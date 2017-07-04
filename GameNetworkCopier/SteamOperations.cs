@@ -19,10 +19,11 @@ namespace GameNetworkCopier
         private Dictionary<string, string> installedGames;
         private List<string> libraryPaths;
         private FtpServer ftpServer;
+        private string steamappsPath;
 
         public SteamOperations()
         {
-            String steamappsPath = GetSteamappsPath();
+            FindSteamappsPath();
             DirectoryInfo di = new DirectoryInfo(@steamappsPath);
             foreach (var file in FullDirList(di, "*.acf"))
             {
@@ -40,7 +41,8 @@ namespace GameNetworkCopier
             var membershipProvider = new AnonymousMembershipProvider();
 
             // use %TEMP%/TestFtpServer as root folder
-            var fsProvider = new DotNetFileSystemProvider(Path.Combine(Path.GetTempPath(), "batata"), false);
+            Console.WriteLine(Path.Combine(@steamappsPath, "common"));
+            var fsProvider = new DotNetFileSystemProvider(Path.Combine(@steamappsPath, "common"), false);
 
             // Initialize the FTP server
             ftpServer = new FtpServer(fsProvider, membershipProvider, "127.0.0.1");
@@ -126,14 +128,17 @@ namespace GameNetworkCopier
             return files;
         }
 
-        private String GetSteamappsPath()
+        private void FindSteamappsPath()
         {
             string steamPath = Registry.GetValue("HKEY_CURRENT_USER\\Software\\Valve\\Steam", "SourceModInstallPath", String.Empty) as string;
             if (steamPath != null && !steamPath.Equals(String.Empty))
             {
-                return steamPath.Replace("sourcemods", "");
+                steamappsPath = steamPath.Replace("sourcemods", "");
             }
-            throw new Exception("No steamapps path found.");
+            else
+            {
+                throw new Exception("No steamapps path found.");
+            }
         }
 
         public static void printList(List<string> l)
