@@ -4,7 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using FubarDev.FtpServer;
+using FubarDev.FtpServer.AccountManagement;
+using FubarDev.FtpServer.FileSystem.DotNet;
 using Microsoft.Win32;
 
 namespace GameNetworkCopier
@@ -14,6 +18,8 @@ namespace GameNetworkCopier
     {
         private Dictionary<string, string> installedGames;
         private List<string> libraryPaths;
+        private FtpServer ftpServer;
+
         public SteamOperations()
         {
             String steamappsPath = GetSteamappsPath();
@@ -24,10 +30,31 @@ namespace GameNetworkCopier
                 installedGames = GetSteamGameDetails(lines);
             }
             libraryPaths = GetLibraryPaths(File.ReadAllLines(@steamappsPath + "\\" + "libraryfolders.vdf"));
+            ReadyFtpServer();
 
         }
 
-       Dictionary<string, string> GetSteamGameDetails(string[] lines)
+        private void ReadyFtpServer()
+        {
+            // allow only anonymous logins
+            var membershipProvider = new AnonymousMembershipProvider();
+
+            // use %TEMP%/TestFtpServer as root folder
+            var fsProvider = new DotNetFileSystemProvider(Path.Combine(Path.GetTempPath(), "batata"), false);
+
+            // Initialize the FTP server
+            ftpServer = new FtpServer(fsProvider, membershipProvider, "127.0.0.1");
+
+            // Start the FTP server
+            ftpServer.Start();
+        }
+
+        public void stop()
+        {
+            if(ftpServer != null) ftpServer.Stop();
+        }
+
+        Dictionary<string, string> GetSteamGameDetails(string[] lines)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
             foreach (var line in lines)

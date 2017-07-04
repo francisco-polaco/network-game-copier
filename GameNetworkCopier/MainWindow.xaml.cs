@@ -23,11 +23,11 @@ namespace GameNetworkCopier
     /// </summary>
     public partial class MainWindow : Window
     {
-        private SteamOperations steam = new SteamOperations();
         public MainWindow()
         {
             InitializeComponent();
         }
 
+      
     }
 }

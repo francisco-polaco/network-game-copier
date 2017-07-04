@@ -43,6 +43,18 @@
     <Reference Include="FubarDev.FtpServer, Version=1.3.6.34281, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FubarDev.FtpServer.1.3.6\lib\portable45-net45+win8+wp8+wpa81\FubarDev.FtpServer.dll</HintPath>
     </Reference>
+    <Reference Include="FubarDev.FtpServer.AccountManagement, Version=1.3.6.34281, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FubarDev.FtpServer.AccountManagement.1.3.6\lib\portable45-net45+win8+wp8+wpa81\FubarDev.FtpServer.AccountManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="FubarDev.FtpServer.AuthTls, Version=1.3.6.34283, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FubarDev.FtpServer.AuthTls.1.3.6\lib\net45\FubarDev.FtpServer.AuthTls.dll</HintPath>
+    </Reference>
+    <Reference Include="FubarDev.FtpServer.FileSystem, Version=1.3.6.34280, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FubarDev.FtpServer.FileSystem.1.3.6\lib\portable45-net45+win8+wp8+wpa81\FubarDev.FtpServer.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="FubarDev.FtpServer.FileSystem.DotNet, Version=1.3.6.34283, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FubarDev.FtpServer.FileSystem.DotNet.1.3.6\lib\net45\FubarDev.FtpServer.FileSystem.DotNet.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
     </Reference>

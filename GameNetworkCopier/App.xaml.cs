@@ -11,7 +11,17 @@ namespace GameNetworkCopier
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
+
     public partial class App : Application
     {
+        private SteamOperations steam = new SteamOperations();
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            // Perform tasks at application exit
+            steam.stop();
+        }
+
     }
+    
+
 }
