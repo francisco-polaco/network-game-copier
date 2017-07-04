@@ -47,11 +47,36 @@ namespace GameNetworkCopier
             DirectoryInfo di = new DirectoryInfo(@steamappsPath);
             foreach (var file in FullDirList(di, "*.acf"))
             {
-                string contents = File.ReadAllText(@steamappsPath + "\\" + file);
+                string[] lines = File.ReadAllLines(@steamappsPath + "\\" + file);
+                Dictionary<string, string> dic = getSteamGameDetails(lines);
+                Console.WriteLine(dic["name"] + " -> " + dic["installdir"]);
+                //string contents = File.ReadAllText(@steamappsPath + "\\" + file);
                 //AppState astate = JsonConvert.DeserializeObject<AppState>(contents);
                 //Console.WriteLine(astate.name);
             }
             return null;
+        }
+
+        Dictionary<string, string> getSteamGameDetails(string[] lines)
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            foreach (var line in lines)
+            {
+                if (line.Contains("\"name\"") || line.Contains("\"installdir\""))
+                {
+                    string[] strings = line.Split('\t');
+                    List<string> aux = new List<string>();
+                    foreach (string s in strings)
+                    {
+                        if (s.StartsWith("\"") && s.EndsWith("\""))
+                        {
+                            aux.Add(s.Replace("\"", ""));
+                        }
+                    }
+                    result[aux[0]] = aux[1];
+                }
+            }
+            return result;
         }
 
         ArrayList FullDirList(DirectoryInfo dir, string searchPattern)
@@ -94,7 +119,16 @@ namespace GameNetworkCopier
             throw new Exception("No steamapps path found.");
         }
 
-        public static void printList(ArrayList l)
+        public static void printList(List<string> l)
+        {
+            String res = "[ ";
+            foreach (var el in l)
+            {
+                res += el + ", ";
+            }
+            Console.WriteLine(res + "]");
+        }
+        public static void printArray(object[] l)
         {
             String res = "[ ";
             foreach (var el in l)
