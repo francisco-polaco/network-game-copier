@@ -19,5 +19,10 @@
         <materialDesign:Card Padding="32" Margin="16">
             <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">My First Material Design App</TextBlock>
         </materialDesign:Card>
+        <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                Margin="0 0 8 0" HorizontalAlignment="Left"
+                ToolTip="MaterialDesignFloatingActionMiniLightButton" Click="Button_Click">
+            <materialDesign:PackIcon Kind="Alarm" Height="24" Width="24" />
+        </Button>
     </Grid>
 </Window>

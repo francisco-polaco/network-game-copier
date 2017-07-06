@@ -14,11 +14,11 @@ namespace GameNetworkCopier
 
     public partial class App : Application
     {
-        private SteamOperations steam = new SteamOperations();
+       
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             // Perform tasks at application exit
-            steam.Stop();
+            BackendSingleton.getInstance()._steam.Stop();
         }
 
     }

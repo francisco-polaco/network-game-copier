@@ -16,45 +16,32 @@ namespace GameNetworkCopier
 
     class SteamOperations
     {
-        private Dictionary<string, string> installedGames;
-        private List<string> libraryPaths;
-        private FtpServer ftpServer;
-        private string steamappsPath;
+        private Dictionary<string, string> _installedGames;
+        private List<string> _libraryPaths;
+        private string _steamappsPath;
 
         public SteamOperations()
         {
             FindSteamappsPath();
-            DirectoryInfo di = new DirectoryInfo(@steamappsPath);
+            DirectoryInfo di = new DirectoryInfo(_steamappsPath);
             foreach (var file in FullDirList(di, "*.acf"))
             {
-                string[] lines = File.ReadAllLines(@steamappsPath + "\\" + file);
-                installedGames = GetSteamGameDetails(lines);
+                string[] lines = File.ReadAllLines(_steamappsPath + "\\" + file);
+                _installedGames = GetSteamGameDetails(lines);
             }
-            libraryPaths = GetLibraryPaths(File.ReadAllLines(@steamappsPath + "\\" + "libraryfolders.vdf"));
+            _libraryPaths = GetLibraryPaths(File.ReadAllLines(_steamappsPath + "\\" + "libraryfolders.vdf"));
             ReadyFtpServer();
 
         }
 
         private void ReadyFtpServer()
         {
-            // allow only anonymous logins
-            var membershipProvider = new AnonymousMembershipProvider();
-
-            // use %TEMP%/TestFtpServer as root folder
-            Console.WriteLine(Path.Combine(@steamappsPath, "common"));
-            var fsProvider = new DotNetFileSystemProvider(Path.Combine(@steamappsPath, "common"), false);
-            //var fsProvider = new DotNetFileSystemProvider(Path.Combine("C:\\", "teste"), false);
-
-            // Initialize the FTP server
-            ftpServer = new FtpServer(fsProvider, membershipProvider, "127.0.0.1");
-
-            // Start the FTP server
-            ftpServer.Start();
+            FtpManager.getInstance().LaunchFtpServer(Path.Combine(_steamappsPath, "common"));
         }
 
         public void Stop()
         {
-            ftpServer?.Stop();
+            FtpManager.getInstance().Stop();
         }
 
         Dictionary<string, string> GetSteamGameDetails(string[] lines)
@@ -134,7 +121,7 @@ namespace GameNetworkCopier
             string steamPath = Registry.GetValue("HKEY_CURRENT_USER\\Software\\Valve\\Steam", "SourceModInstallPath", String.Empty) as string;
             if (steamPath != null && !steamPath.Equals(String.Empty))
             {
-                steamappsPath = steamPath.Replace("sourcemods", "");
+                _steamappsPath = steamPath.Replace("sourcemods", "");
             }
             else
             {
