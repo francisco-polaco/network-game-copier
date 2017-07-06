@@ -16,7 +16,7 @@ namespace GameNetworkCopier
 
     class SteamOperations
     {
-        private Dictionary<string, string> _installedGames;
+        private Dictionary<string, string> _installedGames = new Dictionary<string, string>();
         private List<string> _libraryPaths;
         private string _steamappsPath;
 
@@ -27,7 +27,7 @@ namespace GameNetworkCopier
             foreach (var file in FullDirList(di, "*.acf"))
             {
                 string[] lines = File.ReadAllLines(_steamappsPath + "\\" + file);
-                _installedGames = GetSteamGameDetails(lines);
+                GetSteamGameDetails(lines);
             }
             _libraryPaths = GetLibraryPaths(File.ReadAllLines(_steamappsPath + "\\" + "libraryfolders.vdf"));
             ReadyFtpServer();
@@ -44,21 +44,38 @@ namespace GameNetworkCopier
             FtpManager.getInstance().Stop();
         }
 
-        Dictionary<string, string> GetSteamGameDetails(string[] lines)
+        public List<string> GetGameNamesList()
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
-            foreach (var line in lines)
+            List<String> list = new List<string>();
+            foreach (KeyValuePair<string, string> entry in _installedGames)
             {
-                if (line.Contains("\"name\"") || line.Contains("\"installdir\""))
-                {
-                    var aux = GetValuesFromLine(line);
-                    result[aux[0]] = aux[1];
-                }
+                list.Add(entry.Key);
             }
-            return result;
+            return list;
         }
 
-        List<string> GetLibraryPaths(string[] lines)
+        public string GetDirFromGameName(string gameName)
+        {
+            return _installedGames[gameName];
+        }
+
+        private void GetSteamGameDetails(string[] lines)
+        {
+            string futureKey = null;
+            foreach (var line in lines)
+            {
+                if (line.Contains("\"name\"") )
+                {
+                    futureKey = GetValuesFromLine(line)[1];
+                }
+                else if (line.Contains("\"installdir\""))
+                {
+                    if(futureKey != null) _installedGames[futureKey] = GetValuesFromLine(line)[1];
+                }
+            }
+        }
+
+        private List<string> GetLibraryPaths(string[] lines)
         {
             List<string> paths = new List<string>();
             foreach (var line in lines)
@@ -147,5 +164,7 @@ namespace GameNetworkCopier
             }
             Console.WriteLine(res + "]");
         }
+
+       
     }
 }

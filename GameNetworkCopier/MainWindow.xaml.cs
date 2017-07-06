@@ -32,6 +32,10 @@ namespace GameNetworkCopier
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Console.WriteLine(BackendSingleton.getInstance()._aClient.ping());
+            string[] list = BackendSingleton.getInstance()._aClient.GetGamesNamesList().ToArray();
+            Array.Sort(list);
+            SteamOperations.printArray(list);
+            Console.WriteLine(BackendSingleton.getInstance()._aClient.GetDirFromGameName(list[0]));
         }
     }
 }

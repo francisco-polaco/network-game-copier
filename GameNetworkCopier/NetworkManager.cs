@@ -31,5 +31,15 @@ namespace GameNetworkCopier
             return "Pong!";
         }
 
+        public List<String> GetGamesNamesList()
+        {
+            return BackendSingleton.getInstance()._steam.GetGameNamesList();
+        }
+
+        public string GetDirFromGameName(string gameName)
+        {
+            return BackendSingleton.getInstance()._steam.GetDirFromGameName(gameName);
+        }
+
     }
 }
