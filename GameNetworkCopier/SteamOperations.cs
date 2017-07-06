@@ -43,6 +43,7 @@ namespace GameNetworkCopier
             // use %TEMP%/TestFtpServer as root folder
             Console.WriteLine(Path.Combine(@steamappsPath, "common"));
             var fsProvider = new DotNetFileSystemProvider(Path.Combine(@steamappsPath, "common"), false);
+            //var fsProvider = new DotNetFileSystemProvider(Path.Combine("C:\\", "teste"), false);
 
             // Initialize the FTP server
             ftpServer = new FtpServer(fsProvider, membershipProvider, "127.0.0.1");
@@ -51,9 +52,9 @@ namespace GameNetworkCopier
             ftpServer.Start();
         }
 
-        public void stop()
+        public void Stop()
         {
-            if(ftpServer != null) ftpServer.Stop();
+            ftpServer?.Stop();
         }
 
         Dictionary<string, string> GetSteamGameDetails(string[] lines)
