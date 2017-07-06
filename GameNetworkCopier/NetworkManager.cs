@@ -33,12 +33,12 @@ namespace GameNetworkCopier
 
         public List<String> GetGamesNamesList()
         {
-            return BackendSingleton.getInstance()._steam.GetGameNamesList();
+            return BackendSingleton.GetInstance()._steam.GetGameNamesList();
         }
 
         public string GetDirFromGameName(string gameName)
         {
-            return BackendSingleton.getInstance()._steam.GetDirFromGameName(gameName);
+            return BackendSingleton.GetInstance()._steam.GetDirFromGameName(gameName);
         }
 
     }

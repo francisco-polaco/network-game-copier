@@ -18,7 +18,7 @@ namespace GameNetworkCopier
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             // Perform tasks at application exit
-            BackendSingleton.getInstance()._steam.Stop();
+            BackendSingleton.GetInstance()._steam.Stop();
         }
 
     }

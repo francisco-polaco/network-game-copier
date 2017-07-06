@@ -64,6 +64,9 @@
     <Reference Include="Minimatch, Version=1.1.0.0, Culture=neutral, PublicKeyToken=0cadeb0b849c27c0, processorArchitecture=MSIL">
       <HintPath>..\packages\FubarDev.Minimatch.1.2.0\lib\portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Minimatch.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.3.11\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="Sockets.Plugin, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\rda.SocketsForPCL.1.2.2\lib\net45\Sockets.Plugin.dll</HintPath>
     </Reference>
@@ -93,6 +96,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BackendSingleton.cs" />
+    <Compile Include="FtpLogForNLog.cs" />
+    <Compile Include="FtpLogManager.cs" />
     <Compile Include="FTPManager.cs" />
     <Compile Include="NetworkManager.cs" />
     <Compile Include="SteamOperations.cs" />

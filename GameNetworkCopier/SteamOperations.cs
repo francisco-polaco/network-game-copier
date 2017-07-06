@@ -36,12 +36,12 @@ namespace GameNetworkCopier
 
         private void ReadyFtpServer()
         {
-            FtpManager.getInstance().LaunchFtpServer(Path.Combine(_steamappsPath, "common"));
+            FtpManager.GetInstance().LaunchFtpServer(Path.Combine(_steamappsPath, "common"));
         }
 
         public void Stop()
         {
-            FtpManager.getInstance().Stop();
+            FtpManager.GetInstance().StopFtpServer();
         }
 
         public List<string> GetGameNamesList()

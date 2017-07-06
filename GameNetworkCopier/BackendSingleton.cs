@@ -10,7 +10,7 @@ namespace GameNetworkCopier
     {
         private static readonly BackendSingleton Instance = new BackendSingleton();
 
-        public static BackendSingleton getInstance()
+        public static BackendSingleton GetInstance()
         {
             return Instance;
         }

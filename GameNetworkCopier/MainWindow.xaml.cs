@@ -31,11 +31,13 @@ namespace GameNetworkCopier
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine(BackendSingleton.getInstance()._aClient.ping());
-            string[] list = BackendSingleton.getInstance()._aClient.GetGamesNamesList().ToArray();
+            BackendSingleton.GetInstance();
+            Console.WriteLine(BackendSingleton.GetInstance()._aClient.ping());
+            string[] list = BackendSingleton.GetInstance()._aClient.GetGamesNamesList().ToArray();
             Array.Sort(list);
             SteamOperations.printArray(list);
-            Console.WriteLine(BackendSingleton.getInstance()._aClient.GetDirFromGameName(list[0]));
+            Console.WriteLine(BackendSingleton.GetInstance()._aClient.GetDirFromGameName(list[0]));
+            //FtpManager.GetInstance().ftpClient();
         }
     }
 }
