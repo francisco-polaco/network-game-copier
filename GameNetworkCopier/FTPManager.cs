@@ -14,6 +14,9 @@ using FubarDev.FtpServer.AuthTls;
 using FubarDev.FtpServer.FileSystem.DotNet;
 using NLog;
 
+public delegate void WaitCallback(object state);
+
+
 namespace GameNetworkCopier
 {
     class FtpManager
@@ -81,12 +84,13 @@ namespace GameNetworkCopier
                 BuildListOfFilesToDownload(client, sourcePath, filesToDownloadList);
 
                 // download the files without any sort of verification and error handling YET!
-                foreach (var file in filesToDownloadList)
-                {
-                    client.DownloadFile(destGamePath + file.FullName, file.FullName);
-                }
-                //int numberFilesDownloadFiles = client.DownloadFiles(destGamePath, filesToDownloadList);
-                //_logger.Info("Number of files transfered: " + numberFilesDownloadFiles);
+                // It should be used a bigger number of threads, but for some reason the server can't handle it.
+                Parallel.For(0, filesToDownloadList.Count, new ParallelOptions { MaxDegreeOfParallelism = 1 },
+                    i =>
+                    {
+                        client.DownloadFile(destGamePath + filesToDownloadList[i].FullName, 
+                            filesToDownloadList[i].FullName);
+                    });
             }
             else
             {
@@ -97,25 +101,36 @@ namespace GameNetworkCopier
             client.Disconnect();
         }
 
+        public void RunDownloadFile(object threadPack)
+        {
+            ThreadPack tp = threadPack as ThreadPack;
+            tp?.Client.DownloadFile(tp.DestGamePath + tp.Item.FullName, tp.Item.FullName);
+        }
+
         private void BuildListOfFilesToDownload(FtpClient client, string sourcePath, List<FtpListItem> filesToDownloadList)
         {
-            // get a list of files and directories in the "/htdocs" folder
+            // get a list of files and directories in the folder
             foreach (FtpListItem item in client.GetListing(sourcePath))
             {
                 // if this is a file
                 if (item.Type == FtpFileSystemObjectType.File)
                 {
                     filesToDownloadList.Add(item);
-                    // get the file size
-                    //long size = client.GetFileSize(item.FullName);
                 }
                 else if (item.Type == FtpFileSystemObjectType.Directory)
                 {
-                    // afundar
+                    // going deeper!
                     BuildListOfFilesToDownload(client, sourcePath + "/" + item.Name, filesToDownloadList);
-                    _logger.Info("Directorio: " + item.Name);
                 }
             }
         }
     }
+
+    class ThreadPack
+    {
+        public FtpClient Client { get; set; }
+        public FtpListItem Item { get; set; }
+        public String DestGamePath { get; set; }
+    }
+    
 }
