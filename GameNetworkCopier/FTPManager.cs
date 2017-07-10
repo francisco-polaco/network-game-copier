@@ -14,9 +14,6 @@ using FubarDev.FtpServer.AuthTls;
 using FubarDev.FtpServer.FileSystem.DotNet;
 using NLog;
 
-public delegate void WaitCallback(object state);
-
-
 namespace GameNetworkCopier
 {
     class FtpManager
@@ -101,12 +98,6 @@ namespace GameNetworkCopier
             client.Disconnect();
         }
 
-        public void RunDownloadFile(object threadPack)
-        {
-            ThreadPack tp = threadPack as ThreadPack;
-            tp?.Client.DownloadFile(tp.DestGamePath + tp.Item.FullName, tp.Item.FullName);
-        }
-
         private void BuildListOfFilesToDownload(FtpClient client, string sourcePath, List<FtpListItem> filesToDownloadList)
         {
             // get a list of files and directories in the folder
@@ -124,13 +115,6 @@ namespace GameNetworkCopier
                 }
             }
         }
-    }
-
-    class ThreadPack
-    {
-        public FtpClient Client { get; set; }
-        public FtpListItem Item { get; set; }
-        public String DestGamePath { get; set; }
     }
     
 }
