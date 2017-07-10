@@ -16,7 +16,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
     <Grid>
-        <ListView x:Name="games_list" ItemsSource="{Binding games_list}" Margin="45,0,60.4,-0.2">
+        <ListView x:Name="GamesList" ItemsSource="{Binding games_list}" Margin="45,0,60.4,-0.2" SelectionChanged="GamesList_SelectionChanged" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />

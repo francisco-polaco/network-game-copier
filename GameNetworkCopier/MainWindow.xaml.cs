@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -55,7 +56,7 @@ namespace GameNetworkCopier
             foreach (NameSizePair game in list)
             {
 
-                games_list.Items.Add(SizeFromBytesToMBytes(game));
+                GamesList.Items.Add(SizeFromBytesToMBytes(game));
 
             }
             //SteamOperations.printArray(list);
@@ -105,6 +106,14 @@ namespace GameNetworkCopier
             logger.Warn("warn log message");
             logger.Error("error log message");
             logger.Fatal("fatal log message");
+        }
+
+        private void GamesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LogManager.GetLogger("Example").Debug("Selected: {0}", e.AddedItems[0]);
+            NameSizePair gamePair = e.AddedItems[0] as NameSizePair;
+            SteamOperations.GetInstance().RetrieveGame(gamePair.Name, _aClient);
+
         }
     }
 

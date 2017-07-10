@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentFTP;
 using FubarDev.FtpServer;
@@ -19,7 +20,7 @@ namespace GameNetworkCopier
     {
         private static readonly int FtpPort = 21;
 
-        private Logger logger = LogManager.GetLogger("Example");
+        private readonly Logger _logger = LogManager.GetLogger(typeof(FtpManager).Name);
         private FtpServer _ftpServer;
         private static readonly FtpManager Instance = new FtpManager();
 
@@ -58,7 +59,7 @@ namespace GameNetworkCopier
             _ftpServer?.Stop();
         }
 
-        public void ftpClient()
+        public void RetrieveGame(string destGamePath, string sourceGamePath)
         {
             // create an FTP client
             FtpClient client = new FtpClient("127.0.0.1") {Port = FtpPort};
@@ -68,56 +69,53 @@ namespace GameNetworkCopier
 
             // begin connecting to the server
             client.Connect();
-
-            // get a list of files and directories in the "/htdocs" folder
-            foreach (FtpListItem item in client.GetListing("/htdocs"))
-            {
-
-                // if this is a file
-                if (item.Type == FtpFileSystemObjectType.File)
-                {
-
-                    // get the file size
-                    long size = client.GetFileSize(item.FullName);
-
-                }
-
-                // get modified date/time of the file or folder
-                DateTime time = client.GetModifiedTime(item.FullName);
-
-                // calculate a hash for the file on the server side (default algorithm)
-                //maybe need o import tls commands
-                //FtpHash hash = client.GetHash(item.FullName);
-
-            }
-
-            // upload a file
-            client.UploadFile(@"C:\teste\asdf.txt", "/htdocs/big.txt");
-
-            // rename the uploaded file
-            //client.Rename("/htdocs/big.txt", "/htdocs/big2.txt");
-
-            // download the file again
-            client.DownloadFile(@"C:\\teste\\lel.txt", "/htdocs/teste.txt");
-
-            // delete the file
-            //client.DeleteFile("/htdocs/big2.txt");
-
-            // delete a folder recursively
-            //client.DeleteDirectory("/htdocs/extras/");
-
-            // check if a file exists
-            if (client.FileExists("/htdocs/big2.txt")) { }
-
-            // check if a folder exists
-            if (client.DirectoryExists("/htdocs/extras/")) { }
-
+            
             // upload a file and retry 3 times before giving up
             client.RetryAttempts = 3;
-          //  client.UploadFile(@"C:\MyVideo.mp4", "/htdocs/big.txt", FtpExists.Overwrite, false, FtpVerify.Retry);
+
+            string sourcePath = client.GetWorkingDirectory() + sourceGamePath;
+            // check if a folder exists
+            if (client.DirectoryExists(sourcePath))
+            {
+                List<FtpListItem> filesToDownloadList = new List<FtpListItem>();
+                BuildListOfFilesToDownload(client, sourcePath, filesToDownloadList);
+
+                // download the files without any sort of verification and error handling YET!
+                foreach (var file in filesToDownloadList)
+                {
+                    client.DownloadFile(destGamePath + file.FullName, file.FullName);
+                }
+                //int numberFilesDownloadFiles = client.DownloadFiles(destGamePath, filesToDownloadList);
+                //_logger.Info("Number of files transfered: " + numberFilesDownloadFiles);
+            }
+            else
+            {
+                throw new DirectoryNotFoundException();
+            }
 
             // disconnect! good bye!
             client.Disconnect();
+        }
+
+        private void BuildListOfFilesToDownload(FtpClient client, string sourcePath, List<FtpListItem> filesToDownloadList)
+        {
+            // get a list of files and directories in the "/htdocs" folder
+            foreach (FtpListItem item in client.GetListing(sourcePath))
+            {
+                // if this is a file
+                if (item.Type == FtpFileSystemObjectType.File)
+                {
+                    filesToDownloadList.Add(item);
+                    // get the file size
+                    //long size = client.GetFileSize(item.FullName);
+                }
+                else if (item.Type == FtpFileSystemObjectType.Directory)
+                {
+                    // afundar
+                    BuildListOfFilesToDownload(client, sourcePath + "/" + item.Name, filesToDownloadList);
+                    _logger.Info("Directorio: " + item.Name);
+                }
+            }
         }
     }
 }

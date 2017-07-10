@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentFTP;
 using FubarDev.FtpServer;
 using FubarDev.FtpServer.AccountManagement;
 using FubarDev.FtpServer.FileSystem.DotNet;
@@ -158,6 +160,14 @@ namespace GameNetworkCopier
             }
         }
 
+        public void RetrieveGame(string gameName, NetworkManager clienta)
+        {
+            string remotePath = clienta.GetDirFromGameName(gameName);
+            Console.WriteLine(remotePath);
+            FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath);
+        }
+
+
         public static void printList(List<string> l)
         {
             String res = "[ ";
@@ -180,6 +190,7 @@ namespace GameNetworkCopier
        
     }
 
+
     public class PathnameSizePair
     {
         public string PathName { get; set; }
@@ -189,6 +200,7 @@ namespace GameNetworkCopier
     [System.Serializable]
     public class NameSizePair : IComparable
     {
+
         public string Name { get; set; }
         public string Size { get; set; }
         public int CompareTo(object obj)
@@ -201,5 +213,9 @@ namespace GameNetworkCopier
             throw new InvalidCastException();
         }
 
+        public override String ToString()
+        {
+            return "GamePair: " + Name + " - " + Size;
+        }
     }
 }
