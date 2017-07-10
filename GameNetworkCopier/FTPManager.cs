@@ -9,13 +9,17 @@ using FluentFTP;
 using FubarDev.FtpServer;
 using FubarDev.FtpServer.AccountManagement;
 using FubarDev.FtpServer.AccountManagement.Anonymous;
+using FubarDev.FtpServer.AuthTls;
 using FubarDev.FtpServer.FileSystem.DotNet;
-using TestFtpServer.Logging;
+using NLog;
 
 namespace GameNetworkCopier
 {
     class FtpManager
     {
+        private static readonly int FtpPort = 21;
+
+        private Logger logger = LogManager.GetLogger("Example");
         private FtpServer _ftpServer;
         private static readonly FtpManager Instance = new FtpManager();
 
@@ -27,20 +31,24 @@ namespace GameNetworkCopier
         public void LaunchFtpServer(string pathToServe)
         {
             // allow only anonymous logins
-            var membershipProvider = new AnonymousMembershipProvider(new NoValidation());
+            var membershipProvider = new AnonymousMembershipProvider();
 
             // use %TEMP%/TestFtpServer as root folder
             var fsProvider = new DotNetFileSystemProvider(pathToServe, false);
 
-            // Initialize the FTP server
-            using (_ftpServer = new FtpServer(fsProvider, membershipProvider, "127.0.0.1")
-            {
-                DefaultEncoding = Encoding.ASCII,
-                LogManager = new FtpLogManager(),
-            })
+            // Use all commands from the FtpServer assembly and NOT the one(s) from the AuthTls assembly
+            var commandFactory = new AssemblyFtpCommandHandlerFactory(typeof(FtpServer).Assembly);
 
-                // Start the FTP server
-                _ftpServer.Start();
+
+            // Initialize the FTP server
+            _ftpServer = new FtpServer(fsProvider, membershipProvider, "127.0.0.1", FtpPort, commandFactory)
+            {
+                DefaultEncoding = Encoding.UTF8, // This can cause trouble.
+                LogManager = new FtpLogManager(),
+            };
+
+            // Start the FTP server
+            _ftpServer.Start();
 
         }
 
@@ -52,7 +60,7 @@ namespace GameNetworkCopier
         public void ftpClient()
         {
             // create an FTP client
-            FtpClient client = new FtpClient("localhost");
+            FtpClient client = new FtpClient("localhost") {Port = FtpPort};
 
             // if you don't specify login credentials, we use the "anonymous" user account
             //client.Credentials = new NetworkCredential("david", "pass123");

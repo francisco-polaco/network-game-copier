@@ -16,11 +16,18 @@ namespace GameNetworkCopier
 
     class SteamOperations
     {
+        private static readonly SteamOperations Instance = new SteamOperations();
+
+        public static SteamOperations GetInstance()
+        {
+            return Instance;
+        }
+
         private Dictionary<string, string> _installedGames = new Dictionary<string, string>();
         private List<string> _libraryPaths;
         private string _steamappsPath;
 
-        public SteamOperations()
+        private SteamOperations()
         {
             FindSteamappsPath();
             DirectoryInfo di = new DirectoryInfo(_steamappsPath);
@@ -30,18 +37,11 @@ namespace GameNetworkCopier
                 GetSteamGameDetails(lines);
             }
             _libraryPaths = GetLibraryPaths(File.ReadAllLines(_steamappsPath + "\\" + "libraryfolders.vdf"));
-            ReadyFtpServer();
-
         }
 
-        private void ReadyFtpServer()
+        public void ReadyFtpServer()
         {
             FtpManager.GetInstance().LaunchFtpServer(Path.Combine(_steamappsPath, "common"));
-        }
-
-        public void Stop()
-        {
-            FtpManager.GetInstance().StopFtpServer();
         }
 
         public List<string> GetGameNamesList()
