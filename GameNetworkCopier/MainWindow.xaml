@@ -16,11 +16,16 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
     <Grid>
-        <materialDesign:Card Padding="32" Margin="16">
-            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">My First Material Design App</TextBlock>
-        </materialDesign:Card>
+        <ListView x:Name="games_list" ItemsSource="{Binding games_list}" Margin="45,0,60.4,-0.2">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Size}" Header="Size (MB)" />
+                </GridView>
+            </ListView.View>
+        </ListView>
         <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                Margin="0 0 8 0" HorizontalAlignment="Left"
+                Margin="478,281,0,-0.2" HorizontalAlignment="Left"
                 ToolTip="MaterialDesignFloatingActionMiniLightButton" Click="Button_Click">
             <materialDesign:PackIcon Kind="Alarm" Height="24" Width="24" />
         </Button>

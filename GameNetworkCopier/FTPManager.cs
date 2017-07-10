@@ -33,6 +33,7 @@ namespace GameNetworkCopier
             // allow only anonymous logins
             var membershipProvider = new AnonymousMembershipProvider();
 
+
             // use %TEMP%/TestFtpServer as root folder
             var fsProvider = new DotNetFileSystemProvider(pathToServe, false);
 
@@ -43,7 +44,7 @@ namespace GameNetworkCopier
             // Initialize the FTP server
             _ftpServer = new FtpServer(fsProvider, membershipProvider, "127.0.0.1", FtpPort, commandFactory)
             {
-                DefaultEncoding = Encoding.UTF8, // This can cause trouble.
+                DefaultEncoding = Encoding.ASCII, // This can cause trouble.
                 LogManager = new FtpLogManager(),
             };
 
@@ -60,10 +61,10 @@ namespace GameNetworkCopier
         public void ftpClient()
         {
             // create an FTP client
-            FtpClient client = new FtpClient("localhost") {Port = FtpPort};
+            FtpClient client = new FtpClient("127.0.0.1") {Port = FtpPort};
 
             // if you don't specify login credentials, we use the "anonymous" user account
-            //client.Credentials = new NetworkCredential("david", "pass123");
+            client.Credentials = new NetworkCredential("anonymous", "anonymous@batata.com");
 
             // begin connecting to the server
             client.Connect();
@@ -85,7 +86,8 @@ namespace GameNetworkCopier
                 DateTime time = client.GetModifiedTime(item.FullName);
 
                 // calculate a hash for the file on the server side (default algorithm)
-                FtpHash hash = client.GetHash(item.FullName);
+                //maybe need o import tls commands
+                //FtpHash hash = client.GetHash(item.FullName);
 
             }
 
@@ -93,10 +95,10 @@ namespace GameNetworkCopier
             client.UploadFile(@"C:\teste\asdf.txt", "/htdocs/big.txt");
 
             // rename the uploaded file
-            client.Rename("/htdocs/big.txt", "/htdocs/big2.txt");
+            //client.Rename("/htdocs/big.txt", "/htdocs/big2.txt");
 
             // download the file again
-            client.DownloadFile(@"C:\lel.txt", "/htdocs/teste.txt");
+            client.DownloadFile(@"C:\\teste\\lel.txt", "/htdocs/teste.txt");
 
             // delete the file
             //client.DeleteFile("/htdocs/big2.txt");

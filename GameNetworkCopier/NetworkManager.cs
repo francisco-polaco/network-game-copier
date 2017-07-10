@@ -31,7 +31,7 @@ namespace GameNetworkCopier
             return "Pong!";
         }
 
-        public List<String> GetGamesNamesList()
+        public List<NameSizePair> GetGamesNamesList()
         {
             return SteamOperations.GetInstance().GetGameNamesList();
         }

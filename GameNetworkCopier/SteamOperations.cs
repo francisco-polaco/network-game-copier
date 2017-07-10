@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace GameNetworkCopier
             return Instance;
         }
 
-        private Dictionary<string, string> _installedGames = new Dictionary<string, string>();
+        private Dictionary<string, PathnameSizePair> _installedGames = new Dictionary<string, PathnameSizePair>();
         private List<string> _libraryPaths;
         private string _steamappsPath;
 
@@ -44,24 +45,28 @@ namespace GameNetworkCopier
             FtpManager.GetInstance().LaunchFtpServer(Path.Combine(_steamappsPath, "common"));
         }
 
-        public List<string> GetGameNamesList()
+        public List<NameSizePair> GetGameNamesList()
         {
-            List<String> list = new List<string>();
-            foreach (KeyValuePair<string, string> entry in _installedGames)
+            List<NameSizePair> list = new List<NameSizePair>();
+            foreach (KeyValuePair<string, PathnameSizePair> entry in _installedGames)
             {
-                list.Add(entry.Key);
+                list.Add(new NameSizePair
+                    {
+                        Name = entry.Key, Size = entry.Value.Size
+                    });
             }
             return list;
         }
 
         public string GetDirFromGameName(string gameName)
         {
-            return _installedGames[gameName];
+            return _installedGames[gameName].PathName;
         }
 
         private void GetSteamGameDetails(string[] lines)
         {
             string futureKey = null;
+            string pathname = "";
             foreach (var line in lines)
             {
                 if (line.Contains("\"name\"") )
@@ -70,7 +75,14 @@ namespace GameNetworkCopier
                 }
                 else if (line.Contains("\"installdir\""))
                 {
-                    if(futureKey != null) _installedGames[futureKey] = GetValuesFromLine(line)[1];
+                    pathname = GetValuesFromLine(line)[1];
+                }
+                else if (line.Contains("\"SizeOnDisk\""))
+                {
+                    if (futureKey != null)
+                        _installedGames[futureKey] =
+                            new PathnameSizePair {PathName = pathname, Size = GetValuesFromLine(line)[1]};
+                    break;
                 }
             }
         }
@@ -166,5 +178,28 @@ namespace GameNetworkCopier
         }
 
        
+    }
+
+    public class PathnameSizePair
+    {
+        public string PathName { get; set; }
+        public string Size { get; set; }
+    }
+
+    [System.Serializable]
+    public class NameSizePair : IComparable
+    {
+        public string Name { get; set; }
+        public string Size { get; set; }
+        public int CompareTo(object obj)
+        {
+            if(obj != null && obj.GetType() == typeof(NameSizePair) )
+            {
+                var otherNameSizePair = obj as NameSizePair;
+                return String.Compare(Name, otherNameSizePair.Name, StringComparison.Ordinal);
+            }
+            throw new InvalidCastException();
+        }
+
     }
 }

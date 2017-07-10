@@ -50,11 +50,24 @@ namespace GameNetworkCopier
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Console.WriteLine(_aClient.ping());
-            string[] list = _aClient.GetGamesNamesList().ToArray();
-            //Array.Sort(list);
+            NameSizePair[] list = _aClient.GetGamesNamesList().ToArray();
+            Array.Sort(list);
+            foreach (NameSizePair game in list)
+            {
+
+                games_list.Items.Add(SizeFromBytesToMBytes(game));
+
+            }
             //SteamOperations.printArray(list);
             //Console.WriteLine(_aClient.GetDirFromGameName(list[0]));
-            FtpManager.GetInstance().ftpClient();
+            //FtpManager.GetInstance().ftpClient();
+        }
+
+        private NameSizePair SizeFromBytesToMBytes(NameSizePair pair)
+        {
+            string size = pair.Size;
+            long sizeInMb = Int64.Parse(size) / 1024 / 1024;
+            return new NameSizePair {Name = pair.Name, Size = sizeInMb.ToString()};
         }
 
         private void ConfigLog()
@@ -94,4 +107,6 @@ namespace GameNetworkCopier
             logger.Fatal("fatal log message");
         }
     }
+
+   
 }
