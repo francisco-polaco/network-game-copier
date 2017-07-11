@@ -25,6 +25,8 @@ using NLog.Targets;
 
 namespace GameNetworkCopier
 {
+
+    public delegate void DelAddComputer(string computer);
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -32,7 +34,7 @@ namespace GameNetworkCopier
     {
         private SteamOperations _steam;
         private NetworkManager _server;
-        private NetworkManager _aClient;
+        private NetworkManager _client;
 
         public MainWindow()
         {
@@ -46,16 +48,17 @@ namespace GameNetworkCopier
             DiscoverService.GetInstance().StartListening();
             _steam = SteamOperations.GetInstance();
             _server = new NetworkManager(8086);
-            _aClient = (NetworkManager) Activator.GetObject(
-                typeof(NetworkManager),
-                "tcp://localhost:8086/NetworkManager");
+            //_client = (NetworkManager) Activator.GetObject(
+            //    typeof(NetworkManager),
+            //    "tcp://localhost:8086/NetworkManager");
             ConfigLog();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine(_aClient.ping());
-            NameSizePair[] list = _aClient.GetGamesNamesList().ToArray();
+            if(_client == null) return;
+            Console.WriteLine(_client.ping());
+            NameSizePair[] list = _client.GetGamesNamesList().ToArray();
             Array.Sort(list);
             GamesList.Items.Clear();
             foreach (NameSizePair game in list)
@@ -63,7 +66,6 @@ namespace GameNetworkCopier
                 GamesList.Items.Add(SizeFromBytesToMBytes(game));
             }
 
-            DiscoverService.GetInstance().Broadcast();
         }
 
         private NameSizePair SizeFromBytesToMBytes(NameSizePair pair)
@@ -112,9 +114,35 @@ namespace GameNetworkCopier
 
         private void GamesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LogManager.GetLogger("Example").Debug("Selected: {0}", e.AddedItems[0]);
+            LogManager.GetCurrentClassLogger().Debug("Selected: {0}", e.AddedItems[0]);
             NameSizePair gamePair = e.AddedItems[0] as NameSizePair;
-            SteamOperations.GetInstance().RetrieveGame(gamePair.Name, _aClient);
+            SteamOperations.GetInstance().RetrieveGame(gamePair.Name, _client);
+        }
+
+        private void Refresh_Button_Click(object sender, RoutedEventArgs e)
+        {
+            ComputerComboBox.Items.Clear();
+            DiscoverService.GetInstance().RetrieveLiveServers(this, new DelAddComputer(AddComputer));
+            ComputerComboBox.IsEnabled = true;
+        }
+
+        public void AddComputer(string computer)
+        {
+            ComputerComboBox.Items.Add(computer);
+        }
+
+        private void ComputerComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string targetClientIp = e.AddedItems[0].ToString();
+            LogManager.GetCurrentClassLogger().Info("Current client selected: " + targetClientIp);
+            _client = (NetworkManager)Activator.GetObject(
+                typeof(NetworkManager),
+                BuildTcpRemoteEndpoint(targetClientIp));
+        }
+
+        private string BuildTcpRemoteEndpoint(string ip)
+        {
+            return "tcp://" + ip + ":8086/NetworkManager";
         }
     }
 
