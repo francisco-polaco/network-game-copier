@@ -116,6 +116,7 @@
     <Compile Include="FtpLogManager.cs" />
     <Compile Include="FTPManager.cs" />
     <Compile Include="NetworkManager.cs" />
+    <Compile Include="PrintHelper.cs" />
     <Compile Include="SteamOperations.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -145,7 +146,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="NLog.config" />

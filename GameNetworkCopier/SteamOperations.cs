@@ -164,30 +164,8 @@ namespace GameNetworkCopier
         {
             string remotePath = clienta.GetDirFromGameName(gameName);
             Console.WriteLine(remotePath);
-            FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer);
+            FtpManager.GetInstance().RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer);
         }
-
-
-        public static void printList(List<string> l)
-        {
-            String res = "[ ";
-            foreach (var el in l)
-            {
-                res += el + ", ";
-            }
-            Console.WriteLine(res + "]");
-        }
-        public static void printArray(object[] l)
-        {
-            String res = "[ ";
-            foreach (var el in l)
-            {
-                res += el + ", ";
-            }
-            Console.WriteLine(res + "]");
-        }
-
-       
     }
 
 

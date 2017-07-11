@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,31 +44,15 @@ namespace GameNetworkCopier
             Init();
             InitializeComponent();
             _steam.ReadyFtpServer();
+            Refresh_Button_Click(null, null);
         }
 
         private void Init()
         {
+            ConfigLog();
             DiscoverService.GetInstance().StartListening();
             _steam = SteamOperations.GetInstance();
             _server = new NetworkManager(8086);
-            //_client = (NetworkManager) Activator.GetObject(
-            //    typeof(NetworkManager),
-            //    "tcp://localhost:8086/NetworkManager");
-            ConfigLog();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if(_client == null) return;
-            Console.WriteLine(_client.ping());
-            NameSizePair[] list = _client.GetGamesNamesList().ToArray();
-            Array.Sort(list);
-            GamesList.Items.Clear();
-            foreach (NameSizePair game in list)
-            {
-                GamesList.Items.Add(SizeFromBytesToMBytes(game));
-            }
-
         }
 
         private NameSizePair SizeFromBytesToMBytes(NameSizePair pair)
@@ -117,18 +103,18 @@ namespace GameNetworkCopier
         {
             LogManager.GetCurrentClassLogger().Debug("Selected: {0}", e.AddedItems[0]);
             NameSizePair gamePair = e.AddedItems[0] as NameSizePair;
-            SteamOperations.GetInstance().RetrieveGame(gamePair.Name, _client, _targetClientIp);
+            if (gamePair != null) SteamOperations.GetInstance().RetrieveGame(gamePair.Name, _client, _targetClientIp);
         }
 
         private void Refresh_Button_Click(object sender, RoutedEventArgs e)
         {
             ComputerComboBox.Items.Clear();
-            DiscoverService.GetInstance().RetrieveLiveServers(this, new DelAddComputer(AddComputer));
-            ComputerComboBox.IsEnabled = true;
+            DiscoverService.GetInstance().RetrieveLiveServers(this, AddComputer);
         }
 
         public void AddComputer(string computer)
         {
+            if(!ComputerComboBox.IsEditable) ComputerComboBox.IsEnabled = true;
             ComputerComboBox.Items.Add(computer);
         }
 
@@ -139,6 +125,13 @@ namespace GameNetworkCopier
             _client = (NetworkManager)Activator.GetObject(
                 typeof(NetworkManager),
                 BuildTcpRemoteEndpoint(_targetClientIp));
+            NameSizePair[] list = _client.GetGamesNamesList().ToArray();
+            Array.Sort(list);
+            GamesList.Items.Clear();
+            foreach (NameSizePair game in list)
+            {
+                GamesList.Items.Add(SizeFromBytesToMBytes(game));
+            }
         }
 
 

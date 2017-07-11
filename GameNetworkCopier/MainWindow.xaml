@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GameNetworkCopier"
 
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525"
+        Title="GameCopier" Height="350" Width="525"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -25,8 +25,8 @@
             <ComboBoxItem>Windows</ComboBoxItem>
         </ComboBox>
         <Button x:Name="RefreshButton" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                Margin="454,0,0,280.8" HorizontalAlignment="Left"
-                ToolTip="MaterialDesignFloatingActionMiniButton" RenderTransformOrigin="6.884,-3.003" Click="Refresh_Button_Click">
+                Margin="454,0,0,262.8" HorizontalAlignment="Left"
+                ToolTip="MaterialDesignFloatingActionMiniButton" RenderTransformOrigin="6.884,-3.003" Click="Refresh_Button_Click" Height="Auto" Width="54">
             <materialDesign:PackIcon Kind="Refresh" Height="24" Width="24" RenderTransformOrigin="13.97,-5.296" />
         </Button>
 
@@ -38,10 +38,5 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                Margin="454,247,0,33.8" HorizontalAlignment="Left"
-                ToolTip="MaterialDesignFloatingActionMiniLightButton" Click="Button_Click">
-            <materialDesign:PackIcon Kind="Alarm" Height="24" Width="24" />
-        </Button>
     </Grid>
 </Window>
