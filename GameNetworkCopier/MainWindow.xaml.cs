@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -40,6 +43,7 @@ namespace GameNetworkCopier
 
         private void Init()
         {
+            DiscoverService.GetInstance().StartListening();
             _steam = SteamOperations.GetInstance();
             _server = new NetworkManager(8086);
             _aClient = (NetworkManager) Activator.GetObject(
@@ -53,15 +57,13 @@ namespace GameNetworkCopier
             Console.WriteLine(_aClient.ping());
             NameSizePair[] list = _aClient.GetGamesNamesList().ToArray();
             Array.Sort(list);
+            GamesList.Items.Clear();
             foreach (NameSizePair game in list)
             {
-
                 GamesList.Items.Add(SizeFromBytesToMBytes(game));
-
             }
-            //SteamOperations.printArray(list);
-            //Console.WriteLine(_aClient.GetDirFromGameName(list[0]));
-            //FtpManager.GetInstance().ftpClient();
+
+            DiscoverService.GetInstance().Broadcast();
         }
 
         private NameSizePair SizeFromBytesToMBytes(NameSizePair pair)
@@ -113,7 +115,6 @@ namespace GameNetworkCopier
             LogManager.GetLogger("Example").Debug("Selected: {0}", e.AddedItems[0]);
             NameSizePair gamePair = e.AddedItems[0] as NameSizePair;
             SteamOperations.GetInstance().RetrieveGame(gamePair.Name, _aClient);
-
         }
     }
 
