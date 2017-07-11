@@ -59,46 +59,57 @@ namespace GameNetworkCopier
             _ftpServer?.Stop();
         }
 
-        public void RetrieveGame(string destGamePath, string sourceGamePath, string targetIpServer)
+        public void RetrieveGame(string destGamePath, string sourceGamePath, string targetIpServer, AsyncPack asyncPack)
         {
-            // create an FTP client
-            FtpClient client = new FtpClient(targetIpServer) {Port = FtpPort};
+            new Thread(() =>
+            {
+                // create an FTP client
+                FtpClient client = new FtpClient(targetIpServer)
+                {
+                    Port = FtpPort,
+                    Credentials = new NetworkCredential("anonymous", "anonymous@batata.com")
+                };
 
-            // if you don't specify login credentials, we use the "anonymous" user account
-            client.Credentials = new NetworkCredential("anonymous", "anonymous@batata.com");
+                // if you don't specify login credentials, we use the "anonymous" user account
 
-            // begin connecting to the server
-            client.Connect();
+                // begin connecting to the server
+                client.Connect();
             
-            // upload a file and retry 3 times before giving up
-            client.RetryAttempts = 3;
+                // upload a file and retry 3 times before giving up
+                client.RetryAttempts = 3;
 
-            string sourcePath = client.GetWorkingDirectory() + sourceGamePath;
-            // check if a folder exists
-            if (client.DirectoryExists(sourcePath))
-            {
-                List<FtpListItem> filesToDownloadList = new List<FtpListItem>();
-                BuildListOfFilesToDownload(client, sourcePath, filesToDownloadList);
+                string sourcePath = client.GetWorkingDirectory() + sourceGamePath;
+                // check if a folder exists
+                if (client.DirectoryExists(sourcePath))
+                {
+                    List<FtpListItem> filesToDownloadList = new List<FtpListItem>();
+                    long totalSize = 0;
+                    BuildListOfFilesToDownload(client, sourcePath, filesToDownloadList, ref totalSize);
+                    LogManager.GetCurrentClassLogger().Info("Size to be transfered: " + totalSize);
+                    long alreadyDownloaded = 0;
+                    // download the files without any sort of verification and error handling YET!
+                    // It should be used a bigger number of threads, but for some reason the server can't handle it.
+                    Parallel.For(0, filesToDownloadList.Count, new ParallelOptions { MaxDegreeOfParallelism = 1 },
+                        i =>
+                        {
+                            client.DownloadFile(destGamePath + filesToDownloadList[i].FullName, 
+                                filesToDownloadList[i].FullName);
+                            alreadyDownloaded += filesToDownloadList[i].Size;
+                            asyncPack.Window.Dispatcher.Invoke(asyncPack.ToExecute,
+                                Convert.ToDouble(alreadyDownloaded) / Convert.ToDouble(totalSize) * 100);
+                        });
+                }
+                else
+                {
+                    throw new DirectoryNotFoundException();
+                }
 
-                // download the files without any sort of verification and error handling YET!
-                // It should be used a bigger number of threads, but for some reason the server can't handle it.
-                Parallel.For(0, filesToDownloadList.Count, new ParallelOptions { MaxDegreeOfParallelism = 1 },
-                    i =>
-                    {
-                        client.DownloadFile(destGamePath + filesToDownloadList[i].FullName, 
-                            filesToDownloadList[i].FullName);
-                    });
-            }
-            else
-            {
-                throw new DirectoryNotFoundException();
-            }
-
-            // disconnect! good bye!
-            client.Disconnect();
+                // disconnect! good bye!
+                client.Disconnect();
+            }).Start();
         }
 
-        private void BuildListOfFilesToDownload(FtpClient client, string sourcePath, List<FtpListItem> filesToDownloadList)
+        private void BuildListOfFilesToDownload(FtpClient client, string sourcePath, List<FtpListItem> filesToDownloadList, ref long sizeToBeTransfered)
         {
             // get a list of files and directories in the folder
             foreach (FtpListItem item in client.GetListing(sourcePath))
@@ -106,12 +117,13 @@ namespace GameNetworkCopier
                 // if this is a file
                 if (item.Type == FtpFileSystemObjectType.File)
                 {
+                    sizeToBeTransfered += item.Size;
                     filesToDownloadList.Add(item);
                 }
                 else if (item.Type == FtpFileSystemObjectType.Directory)
                 {
                     // going deeper!
-                    BuildListOfFilesToDownload(client, sourcePath + "/" + item.Name, filesToDownloadList);
+                    BuildListOfFilesToDownload(client, sourcePath + "/" + item.Name, filesToDownloadList, ref sizeToBeTransfered);
                 }
             }
         }

@@ -51,15 +51,15 @@ namespace GameNetworkCopier
             {
                 LogManager.GetCurrentClassLogger().Info("Request from discover service received.");
                 if(_ipsRetrieved.Add(ip.Address.ToString()))
-                    _window.Dispatcher.Invoke(_delAddComputer, Dns.GetHostEntry(ip.Address).HostName);
+                    _window.Dispatcher.Invoke(_delAddComputer, ip.Address.ToString());
                 AckLiveServer(ip.Address);
             }
             else if (message.Equals(Ack_Message))
             {
                 LogManager.GetCurrentClassLogger().Info("Ack from other server received.");
                 if(_ipsRetrieved.Add(ip.Address.ToString()))
-                    _window.Dispatcher.Invoke(_delAddComputer, Dns.GetHostEntry(ip.Address).HostName);
-            }
+                    _window.Dispatcher.Invoke(_delAddComputer, ip.Address.ToString());
+            } //Dns.GetHostEntry(ip.Address).HostName
             StartListening();
         }
 
@@ -86,7 +86,7 @@ namespace GameNetworkCopier
 
         public void PrintListKnownIps()
         {
-            PrintHelper.printList(new List<string>(_ipsRetrieved));
+            PrintHelper.PrintList(new List<string>(_ipsRetrieved));
         }
     }
 }

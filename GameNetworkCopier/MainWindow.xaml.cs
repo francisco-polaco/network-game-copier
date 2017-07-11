@@ -29,11 +29,14 @@ namespace GameNetworkCopier
 {
 
     public delegate void DelAddComputer(string computer);
+    public delegate void DelProgress(double percentage);
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const int NetworkManagerPort = 8086;
+
         private SteamOperations _steam;
         private NetworkManager _server;
         private NetworkManager _client;
@@ -52,7 +55,7 @@ namespace GameNetworkCopier
             ConfigLog();
             DiscoverService.GetInstance().StartListening();
             _steam = SteamOperations.GetInstance();
-            _server = new NetworkManager(8086);
+            _server = new NetworkManager(NetworkManagerPort);
         }
 
         private NameSizePair SizeFromBytesToMBytes(NameSizePair pair)
@@ -103,7 +106,7 @@ namespace GameNetworkCopier
         {
             LogManager.GetCurrentClassLogger().Debug("Selected: {0}", e.AddedItems[0]);
             NameSizePair gamePair = e.AddedItems[0] as NameSizePair;
-            if (gamePair != null) SteamOperations.GetInstance().RetrieveGame(gamePair.Name, _client, _targetClientIp);
+            if (gamePair != null) SteamOperations.GetInstance().RetrieveGame(gamePair.Name, _client, _targetClientIp, new AsyncPack{ToExecute = new DelProgress(Progress), Window = this});
         }
 
         private void Refresh_Button_Click(object sender, RoutedEventArgs e)
@@ -118,13 +121,21 @@ namespace GameNetworkCopier
             ComputerComboBox.Items.Add(computer);
         }
 
+        public void Progress(double percentage)
+        {
+            ProgressBar.Opacity = Math.Abs(percentage - 100) < 1 ? 0 : 100;
+            ProgressBar.Value = percentage;
+        }
+
         private void ComputerComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _targetClientIp = e.AddedItems[0].ToString();
+            //string ip = Dns.GetHostAddresses(_targetClientIp)[0].ToString();
             LogManager.GetCurrentClassLogger().Info("Current client selected: " + _targetClientIp);
             _client = (NetworkManager)Activator.GetObject(
                 typeof(NetworkManager),
                 BuildTcpRemoteEndpoint(_targetClientIp));
+            LogManager.GetCurrentClassLogger().Info(_client.Ping());
             NameSizePair[] list = _client.GetGamesNamesList().ToArray();
             Array.Sort(list);
             GamesList.Items.Clear();
@@ -137,7 +148,7 @@ namespace GameNetworkCopier
 
         private static string BuildTcpRemoteEndpoint(string ip)
         {
-            return "tcp://" + ip + ":8086/NetworkManager";
+            return "tcp://" + ip + ":" + NetworkManagerPort + "/NetworkManager";
         }
     }
 

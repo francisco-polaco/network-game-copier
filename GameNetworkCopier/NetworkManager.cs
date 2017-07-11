@@ -25,7 +25,7 @@ namespace GameNetworkCopier
         {
         }
 
-        public string ping()
+        public string Ping()
         {
             Console.WriteLine("Ping!");
             return "Pong!";

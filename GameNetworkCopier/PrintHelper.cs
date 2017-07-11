@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace GameNetworkCopier
 {
     internal static class PrintHelper
     {
-        public static void printList(List<string> l)
+        public static void PrintList(List<string> l)
         {
             String res = "[ ";
             foreach (var el in l)
@@ -15,7 +16,7 @@ namespace GameNetworkCopier
             Console.WriteLine(res + "]");
         }
 
-        public static void printArray(object[] l)
+        public static void PrintArray(object[] l)
         {
             String res = "[ ";
             foreach (var el in l)
@@ -24,5 +25,11 @@ namespace GameNetworkCopier
             }
             Console.WriteLine(res + "]");
         }
+    }
+
+    public class AsyncPack
+    {
+        public Window Window { get; set; }
+        public Delegate ToExecute { get; set; }
     }
 }

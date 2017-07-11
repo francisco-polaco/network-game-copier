@@ -160,11 +160,12 @@ namespace GameNetworkCopier
             }
         }
 
-        public void RetrieveGame(string gameName, NetworkManager clienta, string selectedComputer)
+        public void RetrieveGame(string gameName, NetworkManager clienta, string selectedComputer, AsyncPack asyncPack)
         {
             string remotePath = clienta.GetDirFromGameName(gameName);
             Console.WriteLine(remotePath);
-            FtpManager.GetInstance().RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer);
+            FtpManager.GetInstance().RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer, asyncPack);
+            //FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer, asyncPack);
         }
     }
 

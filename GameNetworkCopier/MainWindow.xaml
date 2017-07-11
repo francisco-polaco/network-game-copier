@@ -30,7 +30,7 @@
             <materialDesign:PackIcon Kind="Refresh" Height="24" Width="24" RenderTransformOrigin="13.97,-5.296" />
         </Button>
 
-        <ListView x:Name="GamesList" ItemsSource="{Binding games_list}" Margin="10,45,95.4,-0.2" SelectionChanged="GamesList_SelectionChanged" >
+        <ListView x:Name="GamesList" ItemsSource="{Binding games_list}" Margin="36,45,69.4,24.8" SelectionChanged="GamesList_SelectionChanged" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
@@ -38,5 +38,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <ProgressBar x:Name="ProgressBar" Opacity="0" Orientation="Horizontal" Value="0" Margin="24,301,24.4,9.8" Height="10" />
     </Grid>
 </Window>
