@@ -160,11 +160,11 @@ namespace GameNetworkCopier
             }
         }
 
-        public void RetrieveGame(string gameName, NetworkManager clienta)
+        public void RetrieveGame(string gameName, NetworkManager clienta, string selectedComputer)
         {
             string remotePath = clienta.GetDirFromGameName(gameName);
             Console.WriteLine(remotePath);
-            FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath);
+            FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer);
         }
 
 

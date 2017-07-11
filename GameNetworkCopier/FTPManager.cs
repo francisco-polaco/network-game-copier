@@ -59,10 +59,10 @@ namespace GameNetworkCopier
             _ftpServer?.Stop();
         }
 
-        public void RetrieveGame(string destGamePath, string sourceGamePath)
+        public void RetrieveGame(string destGamePath, string sourceGamePath, string targetIpServer)
         {
             // create an FTP client
-            FtpClient client = new FtpClient("127.0.0.1") {Port = FtpPort};
+            FtpClient client = new FtpClient(targetIpServer) {Port = FtpPort};
 
             // if you don't specify login credentials, we use the "anonymous" user account
             client.Credentials = new NetworkCredential("anonymous", "anonymous@batata.com");

@@ -35,6 +35,7 @@ namespace GameNetworkCopier
         private SteamOperations _steam;
         private NetworkManager _server;
         private NetworkManager _client;
+        private string _targetClientIp;
 
         public MainWindow()
         {
@@ -116,7 +117,7 @@ namespace GameNetworkCopier
         {
             LogManager.GetCurrentClassLogger().Debug("Selected: {0}", e.AddedItems[0]);
             NameSizePair gamePair = e.AddedItems[0] as NameSizePair;
-            SteamOperations.GetInstance().RetrieveGame(gamePair.Name, _client);
+            SteamOperations.GetInstance().RetrieveGame(gamePair.Name, _client, _targetClientIp);
         }
 
         private void Refresh_Button_Click(object sender, RoutedEventArgs e)
@@ -133,14 +134,15 @@ namespace GameNetworkCopier
 
         private void ComputerComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string targetClientIp = e.AddedItems[0].ToString();
-            LogManager.GetCurrentClassLogger().Info("Current client selected: " + targetClientIp);
+            _targetClientIp = e.AddedItems[0].ToString();
+            LogManager.GetCurrentClassLogger().Info("Current client selected: " + _targetClientIp);
             _client = (NetworkManager)Activator.GetObject(
                 typeof(NetworkManager),
-                BuildTcpRemoteEndpoint(targetClientIp));
+                BuildTcpRemoteEndpoint(_targetClientIp));
         }
 
-        private string BuildTcpRemoteEndpoint(string ip)
+
+        private static string BuildTcpRemoteEndpoint(string ip)
         {
             return "tcp://" + ip + ":8086/NetworkManager";
         }
