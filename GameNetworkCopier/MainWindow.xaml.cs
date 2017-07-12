@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -123,8 +124,22 @@ namespace GameNetworkCopier
 
         public void Progress(double percentage)
         {
-            ProgressBar.Opacity = Math.Abs(percentage - 100) < 1 ? 0 : 100;
-            ProgressBar.Value = percentage;
+            if (Math.Abs(percentage - 100) < 0.1)
+            {
+                ProgressBar.Opacity = 0;
+                Percentage.Opacity = 0;
+
+            }
+            else
+            {
+                if (Math.Abs(ProgressBar.Opacity - 100) > 1)
+                {
+                    ProgressBar.Opacity = 100;
+                    Percentage.Opacity = 100;
+                }
+                ProgressBar.Value = percentage;
+                Percentage.Text = percentage.ToString(CultureInfo.CurrentCulture) + "%";
+            }
         }
 
         private void ComputerComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

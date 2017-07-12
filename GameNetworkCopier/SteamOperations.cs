@@ -26,7 +26,8 @@ namespace GameNetworkCopier
             return Instance;
         }
 
-        private Dictionary<string, PathnameSizePair> _installedGames = new Dictionary<string, PathnameSizePair>();
+        private Dictionary<string, PathnameSizePair> _installedGames 
+            = new Dictionary<string, PathnameSizePair>();
         private List<string> _libraryPaths;
         private string _steamappsPath;
 
@@ -149,7 +150,8 @@ namespace GameNetworkCopier
 
         private void FindSteamappsPath()
         {
-            string steamPath = Registry.GetValue("HKEY_CURRENT_USER\\Software\\Valve\\Steam", "SourceModInstallPath", String.Empty) as string;
+            string steamPath = Registry.GetValue("HKEY_CURRENT_USER\\Software\\Valve\\Steam",
+                "SourceModInstallPath", String.Empty) as string;
             if (steamPath != null && !steamPath.Equals(String.Empty))
             {
                 _steamappsPath = steamPath.Replace("sourcemods", "");
@@ -164,8 +166,9 @@ namespace GameNetworkCopier
         {
             string remotePath = clienta.GetDirFromGameName(gameName);
             Console.WriteLine(remotePath);
-            FtpManager.GetInstance().RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer, asyncPack);
-            //FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer, asyncPack);
+            //FtpManager.GetInstance()
+              //  .RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer, asyncPack);
+            FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer, asyncPack);
         }
     }
 

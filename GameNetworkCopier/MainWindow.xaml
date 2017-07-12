@@ -19,10 +19,6 @@
         <ComboBox x:Name="ComputerComboBox" IsEnabled="False" materialDesign:HintAssist.Hint="Computers"
                   SelectionChanged="ComputerComboBox_OnSelectionChanged"
                   Height="40" Margin="294,0,84.4,280.8">
-            <ComboBoxItem>Android</ComboBoxItem>
-            <ComboBoxItem>iOS</ComboBoxItem>
-            <ComboBoxItem>Linux</ComboBoxItem>
-            <ComboBoxItem>Windows</ComboBoxItem>
         </ComboBox>
         <Button x:Name="RefreshButton" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                 Margin="454,0,0,262.8" HorizontalAlignment="Left"
@@ -30,7 +26,7 @@
             <materialDesign:PackIcon Kind="Refresh" Height="24" Width="24" RenderTransformOrigin="13.97,-5.296" />
         </Button>
 
-        <ListView x:Name="GamesList" ItemsSource="{Binding games_list}" Margin="36,45,69.4,24.8" SelectionChanged="GamesList_SelectionChanged" >
+        <ListView x:Name="GamesList" ItemsSource="{Binding games_list}" Margin="36,45,69.4,29.8" SelectionChanged="GamesList_SelectionChanged" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
@@ -38,6 +34,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <ProgressBar x:Name="ProgressBar" Opacity="0" Orientation="Horizontal" Value="0" Margin="24,301,24.4,9.8" Height="10" />
+        <ProgressBar x:Name="ProgressBar" Opacity="0" Orientation="Horizontal" Value="0" Margin="36,296,69.4,4.8" Height="20" />
+        <TextBlock x:Name="Percentage" Opacity="0"  Margin="458,292,10.4,2.8"></TextBlock>
     </Grid>
 </Window>
