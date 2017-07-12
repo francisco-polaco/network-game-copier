@@ -21,6 +21,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using NLog;
 using NLog.Config;
@@ -107,7 +108,13 @@ namespace GameNetworkCopier
         {
             LogManager.GetCurrentClassLogger().Debug("Selected: {0}", e.AddedItems[0]);
             NameSizePair gamePair = e.AddedItems[0] as NameSizePair;
-            if (gamePair != null) SteamOperations.GetInstance().RetrieveGame(gamePair.Name, _client, _targetClientIp, new AsyncPack{ToExecute = new DelProgress(Progress), Window = this});
+            if (gamePair != null)
+            {
+                Progress(0);
+                SteamOperations.GetInstance()
+                    .RetrieveGame(gamePair.Name, _client, _targetClientIp, 
+                        new AsyncPack{ToExecute = new DelProgress(Progress), Window = this});
+            }
         }
 
         private void Refresh_Button_Click(object sender, RoutedEventArgs e)
@@ -128,7 +135,7 @@ namespace GameNetworkCopier
             {
                 ProgressBar.Opacity = 0;
                 Percentage.Opacity = 0;
-
+                StateText.Text = "Idle";
             }
             else
             {
@@ -136,9 +143,12 @@ namespace GameNetworkCopier
                 {
                     ProgressBar.Opacity = 100;
                     Percentage.Opacity = 100;
-                }
+                    StateText.Text = "Listing";
+
+                }else
+                    StateText.Text = "Downloading";
                 ProgressBar.Value = percentage;
-                Percentage.Text = percentage.ToString(CultureInfo.CurrentCulture) + "%";
+                Percentage.Text = percentage.ToString("0.00") + "%";
             }
         }
 
@@ -159,7 +169,6 @@ namespace GameNetworkCopier
                 GamesList.Items.Add(SizeFromBytesToMBytes(game));
             }
         }
-
 
         private static string BuildTcpRemoteEndpoint(string ip)
         {
