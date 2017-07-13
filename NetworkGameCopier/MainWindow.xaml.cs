@@ -27,7 +27,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 
-namespace GameNetworkCopier
+namespace NetworkGameCopier
 {
 
     public delegate void DelAddComputer(string computer);

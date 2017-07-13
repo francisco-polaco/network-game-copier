@@ -2,7 +2,7 @@
 using FubarDev.FtpServer;
 using NLog;
 
-namespace GameNetworkCopier
+namespace NetworkGameCopier
 {
     public class FtpLogForNLog : IFtpLog
     {

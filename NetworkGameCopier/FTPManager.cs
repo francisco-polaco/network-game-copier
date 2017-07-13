@@ -15,7 +15,7 @@ using FubarDev.FtpServer.AuthTls;
 using FubarDev.FtpServer.FileSystem.DotNet;
 using NLog;
 
-namespace GameNetworkCopier
+namespace NetworkGameCopier
 {
     class FtpManager
     {

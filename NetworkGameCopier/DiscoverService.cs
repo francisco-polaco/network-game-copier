@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using NLog;
 
-namespace GameNetworkCopier
+namespace NetworkGameCopier
 {
     class DiscoverService
     {

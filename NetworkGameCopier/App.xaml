@@ -1,7 +1,7 @@
-﻿<Application x:Class="GameNetworkCopier.App"
+﻿<Application x:Class="NetworkGameCopier.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:GameNetworkCopier"
+             xmlns:local="clr-namespace:NetworkGameCopier"
              StartupUri="MainWindow.xaml"
              Exit="Application_Exit">
     <Application.Resources>

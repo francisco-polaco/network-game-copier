@@ -8,7 +8,7 @@ using System.Runtime.Remoting.Channels.Tcp;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameNetworkCopier
+namespace NetworkGameCopier
 {
     class NetworkManager : MarshalByRefObject
     {

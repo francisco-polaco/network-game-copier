@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameNetworkCopier.Properties {
+namespace NetworkGameCopier.Properties {
     using System;
     
     

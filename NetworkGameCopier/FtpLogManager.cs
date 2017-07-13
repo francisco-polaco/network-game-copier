@@ -1,7 +1,7 @@
 ﻿using System;
 using FubarDev.FtpServer;
 
-namespace GameNetworkCopier
+namespace NetworkGameCopier
 {
     public class FtpLogManager : IFtpLogManager
     {

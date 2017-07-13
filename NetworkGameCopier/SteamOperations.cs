@@ -14,7 +14,7 @@ using FubarDev.FtpServer.AccountManagement;
 using FubarDev.FtpServer.FileSystem.DotNet;
 using Microsoft.Win32;
 
-namespace GameNetworkCopier
+namespace NetworkGameCopier
 {
 
     class SteamOperations

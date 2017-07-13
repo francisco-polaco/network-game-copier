@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 
-namespace GameNetworkCopier
+namespace NetworkGameCopier
 {
     internal static class PrintHelper
     {
