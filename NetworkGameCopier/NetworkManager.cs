@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NetworkGameCopier
 {
-    class NetworkManager : MarshalByRefObject
+    public class NetworkManager : MarshalByRefObject
     {
         public NetworkManager(int port)
         {

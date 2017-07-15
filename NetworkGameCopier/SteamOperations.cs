@@ -16,8 +16,7 @@ using Microsoft.Win32;
 
 namespace NetworkGameCopier
 {
-
-    class SteamOperations
+    internal class SteamOperations : GameProviderOperationsBase
     {
         private static readonly SteamOperations Instance = new SteamOperations();
 
@@ -26,8 +25,6 @@ namespace NetworkGameCopier
             return Instance;
         }
 
-        private Dictionary<string, PathnameSizePair> _installedGames 
-            = new Dictionary<string, PathnameSizePair>();
         private List<string> _libraryPaths;
         private string _steamappsPath;
 
@@ -43,27 +40,19 @@ namespace NetworkGameCopier
             _libraryPaths = GetLibraryPaths(File.ReadAllLines(_steamappsPath + "\\" + "libraryfolders.vdf"));
         }
 
-        public void ReadyFtpServer()
+        public override void ReadyFtpServer()
         {
             FtpManager.GetInstance().LaunchFtpServer(Path.Combine(_steamappsPath, "common"));
         }
 
-        public List<NameSizePair> GetGameNamesList()
+        public override void RetrieveGame(string gameName, NetworkManager clienta, 
+            string selectedComputer, AsyncPack asyncPack)
         {
-            List<NameSizePair> list = new List<NameSizePair>();
-            foreach (KeyValuePair<string, PathnameSizePair> entry in _installedGames)
-            {
-                list.Add(new NameSizePair
-                    {
-                        Name = entry.Key, Size = entry.Value.Size
-                    });
-            }
-            return list;
-        }
-
-        public string GetDirFromGameName(string gameName)
-        {
-            return _installedGames[gameName].PathName;
+            string remotePath = clienta.GetDirFromGameName(gameName);
+            Console.WriteLine(remotePath);
+            FtpManager.GetInstance()
+                .RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer, asyncPack);
+            //FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer, asyncPack);
         }
 
         private void GetSteamGameDetails(string[] lines)
@@ -83,7 +72,7 @@ namespace NetworkGameCopier
                 else if (line.Contains("\"SizeOnDisk\""))
                 {
                     if (futureKey != null)
-                        _installedGames[futureKey] =
+                        InstalledGames[futureKey] =
                             new PathnameSizePair {PathName = pathname, Size = GetValuesFromLine(line)[1]};
                     break;
                 }
@@ -118,7 +107,7 @@ namespace NetworkGameCopier
             return aux;
         }
 
-        ArrayList FullDirList(DirectoryInfo dir, string searchPattern)
+        private ArrayList FullDirList(DirectoryInfo dir, string searchPattern)
         {
             ArrayList files = new ArrayList();
             // Console.WriteLine("Directory {0}", dir.FullName);
@@ -162,14 +151,6 @@ namespace NetworkGameCopier
             }
         }
 
-        public void RetrieveGame(string gameName, NetworkManager clienta, string selectedComputer, AsyncPack asyncPack)
-        {
-            string remotePath = clienta.GetDirFromGameName(gameName);
-            Console.WriteLine(remotePath);
-            //FtpManager.GetInstance()
-              //  .RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer, asyncPack);
-            FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer, asyncPack);
-        }
     }
 
 

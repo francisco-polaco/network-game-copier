@@ -111,10 +111,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BlizzardOperations.cs" />
     <Compile Include="DiscoverService.cs" />
     <Compile Include="FtpLogForNLog.cs" />
     <Compile Include="FtpLogManager.cs" />
     <Compile Include="FTPManager.cs" />
+    <Compile Include="GameProviderOperationsBase.cs" />
     <Compile Include="NetworkManager.cs" />
     <Compile Include="PrintHelper.cs" />
     <Compile Include="SteamOperations.cs" />
