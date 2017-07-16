@@ -143,6 +143,7 @@ namespace NetworkGameCopier
 
         private void FillList()
         {
+            if(_client == null) return;
             NameSizePair[] list = _client.GetGamesNamesList().ToArray();
             Array.Sort(list);
             GamesList.Items.Clear();

@@ -7,6 +7,7 @@ namespace GameNetworkCopier
     {
         public static string FindInstallLocationByName(string name)
         {
+            string s = Registry.LocalMachine.Name;
             RegistryKey parentKey 
                 = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall");
             if (parentKey != null)
@@ -15,7 +16,8 @@ namespace GameNetworkCopier
                 foreach (string t in nameList)
                 {
                     RegistryKey regKey = parentKey.OpenSubKey(t);
-                    if (regKey != null && regKey.GetValue("DisplayName").ToString() == name)
+                    Console.WriteLine(t);
+                    if (regKey != null && t.Equals(name))
                     {
                         return regKey.GetValue("InstallLocation").ToString();
                     }
