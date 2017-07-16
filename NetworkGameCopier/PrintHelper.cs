@@ -6,7 +6,7 @@ namespace NetworkGameCopier
 {
     internal static class PrintHelper
     {
-        public static void PrintList(List<string> l)
+        public static void PrintList<T>(List<T> l)
         {
             String res = "[ ";
             foreach (var el in l)

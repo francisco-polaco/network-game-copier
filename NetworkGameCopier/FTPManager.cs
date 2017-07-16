@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -10,8 +8,6 @@ using System.Threading.Tasks;
 using FluentFTP;
 using FubarDev.FtpServer;
 using FubarDev.FtpServer.AccountManagement;
-using FubarDev.FtpServer.AccountManagement.Anonymous;
-using FubarDev.FtpServer.AuthTls;
 using FubarDev.FtpServer.FileSystem.DotNet;
 using NLog;
 

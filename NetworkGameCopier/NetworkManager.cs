@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetworkGameCopier
 {
@@ -33,12 +29,12 @@ namespace NetworkGameCopier
 
         public List<NameSizePair> GetGamesNamesList()
         {
-            return SteamOperations.GetInstance().GetGameNamesList();
+            return GameProviderSingleton.GetInstance().Active.GetGameNamesList();
         }
 
         public string GetDirFromGameName(string gameName)
         {
-            return SteamOperations.GetInstance().GetDirFromGameName(gameName);
+            return GameProviderSingleton.GetInstance().Active.GetDirFromGameName(gameName);
         }
 
     }

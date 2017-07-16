@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using NLog;
 
 namespace NetworkGameCopier
 {
@@ -29,5 +31,33 @@ namespace NetworkGameCopier
 
         public abstract void RetrieveGame(string gameName, NetworkManager clienta, string selectedComputer, AsyncPack asyncPack);
 
+    }
+
+    public class GameProviderSingleton
+    {
+
+        private static readonly GameProviderSingleton Instance = new GameProviderSingleton();
+
+        public static GameProviderSingleton GetInstance()
+        {
+            return Instance;
+        }
+
+        private GameProviderOperationsBase _active;
+
+        public GameProviderOperationsBase Active
+        {
+            get => _active;
+            set
+            {
+                _active = value;
+                LogManager.GetCurrentClassLogger().Warn("GameProvider is now " + value.GetType().Name);
+            }
+        }
+
+        private GameProviderSingleton()
+        {
+            Active = SteamOperations.GetInstance();
+        }
     }
 }

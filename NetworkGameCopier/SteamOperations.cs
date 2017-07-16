@@ -2,16 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentFTP;
-using FubarDev.FtpServer;
-using FubarDev.FtpServer.AccountManagement;
-using FubarDev.FtpServer.FileSystem.DotNet;
 using Microsoft.Win32;
 
 namespace NetworkGameCopier
@@ -171,7 +161,7 @@ namespace NetworkGameCopier
             if(obj != null && obj.GetType() == typeof(NameSizePair) )
             {
                 var otherNameSizePair = obj as NameSizePair;
-                return String.Compare(Name, otherNameSizePair.Name, StringComparison.Ordinal);
+                return string.Compare(Name, otherNameSizePair.Name, StringComparison.Ordinal);
             }
             throw new InvalidCastException();
         }

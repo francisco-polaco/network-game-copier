@@ -1,28 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Reflection;
-using System.Resources;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using MaterialDesignThemes.Wpf;
-using Microsoft.Win32;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -39,7 +18,6 @@ namespace NetworkGameCopier
     {
         private const int NetworkManagerPort = 8086;
 
-        private SteamOperations _steam;
         private NetworkManager _server;
         private NetworkManager _client;
         private string _targetClientIp;
@@ -48,7 +26,7 @@ namespace NetworkGameCopier
         {
             Init();
             InitializeComponent();
-            _steam.ReadyFtpServer();
+            GameProviderSingleton.GetInstance().Active.ReadyFtpServer();
             Refresh_Button_Click(null, null);
         }
 
@@ -56,7 +34,6 @@ namespace NetworkGameCopier
         {
             ConfigLog();
             DiscoverService.GetInstance().StartListening();
-            _steam = SteamOperations.GetInstance();
             _server = new NetworkManager(NetworkManagerPort);
         }
 
@@ -111,7 +88,7 @@ namespace NetworkGameCopier
             if (gamePair != null)
             {
                 Progress(0);
-                SteamOperations.GetInstance()
+                GameProviderSingleton.GetInstance().Active
                     .RetrieveGame(gamePair.Name, _client, _targetClientIp, 
                         new AsyncPack{ToExecute = new DelProgress(Progress), Window = this});
             }
@@ -161,6 +138,11 @@ namespace NetworkGameCopier
                 typeof(NetworkManager),
                 BuildTcpRemoteEndpoint(_targetClientIp));
             LogManager.GetCurrentClassLogger().Info(_client.Ping());
+            FillList();
+        }
+
+        private void FillList()
+        {
             NameSizePair[] list = _client.GetGamesNamesList().ToArray();
             Array.Sort(list);
             GamesList.Items.Clear();
@@ -173,6 +155,13 @@ namespace NetworkGameCopier
         private static string BuildTcpRemoteEndpoint(string ip)
         {
             return "tcp://" + ip + ":" + NetworkManagerPort + "/NetworkManager";
+        }
+
+        private void ButtonBlizzard_OnClick(object sender, RoutedEventArgs e)
+        {
+            GameProviderSingleton.GetInstance().Active = 
+                BlizzardOperations.GetInstance();
+            FillList();
         }
     }
 
