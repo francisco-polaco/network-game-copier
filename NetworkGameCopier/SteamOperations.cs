@@ -40,9 +40,9 @@ namespace NetworkGameCopier
         {
             string remotePath = clienta.GetDirFromGameName(gameName);
             Console.WriteLine(remotePath);
-            FtpManager.GetInstance()
-                .RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer, asyncPack);
-            //FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer, asyncPack);
+            //FtpManager.GetInstance()
+              //  .RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer, asyncPack);
+            FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer, asyncPack);
         }
 
         private void GetSteamGameDetails(string[] lines)

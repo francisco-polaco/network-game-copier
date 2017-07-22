@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Controls;
 using MaterialDesignThemes.Wpf;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using System.Reactive.Linq;
 
 namespace NetworkGameCopier
 {
@@ -21,6 +24,7 @@ namespace NetworkGameCopier
         private NetworkManager _server;
         private NetworkManager _client;
         private string _targetClientIp;
+        private NetworkPerformanceReporter _network;
 
         public MainWindow()
         {
@@ -28,7 +32,14 @@ namespace NetworkGameCopier
             InitializeComponent();
             GameProviderSingleton.GetInstance().Active.ReadyFtpServer();
             Refresh_Button_Click(null, null);
+            _network = NetworkPerformanceReporter.Create();
+            //Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(v =>
+            //{
+            //    Console.WriteLine(_network.GetNetworkPerformanceData().BytesReceived);
+            //});
         }
+
+       
 
         private void Init()
         {
@@ -40,8 +51,14 @@ namespace NetworkGameCopier
         private NameSizePair SizeFromBytesToMBytes(NameSizePair pair)
         {
             string size = pair.Size;
-            long sizeInMb = Int64.Parse(size) / 1024 / 1024;
-            return new NameSizePair {Name = pair.Name, Size = sizeInMb.ToString()};
+            long parsed;
+            if (Int64.TryParse(size, out parsed))
+            {
+                long sizeInMb = parsed / 1024 / 1024;
+                return new NameSizePair {Name = pair.Name, Size = sizeInMb.ToString()};
+            }
+            else
+                return new NameSizePair {Name = pair.Name, Size = "0"};
         }
 
         private void ConfigLog()
@@ -162,6 +179,13 @@ namespace NetworkGameCopier
         {
             GameProviderSingleton.GetInstance().Active = 
                 BlizzardOperations.GetInstance();
+            FillList();
+        }
+
+        private void ButtonSteam_OnClick(object sender, RoutedEventArgs e)
+        {
+            GameProviderSingleton.GetInstance().Active =
+                SteamOperations.GetInstance();
             FillList();
         }
     }

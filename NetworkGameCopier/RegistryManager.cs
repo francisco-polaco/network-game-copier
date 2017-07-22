@@ -1,22 +1,43 @@
 ﻿using System;
 using Microsoft.Win32;
 
-namespace GameNetworkCopier
+namespace NetworkGameCopier
 {
     class RegistryManager
     {
         public static string FindInstallLocationByName(string name)
         {
-            string s = Registry.LocalMachine.Name;
+            try
+            {
+                return FindInstallLocationByName64(name);
+            }
+            catch (NoKeyFoundException)
+            {
+                return FindInstallLocationByName32(name);
+            }
+        }
+        private static string FindInstallLocationByName32(string name)
+        {
             RegistryKey parentKey 
                 = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall");
+            return FindInstallLocationByKey(name, parentKey);
+
+        }
+        private static string FindInstallLocationByName64(string name)
+        {
+            RegistryKey parentKey 
+                = Registry.LocalMachine.OpenSubKey(@"Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall");
+            return FindInstallLocationByKey(name, parentKey);
+        }
+
+        private static string FindInstallLocationByKey(string name, RegistryKey parentKey)
+        {
             if (parentKey != null)
             {
                 string[] nameList = parentKey.GetSubKeyNames();
                 foreach (string t in nameList)
                 {
                     RegistryKey regKey = parentKey.OpenSubKey(t);
-                    Console.WriteLine(t);
                     if (regKey != null && t.Equals(name))
                     {
                         return regKey.GetValue("InstallLocation").ToString();
@@ -27,7 +48,7 @@ namespace GameNetworkCopier
         }
     }
 
-    class NoKeyFoundException : Exception
+    internal class NoKeyFoundException : Exception
     {
         public override string ToString()
         {

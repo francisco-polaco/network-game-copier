@@ -1,5 +1,5 @@
 ﻿using System;
-using GameNetworkCopier;
+using System.IO;
 
 namespace NetworkGameCopier
 {
@@ -20,79 +20,23 @@ namespace NetworkGameCopier
 
         private void GetBlizzardGameDetails()
         {
-            try
+            foreach (var gameName in new[]{ "Overwatch" , "Heroes of the Storm" ,
+                "Hearthstone", "World of Warcraft" , "Diablo 3" , "Starcraft 2"})
             {
-                InstalledGames["Overwatch"] =
-                    new PathnameSizePair {PathName = RegistryManager.FindInstallLocationByName("Overwatch"), Size = "0"};
+                try
+                {
+                    string pathname = RegistryManager.FindInstallLocationByName(gameName);
+                    InstalledGames[gameName] =
+                        new PathnameSizePair
+                        {
+                            PathName = pathname,
+                            Size = Utilities.DirSize(new DirectoryInfo(pathname)).ToString()
+                        };
+                }
+                catch (NoKeyFoundException)
+                {
+                }
             }
-            catch (NoKeyFoundException e)
-            {
-                Console.WriteLine(e);
-            }
-            try
-            {
-                InstalledGames["Heroes of the Storm"] =
-                        new PathnameSizePair { PathName = RegistryManager.FindInstallLocationByName("Heroes of the Storm")
-                            , Size = "0" };
-            }
-            catch (NoKeyFoundException e)
-            {
-                Console.WriteLine(e);
-            }
-            try
-            {
-                InstalledGames["Hearthstone"] =
-                    new PathnameSizePair
-                    {
-                        PathName = RegistryManager.FindInstallLocationByName("Hearthstone"),
-                        Size = "0"
-                    };
-            }
-            catch (NoKeyFoundException e)
-            {
-                Console.WriteLine(e);
-            }
-            try
-            {
-                InstalledGames["World of Warcraft"] = new
-                    PathnameSizePair
-                    {
-                        PathName = RegistryManager.FindInstallLocationByName("World of Warcraft") 
-                        , Size = "0"
-
-                };
-            }
-            catch (NoKeyFoundException e)
-            {
-                Console.WriteLine(e);
-            }
-            try
-            {
-                InstalledGames["Diablo 3"] =
-                    new PathnameSizePair
-                    {
-                        PathName = RegistryManager.FindInstallLocationByName("Diablo 3")
-                        , Size = "0"
-                    };
-            }
-            catch (NoKeyFoundException e)
-            {
-                Console.WriteLine(e);
-            }
-            try
-            {
-                InstalledGames["Starcraft 2"] =
-                    new PathnameSizePair
-                    {
-                        PathName = RegistryManager.FindInstallLocationByName("Starcraft 2")
-                        , Size = "0"
-                    };
-            }
-            catch (NoKeyFoundException e)
-            {
-                Console.WriteLine(e);
-            }
-            PrintHelper.PrintList(GetGameNamesList());
         }
 
         public override void ReadyFtpServer()

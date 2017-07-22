@@ -36,8 +36,11 @@
                         CommandParameter="{x:Static Dock.Left}">
                     Blizzard
                 </Button>
-                <Button Margin="4" HorizontalAlignment="Center"
-                        Style="{DynamicResource MaterialDesignFlatButton}">
+                <Button x:Name="ButtonSteam" Margin="4" HorizontalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
+                        Click="ButtonSteam_OnClick"
+                        Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                        CommandParameter="{x:Static Dock.Left}">
                     Steam
                 </Button>
                 
