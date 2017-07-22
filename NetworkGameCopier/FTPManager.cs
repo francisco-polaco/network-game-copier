@@ -15,10 +15,9 @@ namespace NetworkGameCopier
 {
     class FtpManager
     {
-        private static readonly int FtpPort = 21;
+        private static readonly int[] FtpPort = {9000, 9002};
 
-        private readonly Logger _logger = LogManager.GetLogger(typeof(FtpManager).Name);
-        private FtpServer _ftpServer;
+        private List<FtpServer> _ftpServers = new List<FtpServer>();
         private static readonly FtpManager Instance = new FtpManager();
 
         public static FtpManager GetInstance()
@@ -40,30 +39,34 @@ namespace NetworkGameCopier
 
 
             // Initialize the FTP server
-            _ftpServer = new FtpServer(fsProvider, membershipProvider, "127.0.0.1", FtpPort, commandFactory)
+            FtpServer ftpServer = new FtpServer(fsProvider, membershipProvider, "127.0.0.1", FtpPort[0], commandFactory)
             {
                 DefaultEncoding = Encoding.ASCII, // This can cause trouble.
                 LogManager = new FtpLogManager(),
             };
 
             // Start the FTP server
-            _ftpServer.Start();
+            ftpServer.Start();
 
+            _ftpServers.Add(ftpServer);
         }
 
         public void StopFtpServer()
         {
-            _ftpServer?.Stop();
+            foreach (var ftpServer in _ftpServers)
+            {
+                ftpServer?.Stop();
+            }
         }
 
-        public void RetrieveGame(string destGamePath, string sourceGamePath, string targetIpServer, AsyncPack asyncPack)
+        public void RetrieveGame(string destGamePath, string sourceGamePath, string targetIpServer, AsyncPack asyncPack, ProviderType provider)
         {
             new Thread(() =>
             {
                 // create an FTP client
                 FtpClient client = new FtpClient(targetIpServer)
                 {
-                    Port = FtpPort,
+                    Port = FtpPort[(int)provider],
                     Credentials = new NetworkCredential("anonymous", "anonymous@batata.com")
                 };
 
@@ -138,6 +141,12 @@ namespace NetworkGameCopier
                 }
             }
         }
+    }
+
+    public enum ProviderType
+    {
+        Steam,
+        Blizzard
     }
     
 }
