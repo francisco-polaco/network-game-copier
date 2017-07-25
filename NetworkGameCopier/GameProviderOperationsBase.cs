@@ -9,7 +9,7 @@ namespace NetworkGameCopier
         protected Dictionary<string, PathnameSizePair> InstalledGames 
             = new Dictionary<string, PathnameSizePair>();
 
-        public List<NameSizePair> GetGameNamesList()
+        public List<NameSizePair> GetLocalGamesNamesList()
         {
             List<NameSizePair> list = new List<NameSizePair>();
             foreach (KeyValuePair<string, PathnameSizePair> entry in InstalledGames)
@@ -29,6 +29,7 @@ namespace NetworkGameCopier
 
         public abstract void RetrieveGame(string gameName, NetworkManager clienta, string selectedComputer, AsyncPack asyncPack);
 
+        public abstract NameSizePair[] GetRemoteGamesNamesList(NetworkManager client);
     }
 
     public class GameProviderSingleton

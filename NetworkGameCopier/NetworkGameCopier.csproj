@@ -148,6 +148,7 @@
     <Compile Include="NetworkPerformanceReporter.cs" />
     <Compile Include="PrintHelper.cs" />
     <Compile Include="RegistryManager.cs" />
+    <Compile Include="SettingsManager.cs" />
     <Compile Include="SteamOperations.cs" />
     <Compile Include="Utilities.cs" />
     <Page Include="MainWindow.xaml">

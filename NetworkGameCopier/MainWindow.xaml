@@ -17,7 +17,7 @@
     <materialDesign:DrawerHost Margin="10,21,3.6,-1.6" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="2" BorderBrush="{DynamicResource MaterialDesignDivider}" Width="620" Height="431">
         <materialDesign:DrawerHost.LeftDrawerContent>
             <StackPanel Margin="16">
-                <TextBlock Margin="4" HorizontalAlignment="Center">LEFT FIELD</TextBlock>
+                <!--<TextBlock Margin="4" HorizontalAlignment="Center">LEFT FIELD</TextBlock>
                 <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                         CommandParameter="{x:Static Dock.Left}"
                         Margin="4" HorizontalAlignment="Center"
@@ -28,7 +28,7 @@
                         Margin="4" HorizontalAlignment="Center"
                         Style="{DynamicResource MaterialDesignFlatButton}">
                     CLOSE ALL
-                </Button>
+                </Button>-->
                 <Button x:Name="ButtonBlizzard" Margin="4" HorizontalAlignment="Center"
                         Style="{DynamicResource MaterialDesignFlatButton}"
                         Click="ButtonBlizzard_OnClick"
@@ -87,7 +87,7 @@
             </materialDesign:DialogHost>-->
             <TextBlock x:Name="StateText" TextAlignment="Right" Margin="-1,395,529,10.2" Grid.Row="1">Idle</TextBlock>
             <ProgressBar x:Name="ProgressBar" Opacity="100" Orientation="Horizontal" Value="0" Margin="92,395,57,10.2" Height="Auto" Grid.Row="1" />
-            <TextBlock x:Name="Percentage" Opacity="100" TextAlignment="Right" Margin="481,395,23,10.2" Grid.Row="1">100</TextBlock>
+            <TextBlock x:Name="Percentage" Opacity="100" TextAlignment="Right" Margin="494,395,10,10.2" Grid.Row="1">100</TextBlock>
         </Grid>
     </materialDesign:DrawerHost>
 </Window>

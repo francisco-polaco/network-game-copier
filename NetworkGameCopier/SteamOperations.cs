@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Win32;
+using NLog;
 
 namespace NetworkGameCopier
 {
@@ -36,11 +37,16 @@ namespace NetworkGameCopier
         public override void RetrieveGame(string gameName, NetworkManager clienta, 
             string selectedComputer, AsyncPack asyncPack)
         {
-            string remotePath = clienta.GetDirFromGameName(gameName);
-            Console.WriteLine(remotePath);
+            string remotePath = clienta.GetDirFromGameNameSteam(gameName);
+            LogManager.GetCurrentClassLogger().Warn(remotePath);
             //FtpManager.GetInstance()
               //  .RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer, asyncPack);
             FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer, asyncPack, ProviderType.Steam);
+        }
+
+        public override NameSizePair[] GetRemoteGamesNamesList(NetworkManager client)
+        {
+            return client.GetGamesNamesListSteam().ToArray();
         }
 
         private void GetSteamGameDetails(string[] lines)

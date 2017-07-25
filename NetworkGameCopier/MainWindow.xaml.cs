@@ -162,7 +162,7 @@ namespace NetworkGameCopier
         private void FillList()
         {
             if(_client == null) return;
-            NameSizePair[] list = _client.GetGamesNamesList().ToArray();
+            NameSizePair[] list = GameProviderSingleton.GetInstance().Active.GetRemoteGamesNamesList(_client);
             Array.Sort(list);
             GamesList.Items.Clear();
             foreach (NameSizePair game in list)

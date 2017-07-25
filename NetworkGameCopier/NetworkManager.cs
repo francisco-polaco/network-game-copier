@@ -27,14 +27,24 @@ namespace NetworkGameCopier
             return "Pong!";
         }
 
-        public List<NameSizePair> GetGamesNamesList()
+        public List<NameSizePair> GetGamesNamesListSteam()
         {
-            return GameProviderSingleton.GetInstance().Active.GetGameNamesList();
+            return SteamOperations.GetInstance().GetLocalGamesNamesList();
         }
 
-        public string GetDirFromGameName(string gameName)
+        public string GetDirFromGameNameSteam(string gameName)
         {
-            return GameProviderSingleton.GetInstance().Active.GetDirFromGameName(gameName);
+            return SteamOperations.GetInstance().GetDirFromGameName(gameName);
+        }
+
+        public List<NameSizePair> GetGamesNamesListBlizzard()
+        {
+            return BlizzardOperations.GetInstance().GetLocalGamesNamesList();
+        }
+
+        public string GetDirFromGameNameBlizzard(string gameName)
+        {
+            return BlizzardOperations.GetInstance().GetDirFromGameName(gameName);
         }
 
     }

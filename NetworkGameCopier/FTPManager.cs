@@ -26,9 +26,9 @@ namespace NetworkGameCopier
             NoAdmin = 2
         }
 
-        private static readonly int[] FtpPort = {9000, 9002};
+        private const int FtpPort = 9000;
 
-        private List<FtpServer> _ftpServers = new List<FtpServer>();
+        private FtpServer _ftpServer;
         private static readonly FtpManager Instance = new FtpManager();
 
         public static FtpManager GetInstance()
@@ -71,24 +71,20 @@ namespace NetworkGameCopier
 
 
             // Initialize the FTP server
-            FtpServer ftpServer = new FtpServer(fsProvider, membershipProvider, "127.0.0.1", FtpPort[0], commandFactory)
+            _ftpServer = new FtpServer(fsProvider, membershipProvider, "127.0.0.1", FtpPort, commandFactory)
             {
                 DefaultEncoding = Encoding.ASCII, // This can cause trouble.
                 LogManager = new FtpLogManager(),
             };
 
             // Start the FTP server
-            ftpServer.Start();
+            _ftpServer.Start();
 
-            _ftpServers.Add(ftpServer);
         }
 
         public void StopFtpServer()
         {
-            foreach (var ftpServer in _ftpServers)
-            {
-                ftpServer?.Stop();
-            }
+            _ftpServer?.Stop();
         }
 
         public void RetrieveGame(string destGamePath, string sourceGamePath, 
@@ -99,7 +95,7 @@ namespace NetworkGameCopier
                 // create an FTP client
                 FtpClient client = new FtpClient(targetIpServer)
                 {
-                    Port = FtpPort[(int)provider],
+                    Port = FtpPort,
                     Credentials = new NetworkCredential("anonymous", "anonymous@batata.com")
                 };
 
