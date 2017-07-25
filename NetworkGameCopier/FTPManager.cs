@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,8 +14,18 @@ using NLog;
 
 namespace NetworkGameCopier
 {
-    class FtpManager
+    internal class FtpManager
     {
+        [DllImport("kernel32.dll")]
+        static extern bool CreateSymbolicLink(string lpSymlinkFileName, string lpTargetFileName, int dwFlags);
+
+        enum SymbolicLink
+        {
+            File = 0,
+            Directory = 1,
+            NoAdmin = 2
+        }
+
         private static readonly int[] FtpPort = {9000, 9002};
 
         private List<FtpServer> _ftpServers = new List<FtpServer>();
@@ -25,14 +36,35 @@ namespace NetworkGameCopier
             return Instance;
         }
 
-        public void LaunchFtpServer(string pathToServe)
+        public FtpManager()
         {
+            LaunchFtpServer();
+        }
+
+        public void AddLinks(string[] files)
+        {
+            
+            foreach (var file in files)
+            {
+                Console.WriteLine(file);
+                string[] filePathElements = file.Split('\\');
+
+                bool value = CreateSymbolicLink(@".\root\" + filePathElements[filePathElements.Length - 1],
+                    file, 1);
+                Console.WriteLine("SYM " + value);
+            }
+        }
+
+        private void LaunchFtpServer()
+        {
+            Directory.CreateDirectory(@"root");
+
             // allow only anonymous logins
             var membershipProvider = new AnonymousMembershipProvider();
 
 
             // use %TEMP%/TestFtpServer as root folder
-            var fsProvider = new DotNetFileSystemProvider(pathToServe, false);
+            var fsProvider = new DotNetFileSystemProvider("root", false);
 
             // Use all commands from the FtpServer assembly and NOT the one(s) from the AuthTls assembly
             var commandFactory = new AssemblyFtpCommandHandlerFactory(typeof(FtpServer).Assembly);
@@ -59,7 +91,8 @@ namespace NetworkGameCopier
             }
         }
 
-        public void RetrieveGame(string destGamePath, string sourceGamePath, string targetIpServer, AsyncPack asyncPack, ProviderType provider)
+        public void RetrieveGame(string destGamePath, string sourceGamePath, 
+            string targetIpServer, AsyncPack asyncPack, ProviderType provider) 
         {
             new Thread(() =>
             {
@@ -113,8 +146,8 @@ namespace NetworkGameCopier
                         });
                 }
                 else
-                {
-                    throw new DirectoryNotFoundException();
+                { 
+                  //  throw new DirectoryNotFoundException();
                 }
 
                 // disconnect! good bye!

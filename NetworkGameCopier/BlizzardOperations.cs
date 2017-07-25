@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace NetworkGameCopier
 {
@@ -16,6 +18,12 @@ namespace NetworkGameCopier
         private BlizzardOperations()
         {
             GetBlizzardGameDetails();
+            List<string> list = new List<string>();
+            foreach (var installedGamesValue in InstalledGames.Values)
+            {
+                list.Add(installedGamesValue.PathName);
+            }
+            FtpManager.GetInstance().AddLinks(list.ToArray());
         }
 
         private void GetBlizzardGameDetails()
@@ -39,10 +47,6 @@ namespace NetworkGameCopier
             }
         }
 
-        public override void ReadyFtpServer()
-        {
-            throw new System.NotImplementedException();
-        }
 
         public override void RetrieveGame(string gameName, NetworkManager clienta, string selectedComputer, AsyncPack asyncPack)
         {

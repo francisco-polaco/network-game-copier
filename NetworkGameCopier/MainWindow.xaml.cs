@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,7 +31,7 @@ namespace NetworkGameCopier
         {
             Init();
             InitializeComponent();
-            GameProviderSingleton.GetInstance().Active.ReadyFtpServer();
+            GameProviderSingleton.GetInstance();
             Refresh_Button_Click(null, null);
             _network = NetworkPerformanceReporter.Create();
             //Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(v =>
@@ -105,9 +106,9 @@ namespace NetworkGameCopier
             if (gamePair != null)
             {
                 Progress(0);
-                GameProviderSingleton.GetInstance().Active
-                    .RetrieveGame(gamePair.Name, _client, _targetClientIp, 
-                        new AsyncPack{ToExecute = new DelProgress(Progress), Window = this});
+                    GameProviderSingleton.GetInstance().Active
+                        .RetrieveGame(gamePair.Name, _client, _targetClientIp,
+                            new AsyncPack {ToExecute = new DelProgress(Progress), Window = this});
             }
         }
 

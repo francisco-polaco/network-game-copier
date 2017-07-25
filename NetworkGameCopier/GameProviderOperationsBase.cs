@@ -27,8 +27,6 @@ namespace NetworkGameCopier
             return InstalledGames[gameName].PathName;
         }
 
-        public abstract void ReadyFtpServer();
-
         public abstract void RetrieveGame(string gameName, NetworkManager clienta, string selectedComputer, AsyncPack asyncPack);
 
     }

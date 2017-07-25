@@ -28,11 +28,9 @@ namespace NetworkGameCopier
                 GetSteamGameDetails(lines);
             }
             _libraryPaths = GetLibraryPaths(File.ReadAllLines(_steamappsPath + "\\" + "libraryfolders.vdf"));
-        }
-
-        public override void ReadyFtpServer()
-        {
-            FtpManager.GetInstance().LaunchFtpServer(Path.Combine(_steamappsPath, "common"));
+            string[] files =
+                Directory.GetFileSystemEntries(Path.Combine(_steamappsPath, "common"), "*", SearchOption.TopDirectoryOnly);
+            FtpManager.GetInstance().AddLinks(files);
         }
 
         public override void RetrieveGame(string gameName, NetworkManager clienta, 
