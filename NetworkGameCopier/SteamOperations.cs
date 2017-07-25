@@ -39,9 +39,9 @@ namespace NetworkGameCopier
         {
             string remotePath = clienta.GetDirFromGameNameSteam(gameName);
             LogManager.GetCurrentClassLogger().Warn(remotePath);
-            //FtpManager.GetInstance()
-              //  .RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer, asyncPack);
-            FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer, asyncPack, ProviderType.Steam);
+            FtpManager.GetInstance()
+                .RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer, asyncPack);
+            //FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer, asyncPack, ProviderType.Steam);
         }
 
         public override NameSizePair[] GetRemoteGamesNamesList(NetworkManager client)

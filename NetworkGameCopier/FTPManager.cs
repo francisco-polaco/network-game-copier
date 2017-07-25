@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,18 +43,24 @@ namespace NetworkGameCopier
             LaunchFtpServer();
         }
 
-        public void AddLinks(string[] files)
+        public bool AddLinks(string[] files)
         {
-            
+            if(!IsAdministrator()) return false;
+            bool value = false;
             foreach (var file in files)
             {
-                Console.WriteLine(file);
                 string[] filePathElements = file.Split('\\');
-
-                bool value = CreateSymbolicLink(@".\root\" + filePathElements[filePathElements.Length - 1],
+                value = CreateSymbolicLink(@".\root\" + filePathElements[filePathElements.Length - 1],
                     file, 1);
                 Console.WriteLine("SYM " + value);
             }
+            return value;
+        }
+
+        private bool IsAdministrator()
+        {
+            return (new WindowsPrincipal(WindowsIdentity.GetCurrent()))
+                .IsInRole(WindowsBuiltInRole.Administrator);
         }
 
         private void LaunchFtpServer()
@@ -88,7 +96,7 @@ namespace NetworkGameCopier
         }
 
         public void RetrieveGame(string destGamePath, string sourceGamePath, 
-            string targetIpServer, AsyncPack asyncPack, ProviderType provider) 
+            string targetIpServer, AsyncPack asyncPack) 
         {
             new Thread(() =>
             {
@@ -172,10 +180,6 @@ namespace NetworkGameCopier
         }
     }
 
-    public enum ProviderType
-    {
-        Steam,
-        Blizzard
-    }
+   
     
 }

@@ -54,7 +54,7 @@ namespace NetworkGameCopier
             Console.WriteLine(remotePath);
             //FtpManager.GetInstance()
             //  .RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer, asyncPack);
-            FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer, asyncPack, ProviderType.Blizzard);
+            FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer, asyncPack);
         }
 
         public override NameSizePair[] GetRemoteGamesNamesList(NetworkManager client)

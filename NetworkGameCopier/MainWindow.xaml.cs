@@ -76,7 +76,7 @@ namespace NetworkGameCopier
 
             // Step 3. Set target properties 
             consoleTarget.Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}";
-            fileTarget.FileName = "${basedir}/file.txt";
+            fileTarget.FileName = "${basedir}/log.txt";
             fileTarget.Layout = "${message}";
 
             // Step 4. Define rules
