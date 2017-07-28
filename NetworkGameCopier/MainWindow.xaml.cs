@@ -32,8 +32,9 @@ namespace NetworkGameCopier
             Init();
             InitializeComponent();
             GameProviderSingleton.GetInstance();
+            SettingsManager.GetInstance();
             Refresh_Button_Click(null, null);
-            _network = NetworkPerformanceReporter.Create();
+            //_network = NetworkPerformanceReporter.Create();
             //Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(v =>
             //{
             //    Console.WriteLine(_network.GetNetworkPerformanceData().BytesReceived);

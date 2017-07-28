@@ -11,26 +11,26 @@ namespace NetworkGameCopier
     {
         private static readonly SteamOperations Instance = new SteamOperations();
 
+        public List<string> LibraryPaths { get; }
+        public string SteamappsPath { get; private set; }
+
         public static SteamOperations GetInstance()
         {
             return Instance;
         }
 
-        private List<string> _libraryPaths;
-        private string _steamappsPath;
-
         private SteamOperations()
         {
             FindSteamappsPath();
-            DirectoryInfo di = new DirectoryInfo(_steamappsPath);
+            DirectoryInfo di = new DirectoryInfo(SteamappsPath);
             foreach (var file in FullDirList(di, "*.acf"))
             {
-                string[] lines = File.ReadAllLines(_steamappsPath + "\\" + file);
+                string[] lines = File.ReadAllLines(SteamappsPath + "\\" + file);
                 GetSteamGameDetails(lines);
             }
-            _libraryPaths = GetLibraryPaths(File.ReadAllLines(_steamappsPath + "\\" + "libraryfolders.vdf"));
+            LibraryPaths = GetLibraryPaths(File.ReadAllLines(SteamappsPath + "\\" + "libraryfolders.vdf"));
             string[] files =
-                Directory.GetFileSystemEntries(Path.Combine(_steamappsPath, "common"), "*", SearchOption.TopDirectoryOnly);
+                Directory.GetFileSystemEntries(Path.Combine(SteamappsPath, "common"), "*", SearchOption.TopDirectoryOnly);
             FtpManager.GetInstance().AddLinks(files);
         }
 
@@ -40,8 +40,7 @@ namespace NetworkGameCopier
             string remotePath = clienta.GetDirFromGameNameSteam(gameName);
             LogManager.GetCurrentClassLogger().Warn(remotePath);
             FtpManager.GetInstance()
-                .RetrieveGame(Path.Combine(_steamappsPath, "common"), remotePath, selectedComputer, asyncPack);
-            //FtpManager.GetInstance().RetrieveGame("C:\\teste", remotePath, selectedComputer, asyncPack, ProviderType.Steam);
+                .RetrieveGame(SettingsManager.GetInstance().GetDefaultSteamLibrary(), remotePath, selectedComputer, asyncPack);
         }
 
         public override NameSizePair[] GetRemoteGamesNamesList(NetworkManager client)
@@ -137,7 +136,7 @@ namespace NetworkGameCopier
                 "SourceModInstallPath", String.Empty) as string;
             if (steamPath != null && !steamPath.Equals(String.Empty))
             {
-                _steamappsPath = steamPath.Replace("sourcemods", "");
+                SteamappsPath = steamPath.Replace("sourcemods", "");
             }
             else
             {

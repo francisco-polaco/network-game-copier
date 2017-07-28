@@ -52,7 +52,6 @@ namespace NetworkGameCopier
                 string[] filePathElements = file.Split('\\');
                 value = CreateSymbolicLink(@".\root\" + filePathElements[filePathElements.Length - 1],
                     file, 1);
-                Console.WriteLine("SYM " + value);
             }
             return value;
         }
