@@ -40,7 +40,8 @@ namespace NetworkGameCopier
             string remotePath = clienta.GetDirFromGameNameSteam(gameName);
             LogManager.GetCurrentClassLogger().Warn(remotePath);
             FtpManager.GetInstance()
-                .RetrieveGame(SettingsManager.GetInstance().GetDefaultSteamLibrary(), remotePath, selectedComputer, asyncPack);
+                .RetrieveGame(SettingsManager.GetInstance().GetDefaultSteamLibrary(), 
+                remotePath, selectedComputer, asyncPack);
         }
 
         public override NameSizePair[] GetRemoteGamesNamesList(NetworkManager client)

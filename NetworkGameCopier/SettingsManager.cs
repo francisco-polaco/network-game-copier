@@ -26,6 +26,9 @@ namespace NetworkGameCopier
 
         private readonly SerializableDictionary<SettingsKey, string> _settings
             = new SerializableDictionary<SettingsKey, string>();
+
+        private bool _isIoNeeded = false;
+
         private SettingsManager()
         {
             try
@@ -50,11 +53,13 @@ namespace NetworkGameCopier
         public void SetDefaultSteamLibrary(string path)
         {
             _settings[SettingsKey.SteamLibKey] = path;
+            IoDone();
         }
 
         public void SetDefaultBlizzardPath(string path)
         {
             _settings[SettingsKey.BlizzardPathKey] = path;
+            IoDone();
         }
 
         public string GetDefaultSteamLibrary()
@@ -64,12 +69,18 @@ namespace NetworkGameCopier
 
         public string GetDefaultBlizzardPath()
         {
-            return @"C:\teste";
-            //return _settings[SettingsKey.BlizzardPathKey];
+            //return @"C:\teste";
+            return _settings[SettingsKey.BlizzardPathKey];
+        }
+
+        private void IoDone()
+        {
+            if(!_isIoNeeded) _isIoNeeded = true;
         }
 
         public void ForceSave()
         {
+            if(!_isIoNeeded) return;
             XmlWriterSettings settings = new XmlWriterSettings
             {
                 Indent = true,

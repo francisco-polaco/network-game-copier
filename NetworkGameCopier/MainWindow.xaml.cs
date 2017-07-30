@@ -9,6 +9,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using System.Reactive.Linq;
+using System.Windows.Controls.Primitives;
 
 namespace NetworkGameCopier
 {
@@ -189,6 +190,48 @@ namespace NetworkGameCopier
             GameProviderSingleton.GetInstance().Active =
                 SteamOperations.GetInstance();
             FillList();
+        }
+
+
+        private void ButtonAcceptSettings_OnClick(object sender, RoutedEventArgs e)
+        {
+            SettingsManager.GetInstance().SetDefaultBlizzardPath(SettingsBlizzardPath.Text);
+            SettingsManager.GetInstance().SetDefaultSteamLibrary(SettingsSteamPath.Text);
+        }
+
+        private void ButtonSettings_OnClick(object sender, RoutedEventArgs e)
+        {
+            SettingsBlizzardPath.Text = SettingsManager.GetInstance().GetDefaultBlizzardPath();
+            SettingsSteamPath.Text = SettingsManager.GetInstance().GetDefaultSteamLibrary();
+            /* The second command in the array represents the close drawer command.
+            * Check XAML Toolkit Sources, namely a constructor at line 77
+            * https://github.com/ButchersBoy/MaterialDesignInXamlToolkit/blob/master/MaterialDesignThemes.Wpf/DrawerHost.cs
+            */
+            Drawer.CommandBindings[1].Command.Execute(null);
+        }
+
+        private void ButtonBrowseSteam_OnClick(object sender, RoutedEventArgs e)
+        {
+            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    SettingsSteamPath.Text = dialog.SelectedPath;
+                }
+            }
+        }
+
+        private void ButtonBrowseBlizzard_OnClick(object sender, RoutedEventArgs e)
+        {
+            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    SettingsBlizzardPath.Text = dialog.SelectedPath;
+                }
+            }
         }
     }
 
