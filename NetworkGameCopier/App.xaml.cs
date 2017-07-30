@@ -12,7 +12,8 @@ namespace NetworkGameCopier
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             // Perform tasks at application exit
-           FtpManager.GetInstance().StopFtpServer();
+            FtpManager.GetInstance().StopFtpServer();
+            SettingsManager.GetInstance().ForceSave();
         }
 
     }

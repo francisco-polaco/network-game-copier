@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 using NLog;
 
 namespace NetworkGameCopier
 {
-    class SettingsManager
+    public class SettingsManager
     {
+        private const string SettingsXmlPath = "settings.xml";
         private static readonly SettingsManager Instance = new SettingsManager();
 
         public static SettingsManager GetInstance()
@@ -19,7 +18,7 @@ namespace NetworkGameCopier
             return Instance;
         }
 
-        private enum SettingsKey
+        public enum SettingsKey
         {
             SteamLibKey,
             BlizzardPathKey
@@ -31,11 +30,18 @@ namespace NetworkGameCopier
         {
             try
             {
-                _settings.ReadXml(XmlReader.Create(new StreamReader("settings.xml")));
+                XmlReaderSettings settings = new XmlReaderSettings
+                {
+                    ConformanceLevel = ConformanceLevel.Fragment
+                };
+                using (XmlReader reader = XmlReader.Create(new StreamReader(SettingsXmlPath), settings))
+                {
+                    _settings.ReadXml(reader);
+                }
             }
-            catch (FileNotFoundException)
+            catch (Exception e)
             {
-                LogManager.GetCurrentClassLogger().Info("Fresh start!");
+                LogManager.GetCurrentClassLogger().Info("Fresh start! " + e.Message);
                 SetDefaultBlizzardPath(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
                 SetDefaultSteamLibrary(Path.Combine(SteamOperations.GetInstance().SteamappsPath, "common"));
             }
@@ -62,6 +68,22 @@ namespace NetworkGameCopier
             //return _settings[SettingsKey.BlizzardPathKey];
         }
 
+        public void ForceSave()
+        {
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                Indent = true,
+                IndentChars = "  ",
+                NewLineChars = "\r\n",
+                NewLineHandling = NewLineHandling.Replace,
+                ConformanceLevel = ConformanceLevel.Fragment
+            };
+            using (XmlWriter writer = XmlWriter.Create(new StreamWriter(SettingsXmlPath, false), settings))
+            {
+                _settings.WriteXml(writer);
+            }
+        }
+
     }
 
 
@@ -71,12 +93,12 @@ namespace NetworkGameCopier
         : Dictionary<TKey, TValue>, IXmlSerializable
     {
         #region IXmlSerializable Members
-        public System.Xml.Schema.XmlSchema GetSchema()
+        public XmlSchema GetSchema()
         {
             return null;
         }
 
-        public void ReadXml(System.Xml.XmlReader reader)
+        public void ReadXml(XmlReader reader)
         {
             XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
             XmlSerializer valueSerializer = new XmlSerializer(typeof(TValue));
@@ -87,7 +109,7 @@ namespace NetworkGameCopier
             if (wasEmpty)
                 return;
 
-            while (reader.NodeType != System.Xml.XmlNodeType.EndElement)
+            while (reader.NodeType != XmlNodeType.None)
             {
                 reader.ReadStartElement("item");
 
@@ -99,32 +121,31 @@ namespace NetworkGameCopier
                 TValue value = (TValue)valueSerializer.Deserialize(reader);
                 reader.ReadEndElement();
 
-                this.Add(key, value);
+                Add(key, value);
 
                 reader.ReadEndElement();
                 reader.MoveToContent();
             }
-            reader.ReadEndElement();
+            //if(reader.NodeType == XmlNodeType.None) reader.Skip();
+            //else reader.ReadEndElement();
         }
 
-        public void WriteXml(System.Xml.XmlWriter writer)
+        public void WriteXml(XmlWriter writer)
         {
             XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
             XmlSerializer valueSerializer = new XmlSerializer(typeof(TValue));
 
-            foreach (TKey key in this.Keys)
+            foreach (TKey key in Keys)
             {
+                LogManager.GetCurrentClassLogger().Debug(key + " - " + this[key]);
                 writer.WriteStartElement("item");
-
                 writer.WriteStartElement("key");
                 keySerializer.Serialize(writer, key);
                 writer.WriteEndElement();
-
                 writer.WriteStartElement("value");
                 TValue value = this[key];
                 valueSerializer.Serialize(writer, value);
                 writer.WriteEndElement();
-
                 writer.WriteEndElement();
             }
         }

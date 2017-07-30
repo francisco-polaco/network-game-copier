@@ -91,13 +91,13 @@ namespace NetworkGameCopier
             LogManager.Configuration = config;
 
             // Example usage
-            Logger logger = LogManager.GetLogger("Example");
-            logger.Trace("trace log message");
-            logger.Debug("debug log message");
-            logger.Info("info log message");
-            logger.Warn("warn log message");
-            logger.Error("error log message");
-            logger.Fatal("fatal log message");
+            //Logger logger = LogManager.GetLogger("Example");
+            //logger.Trace("trace log message");
+            //logger.Debug("debug log message");
+            //logger.Info("info log message");
+            //logger.Warn("warn log message");
+            //logger.Error("error log message");
+            //logger.Fatal("fatal log message");
         }
 
         private void GamesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
