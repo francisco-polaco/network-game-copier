@@ -28,25 +28,32 @@ namespace NetworkGameCopier
                 string[] lines = File.ReadAllLines(SteamappsPath + "\\" + file);
                 GetSteamGameDetails(lines);
             }
-            LibraryPaths = GetLibraryPaths(File.ReadAllLines(SteamappsPath + "\\" + "libraryfolders.vdf"));
+            LibraryPaths = GetLibraryPathsFromSteam(File.ReadAllLines(Path.Combine(SteamappsPath, "libraryfolders.vdf")));
             string[] files =
-                Directory.GetFileSystemEntries(Path.Combine(SteamappsPath, "common"), "*", SearchOption.TopDirectoryOnly);
+                Directory.GetFileSystemEntries(Path.Combine(SteamappsPath, "common"), "*",
+                    SearchOption.TopDirectoryOnly);
             FtpManager.GetInstance().AddLinks(files);
         }
 
-        public override void RetrieveGame(string gameName, NetworkManager clienta, 
+        public override void RetrieveGame(string gameName, NetworkManager clienta,
             string selectedComputer, AsyncPack asyncPack)
         {
             string remotePath = clienta.GetDirFromGameNameSteam(gameName);
             LogManager.GetCurrentClassLogger().Warn(remotePath);
             FtpManager.GetInstance()
-                .RetrieveGame(SettingsManager.GetInstance().GetDefaultSteamLibrary(), 
-                remotePath, selectedComputer, asyncPack);
+                .RetrieveGame(SettingsManager.GetInstance().GetDefaultSteamLibrary(),
+                    remotePath, selectedComputer, asyncPack);
         }
 
         public override NameSizePair[] GetRemoteGamesNamesList(NetworkManager client)
         {
             return client.GetGamesNamesListSteam().ToArray();
+        }
+
+        public List<string> GetLibraryPaths()
+        {
+            var libs = new List<string>(LibraryPaths) {Path.Combine(SteamappsPath, "common")};
+            return libs;
         }
 
         private void GetSteamGameDetails(string[] lines)
@@ -73,15 +80,20 @@ namespace NetworkGameCopier
             }
         }
 
-        private List<string> GetLibraryPaths(string[] lines)
+        private List<string> GetLibraryPathsFromSteam(string[] lines)
         {
             List<string> paths = new List<string>();
             foreach (var line in lines)
             {
                 if (line.Contains("\"1\""))
                 {
-                    var aux = GetValuesFromLine(line);
-                    paths.Add(aux[1]);
+                    var path = GetValuesFromLine(line)[1];
+                    do
+                    {
+                        path = path.Replace("\\\\", "\\");
+                    }
+                    while (path.Contains("\\\\"));
+                    paths.Add(path);
                 }
             }
             return paths;

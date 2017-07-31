@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net.NetworkInformation;
@@ -9,6 +10,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Windows.Controls.Primitives;
 
 namespace NetworkGameCopier
@@ -196,13 +198,24 @@ namespace NetworkGameCopier
         private void ButtonAcceptSettings_OnClick(object sender, RoutedEventArgs e)
         {
             SettingsManager.GetInstance().SetDefaultBlizzardPath(SettingsBlizzardPath.Text);
-            SettingsManager.GetInstance().SetDefaultSteamLibrary(SettingsSteamPath.Text);
+            SettingsManager.GetInstance().SetDefaultSteamLibrary(SteamLibsComboBox.SelectedItem.ToString());
+            new Thread(() =>
+                SettingsManager.GetInstance().ForceSave()).Start();
         }
 
         private void ButtonSettings_OnClick(object sender, RoutedEventArgs e)
         {
             SettingsBlizzardPath.Text = SettingsManager.GetInstance().GetDefaultBlizzardPath();
-            SettingsSteamPath.Text = SettingsManager.GetInstance().GetDefaultSteamLibrary();
+            SteamLibsComboBox.Items.Clear();
+            List<string> libs = SteamOperations.GetInstance().GetLibraryPaths();
+            if(!libs.Contains(SettingsManager.GetInstance().GetDefaultSteamLibrary()))
+                libs.Add(SettingsManager.GetInstance().GetDefaultSteamLibrary());
+            libs.Sort();
+            foreach (var libraryPath in libs)
+            {
+                SteamLibsComboBox.Items.Add(libraryPath);
+            }
+            SteamLibsComboBox.SelectedItem = SettingsManager.GetInstance().GetDefaultSteamLibrary();
             /* The second command in the array represents the close drawer command.
             * Check XAML Toolkit Sources, namely a constructor at line 77
             * https://github.com/ButchersBoy/MaterialDesignInXamlToolkit/blob/master/MaterialDesignThemes.Wpf/DrawerHost.cs
@@ -217,7 +230,18 @@ namespace NetworkGameCopier
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    SettingsSteamPath.Text = dialog.SelectedPath;
+                    if (!SteamLibsComboBox.Items.Contains(dialog.SelectedPath))
+                    {
+                        SteamLibsComboBox.Items.Clear();
+                        List<string> libs = SteamOperations.GetInstance().GetLibraryPaths();
+                        libs.Add(dialog.SelectedPath);
+                        libs.Sort();
+                        foreach (var libraryPath in libs)
+                        {
+                            SteamLibsComboBox.Items.Add(libraryPath);
+                        }
+                    }
+                    SteamLibsComboBox.SelectedItem = dialog.SelectedPath;
                 }
             }
         }

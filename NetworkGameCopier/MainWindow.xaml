@@ -15,10 +15,10 @@
         FontFamily="{DynamicResource MaterialDesignFont}">
 
     <StackPanel>
-        <materialDesign:DialogHost >
-            <materialDesign:DialogHost.DialogContent>
+        <materialDesign:DialogHost>
+            <materialDesign:DialogHost.DialogContent >
                 <StackPanel Margin="16">
-                    <TextBlock FontSize="16">Settings</TextBlock>
+                    <TextBlock FontSize="18">Settings</TextBlock>
                     <StackPanel>
                         <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 8 0 0" 
                                  HorizontalAlignment="Stretch" x:Name="SettingsBlizzardPath" >
@@ -29,22 +29,31 @@
                                 </StackPanel>
                             </materialDesign:HintAssist.Hint>
                         </TextBox>
-                        <Button x:Name="ButtonBrowseBlizzard" Style="{StaticResource MaterialDesignRaisedButton}" Margin="0 12 8 0" Width="100"
+                        <Button x:Name="ButtonBrowseBlizzard" 
+                                Style="{StaticResource MaterialDesignRaisedButton}" Margin="0 12 8 0" Width="100"
                                 ToolTip="Browse Directory"
                                 Click="ButtonBrowseBlizzard_OnClick">
                             BROWSE
                         </Button>
                     </StackPanel>
                     <StackPanel>
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"  Margin="0 8 0 0" 
-                              HorizontalAlignment="Stretch"  x:Name="SettingsSteamPath">
+                        <ComboBox x:Name="SteamLibsComboBox"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  IsEditable="True" 
+                                  SelectedIndex="0"
+                                  Margin="0 8 0 0" 
+                                  HorizontalAlignment="Stretch">
                             <materialDesign:HintAssist.Hint>
                                 <StackPanel Orientation="Horizontal" Margin="-2 0 0 0">
                                     <!--<materialDesign:PackIcon Kind="AccessPoint" />-->
-                                    <TextBlock>Steam games default copy path</TextBlock>
+                                    <TextBlock FontSize="19">Steam games default copy path</TextBlock>
                                 </StackPanel>
                             </materialDesign:HintAssist.Hint>
-                        </TextBox>
+                            <ComboBoxItem>Apple</ComboBoxItem>
+                            <ComboBoxItem>Banana</ComboBoxItem>
+                            <ComboBoxItem>Pear</ComboBoxItem>
+                            <ComboBoxItem>Orange</ComboBoxItem>
+                        </ComboBox>
                         <Button x:Name="ButtonBrowseSteam" Style="{StaticResource MaterialDesignRaisedButton}" Margin="0 12 8 0" Width="100"
                                 ToolTip="Browse Directory"
                                 Click="ButtonBrowseSteam_OnClick">

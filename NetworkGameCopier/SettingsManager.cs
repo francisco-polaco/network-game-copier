@@ -93,6 +93,7 @@ namespace NetworkGameCopier
             {
                 _settings.WriteXml(writer);
             }
+            _isIoNeeded = false;
         }
 
     }
