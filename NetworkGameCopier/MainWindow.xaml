@@ -15,7 +15,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}">
 
     <StackPanel>
-        <materialDesign:DialogHost>
+        <materialDesign:DialogHost >
             <materialDesign:DialogHost.DialogContent >
                 <StackPanel Margin="16">
                     <TextBlock FontSize="18">Settings</TextBlock>
@@ -77,16 +77,23 @@
 
                             CANCEL
                         </Button>
+                        <Button x:Name="ButtonDefaultSettings"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                                Margin="0 8 8 0"
+                                Click="ButtonDefaultSettings_OnClick">
+                            RESET
+                        </Button>
                     </StackPanel>
+                    <materialDesign:Snackbar x:Name="MySnackbar"  MessageQueue="{Binding MyCustomMessageQueue}" />
                 </StackPanel>
             </materialDesign:DialogHost.DialogContent>
 
 
-
-            <materialDesign:DrawerHost x:Name="Drawer" Margin="10,21,3.6,-1.6" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="2" BorderBrush="{DynamicResource MaterialDesignDivider}" Width="620" Height="431">
-                <materialDesign:DrawerHost.LeftDrawerContent >
-                    <StackPanel Margin="16">
-                        <!--<TextBlock Margin="4" HorizontalAlignment="Center">LEFT FIELD</TextBlock>
+            <StackPanel>
+                <materialDesign:DrawerHost x:Name="Drawer" Margin="10,21,3.6,-1.6" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="2" BorderBrush="{DynamicResource MaterialDesignDivider}" Width="620" Height="431">
+                    <materialDesign:DrawerHost.LeftDrawerContent >
+                        <StackPanel Margin="16">
+                            <!--<TextBlock Margin="4" HorizontalAlignment="Center">LEFT FIELD</TextBlock>
                     <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                             CommandParameter="{x:Static Dock.Left}"
                             Margin="4" HorizontalAlignment="Center"
@@ -98,73 +105,74 @@
                             Style="{DynamicResource MaterialDesignFlatButton}">
                         CLOSE ALL
                     </Button>-->
-                        <Button x:Name="ButtonBlizzard" Margin="4" HorizontalAlignment="Center"
+                            <Button x:Name="ButtonBlizzard" Margin="4" HorizontalAlignment="Center"
                             Style="{DynamicResource MaterialDesignFlatButton}"
                             Click="ButtonBlizzard_OnClick"
                             Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                             CommandParameter="{x:Static Dock.Left}">
-                            Blizzard
-                        </Button>
-                        <Button x:Name="ButtonSteam" Margin="4" HorizontalAlignment="Center"
+                                Blizzard
+                            </Button>
+                            <Button x:Name="ButtonSteam" Margin="4" HorizontalAlignment="Center"
                             Style="{DynamicResource MaterialDesignFlatButton}"
                             Click="ButtonSteam_OnClick"
                             Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                             CommandParameter="{x:Static Dock.Left}">
-                            Steam
-                        </Button>
-                        <Button x:Name="ButtonSettings" Margin="4" HorizontalAlignment="Center"
+                                Steam
+                            </Button>
+                            <Button x:Name="ButtonSettings" Margin="4" HorizontalAlignment="Center"
                             Style="{DynamicResource MaterialDesignFlatButton}"
                             Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
                                 Click="ButtonSettings_OnClick">
-                            Settings
-                        </Button>
-                    </StackPanel>
-                </materialDesign:DrawerHost.LeftDrawerContent>
+                                Settings
+                            </Button>
+                        </StackPanel>
+                    </materialDesign:DrawerHost.LeftDrawerContent>
 
-                <Grid Margin="0,0,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0*"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <materialDesign:ColorZone Mode="PrimaryDark" Padding="16" CornerRadius="3" materialDesign:ShadowAssist.ShadowDepth="Depth3" Margin="-6,0,10,0" Height="62" Grid.RowSpan="2">
-                        <StackPanel Orientation="Horizontal" Margin="0,-10,0,-10">
-                            <ToggleButton Style="{DynamicResource MaterialDesignHamburgerToggleButton}" 
+                    <Grid Margin="0,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0*"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:ColorZone Mode="PrimaryDark" Padding="16" CornerRadius="3" materialDesign:ShadowAssist.ShadowDepth="Depth3" Margin="-6,0,10,0" Height="62" Grid.RowSpan="2">
+                            <StackPanel Orientation="Horizontal" Margin="0,-10,0,-10">
+                                <ToggleButton Style="{DynamicResource MaterialDesignHamburgerToggleButton}" 
                                       Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
                                       CommandParameter="{x:Static Dock.Left}" Margin="0,5,0,7.6"  />
-                            <TextBlock FontSize="20" FontFamily="Bold" VerticalAlignment="Center" Margin="16 0 0 0"><Run Text="Network Game Copier"/></TextBlock>
-                        </StackPanel>
-                    </materialDesign:ColorZone>
+                                <TextBlock FontSize="20" FontFamily="Bold" VerticalAlignment="Center" Margin="16 0 0 0"><Run Text="Network Game Copier"/></TextBlock>
+                            </StackPanel>
+                        </materialDesign:ColorZone>
 
-                    <ComboBox x:Name="ComputerComboBox" IsEnabled="False" materialDesign:HintAssist.Hint="Computers"
+                        <ComboBox x:Name="ComputerComboBox" IsEnabled="False" materialDesign:HintAssist.Hint="Computers"
                           SelectionChanged="ComputerComboBox_OnSelectionChanged"
                           Height="40" Margin="368,93,91,294.2" Grid.Row="1">
-                    </ComboBox>
-                    <Button x:Name="RefreshButton" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                        </ComboBox>
+                        <Button x:Name="RefreshButton" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                         Margin="548,93,0,294.2" HorizontalAlignment="Left"
                         ToolTip="MaterialDesignFloatingActionMiniButton" RenderTransformOrigin="6.884,-3.003" Click="Refresh_Button_Click" Height="Auto" Width="45"
                         Grid.Row="0" Grid.RowSpan="2">
-                        <materialDesign:PackIcon Kind="Refresh" Height="24" Width="24" RenderTransformOrigin="13.97,-5.296" />
-                    </Button>
+                            <materialDesign:PackIcon Kind="Refresh" Height="24" Width="24" RenderTransformOrigin="13.97,-5.296" />
+                        </Button>
 
-                    <ListView x:Name="GamesList" ItemsSource="{Binding games_list}" Margin="36,138,41,37.2" SelectionChanged="GamesList_SelectionChanged" Grid.Row="1" >
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
-                                <GridViewColumn DisplayMemberBinding="{Binding Size}" Header="Size (MB)" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <!--<materialDesign:DialogHost x:Name="PreparingDialog" Margin="148,124,158.4,97.8">
+                        <ListView x:Name="GamesList" ItemsSource="{Binding games_list}" Margin="36,138,41,37.2" SelectionChanged="GamesList_SelectionChanged" Grid.Row="1" >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding Size}" Header="Size (MB)" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <!--<materialDesign:DialogHost x:Name="PreparingDialog" Margin="148,124,158.4,97.8">
                     <materialDesign:DialogHost.DialogContent>
                         Preparing
                     </materialDesign:DialogHost.DialogContent>
                     EHEHEHE
                 </materialDesign:DialogHost>-->
-                    <TextBlock x:Name="StateText" TextAlignment="Right" Margin="-1,395,529,10.2" Grid.Row="1">Idle</TextBlock>
-                    <ProgressBar x:Name="ProgressBar" Opacity="100" Orientation="Horizontal" Value="0" Margin="92,395,57,10.2" Height="Auto" Grid.Row="1" />
-                    <TextBlock x:Name="Percentage" Opacity="100" TextAlignment="Right" Margin="494,395,10,10.2" Grid.Row="1">100</TextBlock>
-                </Grid>
-            </materialDesign:DrawerHost>
+                        <TextBlock x:Name="StateText" TextAlignment="Right" Margin="-1,395,529,10.2" Grid.Row="1">Idle</TextBlock>
+                        <ProgressBar x:Name="ProgressBar" Opacity="100" Orientation="Horizontal" Value="0" Margin="92,395,57,10.2" Height="Auto" Grid.Row="1" />
+                        <TextBlock x:Name="Percentage" Opacity="100" TextAlignment="Right" Margin="494,395,10,10.2" Grid.Row="1">100</TextBlock>
+                    </Grid>
+                </materialDesign:DrawerHost>
+            </StackPanel>
         </materialDesign:DialogHost>
     </StackPanel>
 </Window>

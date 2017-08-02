@@ -13,7 +13,6 @@ namespace NetworkGameCopier
         {
             // Perform tasks at application exit
             FtpManager.GetInstance().StopFtpServer();
-            SettingsManager.GetInstance().ForceSave();
         }
 
     }

@@ -77,5 +77,15 @@ namespace NetworkGameCopier.Properties {
                 return ResourceManager.GetString("Computers", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Int32 similar to 5.
+        /// </summary>
+        public static int SnackbarSecondsDuration {
+            get {
+                object obj = ResourceManager.GetObject("SnackbarSecondsDuration", resourceCulture);
+                return ((int)(obj));
+            }
+        }
     }
 }

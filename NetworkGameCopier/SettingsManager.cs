@@ -33,21 +33,32 @@ namespace NetworkGameCopier
         {
             try
             {
-                XmlReaderSettings settings = new XmlReaderSettings
-                {
-                    ConformanceLevel = ConformanceLevel.Fragment
-                };
-                using (XmlReader reader = XmlReader.Create(new StreamReader(SettingsXmlPath), settings))
-                {
-                    _settings.ReadXml(reader);
-                }
+                LoadSettings();
             }
             catch (Exception e)
             {
                 LogManager.GetCurrentClassLogger().Info("Fresh start! " + e.Message);
-                SetDefaultBlizzardPath(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
-                SetDefaultSteamLibrary(Path.Combine(SteamOperations.GetInstance().SteamappsPath, "common"));
+                LoadDefaultValues();
             }
+        }
+
+        public void LoadSettings()
+        {
+            if(_settings.Count != 0) _settings.Clear();
+            XmlReaderSettings settings = new XmlReaderSettings
+            {
+                ConformanceLevel = ConformanceLevel.Fragment
+            };
+            using (XmlReader reader = XmlReader.Create(new StreamReader(SettingsXmlPath), settings))
+            {
+                _settings.ReadXml(reader);
+            }
+        }
+
+        public void LoadDefaultValues()
+        {
+            SetDefaultBlizzardPath(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
+            SetDefaultSteamLibrary(Path.Combine(SteamOperations.GetInstance().SteamappsPath, "common"));
         }
 
         public void SetDefaultSteamLibrary(string path)
@@ -149,7 +160,6 @@ namespace NetworkGameCopier
 
             foreach (TKey key in Keys)
             {
-                LogManager.GetCurrentClassLogger().Debug(key + " - " + this[key]);
                 writer.WriteStartElement("item");
                 writer.WriteStartElement("key");
                 keySerializer.Serialize(writer, key);

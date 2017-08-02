@@ -34,6 +34,8 @@ namespace NetworkGameCopier
         {
             Init();
             InitializeComponent();
+            MySnackbar.MessageQueue = 
+                new SnackbarMessageQueue(TimeSpan.FromSeconds(Properties.Resources.SnackbarSecondsDuration));
             GameProviderSingleton.GetInstance();
             SettingsManager.GetInstance();
             Refresh_Button_Click(null, null);
@@ -220,7 +222,7 @@ namespace NetworkGameCopier
             * Check XAML Toolkit Sources, namely a constructor at line 77
             * https://github.com/ButchersBoy/MaterialDesignInXamlToolkit/blob/master/MaterialDesignThemes.Wpf/DrawerHost.cs
             */
-            Drawer.CommandBindings[1].Command.Execute(null);
+            if(!(sender == null && e == null)) Drawer.CommandBindings[1].Command.Execute(null);
         }
 
         private void ButtonBrowseSteam_OnClick(object sender, RoutedEventArgs e)
@@ -256,6 +258,20 @@ namespace NetworkGameCopier
                     SettingsBlizzardPath.Text = dialog.SelectedPath;
                 }
             }
+        }
+
+        private void ButtonDefaultSettings_OnClick(object sender, RoutedEventArgs e)
+        {
+            SettingsManager.GetInstance().LoadDefaultValues();
+            ButtonSettings_OnClick(null, null);
+
+            MySnackbar.MessageQueue.Enqueue("Settings reset", "UNDO", HandleSettingsUndoMethod);
+        }
+
+        private void HandleSettingsUndoMethod()
+        {
+            SettingsManager.GetInstance().LoadSettings();
+            ButtonSettings_OnClick(null, null);
         }
     }
 
