@@ -1,10 +1,30 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Win32;
 
 namespace NetworkGameCopier
 {
     class RegistryManager
     {
+        public static void WriteExecutionLocation()
+        {
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+
+            key?.CreateSubKey("NetworkGameCopier");
+            key = key?.OpenSubKey("NetworkGameCopier", true);
+
+
+            //key.CreateSubKey("InstalledPath");
+            //key = key.OpenSubKey("InstalledPath", true);
+            key?.SetValue("InstalledPath", Path.GetFullPath("."));
+        }
+
+        public static string ReadExecutionLocation()
+        {
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\NetworkGameCopier\InstalledPath");
+
+            return key?.GetValue("InstalledPath").ToString();
+        }
         public static string FindInstallLocationByName(string name)
         {
             try
@@ -46,6 +66,7 @@ namespace NetworkGameCopier
             }
             throw new NoKeyFoundException();
         }
+
     }
 
     internal class NoKeyFoundException : Exception

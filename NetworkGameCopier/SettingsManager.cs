@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -37,8 +38,12 @@ namespace NetworkGameCopier
             }
             catch (Exception e)
             {
+                // Fresh start!
                 LogManager.GetCurrentClassLogger().Info("Fresh start! " + e.Message);
                 LoadDefaultValues();
+                RegistryManager.WriteExecutionLocation();
+                //MainWindow.RegisterUpdateService();
+                new Thread(ForceSave).Start();
             }
         }
 

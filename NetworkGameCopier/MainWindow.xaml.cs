@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net.NetworkInformation;
+using System.ServiceProcess;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using MaterialDesignThemes.Wpf;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
-using System.Reactive.Linq;
-using System.Threading;
-using System.Windows.Controls.Primitives;
 
 namespace NetworkGameCopier
 {
@@ -28,7 +27,7 @@ namespace NetworkGameCopier
         private NetworkManager _server;
         private NetworkManager _client;
         private string _targetClientIp;
-        private NetworkPerformanceReporter _network;
+        //private NetworkPerformanceReporter _network;
 
         public MainWindow()
         {
@@ -39,6 +38,7 @@ namespace NetworkGameCopier
             GameProviderSingleton.GetInstance();
             SettingsManager.GetInstance();
             Refresh_Button_Click(null, null);
+            LaunchUpdater();
             //_network = NetworkPerformanceReporter.Create();
             //Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(v =>
             //{
@@ -46,7 +46,27 @@ namespace NetworkGameCopier
             //});
         }
 
-       
+        private void LaunchUpdater()
+        {
+            ServiceController service = new ServiceController("Network Game Copier Updater");
+            service.Start();
+        }
+
+        public void RegisterUpdateService()
+        {
+            Process process = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.FileName = "cmd.exe";
+            #if DEBUG
+                startInfo.Arguments = @"/C ..\..\..\UpdateService\bin\Debug\UpdateService.exe -install";
+            #else
+                startInfo.Arguments = "/C UpdateService.exe -install";
+            #endif
+            process.StartInfo = startInfo;
+            process.Start();
+        }
+
 
         private void Init()
         {
@@ -64,8 +84,7 @@ namespace NetworkGameCopier
                 long sizeInMb = parsed / 1024 / 1024;
                 return new NameSizePair {Name = pair.Name, Size = sizeInMb.ToString()};
             }
-            else
-                return new NameSizePair {Name = pair.Name, Size = "0"};
+            return new NameSizePair {Name = pair.Name, Size = "0"};
         }
 
         private void ConfigLog()
@@ -227,9 +246,9 @@ namespace NetworkGameCopier
 
         private void ButtonBrowseSteam_OnClick(object sender, RoutedEventArgs e)
         {
-            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            using (var dialog = new FolderBrowserDialog())
             {
-                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                DialogResult result = dialog.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     if (!SteamLibsComboBox.Items.Contains(dialog.SelectedPath))
@@ -250,9 +269,9 @@ namespace NetworkGameCopier
 
         private void ButtonBrowseBlizzard_OnClick(object sender, RoutedEventArgs e)
         {
-            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            using (var dialog = new FolderBrowserDialog())
             {
-                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                DialogResult result = dialog.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     SettingsBlizzardPath.Text = dialog.SelectedPath;
