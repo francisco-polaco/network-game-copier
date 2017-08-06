@@ -8,23 +8,15 @@ namespace NetworkGameCopier
     {
         public static void WriteExecutionLocation()
         {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+            RegistryKey key = Registry.LocalMachine.OpenSubKey("Software", true);
 
             key?.CreateSubKey("NetworkGameCopier");
             key = key?.OpenSubKey("NetworkGameCopier", true);
 
-
-            //key.CreateSubKey("InstalledPath");
-            //key = key.OpenSubKey("InstalledPath", true);
             key?.SetValue("InstalledPath", Path.GetFullPath("."));
         }
 
-        public static string ReadExecutionLocation()
-        {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\NetworkGameCopier\InstalledPath");
-
-            return key?.GetValue("InstalledPath").ToString();
-        }
+  
         public static string FindInstallLocationByName(string name)
         {
             try

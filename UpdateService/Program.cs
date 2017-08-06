@@ -28,28 +28,28 @@ namespace UpdateService
                 };
                 ServiceBase.Run(servicesToRun);
             }
-            else if(args.Length == 1)
-            {
-                switch (args[0])
-                {
-                    case "-install":
-                        Console.WriteLine("Installing service");
-                        //AssemblyInstaller Installer = new AssemblyInstaller();
-                        //Installer.UseNewContext = true;
-                        //Installer.Install(null);
-                        //Installer.Commit(null);
-                        InstallService();
-                        //StartService();
-                        break;
-                    case "-uninstall":
-                        Console.WriteLine("Uninstalling service");
-                        StopService();
-                        UninstallService();
-                        break;
-                    default:
-                        break;
-                }
-            }
+            //else if(args.Length == 1)
+            //{
+            //    switch (args[0])
+            //    {
+            //        case "-install":
+            //            Console.WriteLine("Installing service");
+            //            //AssemblyInstaller Installer = new AssemblyInstaller();
+            //            //Installer.UseNewContext = true;
+            //            //Installer.Install(null);
+            //            //Installer.Commit(null);
+            //            InstallService();
+            //            //StartService();
+            //            break;
+            //        case "-uninstall":
+            //            Console.WriteLine("Uninstalling service");
+            //            StopService();
+            //            UninstallService();
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //}
         }
 
         private static bool IsInstalled()
@@ -211,7 +211,7 @@ namespace UpdateService
 
             // ServiceName must equal those on ServiceBase derived classes.
             serviceInstaller.ServiceName = "Network Game Copier Updater";
-            serviceInstaller.Description = "Service to update Network Game Copier to last version available.";
+            serviceInstaller.Description = "Service to update Network Game Copier to the last version available.";
 
             // Add installers to collection. Order is not important.
             Installers.Add(serviceInstaller);

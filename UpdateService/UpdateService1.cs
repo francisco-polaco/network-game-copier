@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
-using System.Linq;
 using System.Net;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Win32;
 using RestSharp;
+using Ionic.Zip;
+using Microsoft.Win32;
 
 namespace UpdateService
 {
@@ -24,6 +18,9 @@ namespace UpdateService
 
         protected override void OnStart(string[] args)
         {
+            //#if DEBUG
+            //    System.Diagnostics.Debugger.Launch();
+            //#endif
             // https://api.github.com/repos/francisco-polaco/network-game-copier/releases/latest
             var client = 
                 new RestClient("https://api.github.com/repos/francisco-polaco/network-game-copier/releases/latest");
@@ -35,22 +32,28 @@ namespace UpdateService
                 if (line.Contains("browser_") && line.Contains(".zip"))
                 {
                     string[] downloadUrlArray = line.Split(':');
-                    string downloadUrl = (downloadUrlArray[1] + downloadUrlArray[2])
+                    string downloadUrl = (downloadUrlArray[1] + ":" + downloadUrlArray[2])
                         .Replace("\"", "")
                         .Replace("}", "")
                         .Replace("]", "");
                     if (VersionIsUpdatable(downloadUrl))
                     {
-                        var fileName = Path.Combine(Path.GetTempPath(), "NetworkGameCopier_update", "update.zip");
+                        var dirName = Path.Combine(Path.GetTempPath(), "NetworkGameCopier_update");
+                        var updateDir = new DirectoryInfo(dirName);
+                        updateDir.Create();
+                        var fileName = Path.Combine(dirName, "update.zip");
                         new WebClient().DownloadFile(downloadUrl, fileName);
                         Process[] pname = Process.GetProcessesByName("NetworkGameCopier");
                         if (pname.Length != 0)
                         {
                             pname[0].WaitForExit();
                         }
-                        ZipFile.ExtractToDirectory(fileName, ReadExecutionLocation());
+                        using (ZipFile zip = ZipFile.Read(fileName))
+                        {
+                            zip.ExtractAll(ReadExecutionLocation(), ExtractExistingFileAction.OverwriteSilently);
+                        }
                         // Cleaning up the trash
-                        //new DirectoryInfo(Path.Combine(Path.GetTempPath(), "NetworkGameCopier_update")).Delete(true);
+                        updateDir.Delete(true);
                     }
                     break;
                 }
@@ -64,13 +67,19 @@ namespace UpdateService
                 Path.Combine(ReadExecutionLocation(), "version.dat"));
             UInt64 version = UInt64.Parse(sr.ReadToEnd());
             // get downloaded version
-            UInt64 downloadVersion = 50;
+            UInt64 downloadVersion = 
+                ulong.Parse(downloadUrl.Substring(downloadUrl.IndexOf("2", downloadUrl.Length - 1 - 15))
+                .Replace(".zip", ""));
+            Console.WriteLine("Version: " + version + " VS " + downloadVersion);
             return version < downloadVersion;
         }
 
         private string ReadExecutionLocation()
         {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\NetworkGameCopier\InstalledPath");
+            //return @"C:\Users\franc\Source\Repos\game-network-copier\NetworkGameCopier\bin\Debug";
+            RegistryKey key = Registry.LocalMachine.OpenSubKey("Software");
+            key = key?.OpenSubKey("NetworkGameCopier");
+            //key = key?.OpenSubKey("InstalledPath")
             return key?.GetValue("InstalledPath").ToString();
         }
 
