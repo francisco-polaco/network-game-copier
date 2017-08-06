@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using NetworkGameCopier.Properties;
 using NLog;
 
 namespace NetworkGameCopier
@@ -44,6 +46,13 @@ namespace NetworkGameCopier
                 RegistryManager.WriteExecutionLocation();
                 //MainWindow.RegisterUpdateService();
                 new Thread(ForceSave).Start();
+                new Thread(() =>
+                {
+                    using (StreamWriter sw = new StreamWriter("version.dat"))
+                    {
+                        sw.Write(UInt64.Parse(Resources.VersionNumber));
+                    }
+                }).Start();
             }
         }
 

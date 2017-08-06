@@ -87,5 +87,14 @@ namespace NetworkGameCopier.Properties {
                 return ((int)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 20170808.
+        /// </summary>
+        public static string VersionNumber {
+            get {
+                return ResourceManager.GetString("VersionNumber", resourceCulture);
+            }
+        }
     }
 }

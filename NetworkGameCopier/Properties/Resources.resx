@@ -123,7 +123,12 @@
   <data name="Computers" xml:space="preserve">
     <value>Computers</value>
   </data>
-  <data name="SnackbarSecondsDuration" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SnackbarSecondsDuration" type="System.Int32, mscorlib">
     <value>5</value>
+  </data>
+  <data name="VersionNumber" xml:space="preserve">
+    <value>20170808</value>
+    <comment>Version Number. Increase to indicate an update.</comment>
   </data>
 </root>

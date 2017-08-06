@@ -39,19 +39,33 @@ namespace UpdateService
                         .Replace("\"", "")
                         .Replace("}", "")
                         .Replace("]", "");
-                    var fileName = Path.Combine(Path.GetTempPath(), "NetworkGameCopier_update", "update.zip");
-                    new WebClient().DownloadFile(downloadUrl, fileName);
-                    Process[] pname = Process.GetProcessesByName("notepad");
-                    if (pname.Length != 0)
+                    if (VersionIsUpdatable(downloadUrl))
                     {
-                        pname[0].WaitForExit();
+                        var fileName = Path.Combine(Path.GetTempPath(), "NetworkGameCopier_update", "update.zip");
+                        new WebClient().DownloadFile(downloadUrl, fileName);
+                        Process[] pname = Process.GetProcessesByName("NetworkGameCopier");
+                        if (pname.Length != 0)
+                        {
+                            pname[0].WaitForExit();
+                        }
+                        ZipFile.ExtractToDirectory(fileName, ReadExecutionLocation());
+                        // Cleaning up the trash
+                        //new DirectoryInfo(Path.Combine(Path.GetTempPath(), "NetworkGameCopier_update")).Delete(true);
                     }
-
-                    ZipFile.ExtractToDirectory(fileName, ReadExecutionLocation());
                     break;
                 }
             }
             Stop();
+        }
+
+        private bool VersionIsUpdatable(string downloadUrl)
+        {
+            StreamReader sr = new StreamReader(
+                Path.Combine(ReadExecutionLocation(), "version.dat"));
+            UInt64 version = UInt64.Parse(sr.ReadToEnd());
+            // get downloaded version
+            UInt64 downloadVersion = 50;
+            return version < downloadVersion;
         }
 
         private string ReadExecutionLocation()
