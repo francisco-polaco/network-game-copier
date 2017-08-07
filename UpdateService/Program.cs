@@ -28,6 +28,7 @@ namespace UpdateService
                 };
                 ServiceBase.Run(servicesToRun);
             }
+           
             //else if(args.Length == 1)
             //{
             //    switch (args[0])
