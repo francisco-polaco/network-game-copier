@@ -128,7 +128,15 @@ namespace NetworkGameCopier
 
         private void GamesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LogManager.GetCurrentClassLogger().Debug("Selected: {0}", e.AddedItems[0]);
+            try
+            {
+                LogManager.GetCurrentClassLogger().Debug("Selected: {0}", e.AddedItems[0]);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                // Avoid crashing after selecting a game and changing provider
+                return;
+            }
             NameSizePair gamePair = e.AddedItems[0] as NameSizePair;
             if (gamePair != null)
             {
@@ -193,6 +201,7 @@ namespace NetworkGameCopier
         private void FillList()
         {
             if(_client == null) return;
+            GamesList.SelectedItems.Clear();
             NameSizePair[] list = GameProviderSingleton.GetInstance().Active.GetRemoteGamesNamesList(_client);
             Array.Sort(list);
             GamesList.Items.Clear();
@@ -216,6 +225,7 @@ namespace NetworkGameCopier
 
         private void ButtonSteam_OnClick(object sender, RoutedEventArgs e)
         {
+            GamesList.SelectedIndex = -1;
             GameProviderSingleton.GetInstance().Active =
                 SteamOperations.GetInstance();
             FillList();

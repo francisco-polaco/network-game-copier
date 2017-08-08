@@ -31,6 +31,8 @@ namespace NetworkGameCopier
         private const int FtpPort = 9000;
 
         private FtpServer _ftpServer;
+        private FtpClient _client;
+
         private static readonly FtpManager Instance = new FtpManager();
 
         public static FtpManager GetInstance()
@@ -89,10 +91,14 @@ namespace NetworkGameCopier
 
         }
 
-        public void StopFtpServer()
+        public void StopFtp()
         {
+            if(_client != null && _client.IsConnected)
+                _client.Disconnect();
             _ftpServer?.Stop();
+
         }
+
 
         public void RetrieveGame(string destGamePath, string sourceGamePath, 
             string targetIpServer, AsyncPack asyncPack) 
@@ -100,7 +106,7 @@ namespace NetworkGameCopier
             new Thread(() =>
             {
                 // create an FTP client
-                FtpClient client = new FtpClient(targetIpServer)
+                _client = new FtpClient(targetIpServer)
                 {
                     Port = FtpPort,
                     Credentials = new NetworkCredential("anonymous", "anonymous@batata.com")
@@ -109,18 +115,18 @@ namespace NetworkGameCopier
                 // if you don't specify login credentials, we use the "anonymous" user account
 
                 // begin connecting to the server
-                client.Connect();
+                _client.Connect();
             
                 // upload a file and retry 3 times before giving up
-                client.RetryAttempts = 3;
-
-                string sourcePath = client.GetWorkingDirectory() + sourceGamePath;
+                _client.RetryAttempts = 3;
+                
+                string sourcePath = _client.GetWorkingDirectory() + sourceGamePath;
                 // check if a folder exists
-                if (client.DirectoryExists(sourcePath))
+                if (_client.DirectoryExists(sourcePath))
                 {
                     long totalSize = 0;
                     List<FtpListItem> filesToDownloadList = new List<FtpListItem>();
-                    BuildListOfFilesToDownload(client, sourcePath, filesToDownloadList, ref totalSize);
+                    BuildListOfFilesToDownload(_client, sourcePath, filesToDownloadList, ref totalSize);
                     LogManager.GetCurrentClassLogger().Info("Size to be transfered: " + totalSize);
 
                     long alreadyDownloaded = 0;
@@ -132,7 +138,7 @@ namespace NetworkGameCopier
                             // TODO: Revisit this code to show some statistics
                             //Stopwatch sw = new Stopwatch();
                             //sw.Start();
-                            client.DownloadFile(destGamePath + filesToDownloadList[i].FullName, 
+                            _client.DownloadFile(destGamePath + filesToDownloadList[i].FullName, 
                                 filesToDownloadList[i].FullName);
                             //sw.Stop();
                             //long elapsedTime = sw.ElapsedMilliseconds / 1000;
@@ -154,7 +160,7 @@ namespace NetworkGameCopier
                 }
 
                 // disconnect! good bye!
-                client.Disconnect();
+                _client.Disconnect();
             }).Start();
         }
 
