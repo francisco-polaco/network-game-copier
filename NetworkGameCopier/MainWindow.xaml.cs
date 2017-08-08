@@ -48,10 +48,12 @@ namespace NetworkGameCopier
 
         private void LaunchUpdater()
         {
+                                                           // "Network Game Copier Updater"
             ServiceController service = new ServiceController("Network Game Copier Updater");
             service.Start();
         }
 
+        // This function is outdated, it will be deleted as soon as it has 0 value.
         public void RegisterUpdateService()
         {
             Process process = new Process();
@@ -131,9 +133,13 @@ namespace NetworkGameCopier
             if (gamePair != null)
             {
                 Progress(0);
-                    GameProviderSingleton.GetInstance().Active
-                        .RetrieveGame(gamePair.Name, _client, _targetClientIp,
-                            new AsyncPack {ToExecute = new DelProgress(Progress), Window = this});
+                DownloadTaskQueue.GetInstance().QueueJob(
+                    GameProviderSingleton.GetInstance().Active, 
+                    gamePair.Name, _client, _targetClientIp, 
+                    new AsyncPack { ToExecute = new DelProgress(Progress), Window = this });
+                    //GameProviderSingleton.GetInstance().Active
+                    //    .RetrieveGame(gamePair.Name, _client, _targetClientIp,
+                    //        new AsyncPack {ToExecute = new DelProgress(Progress), Window = this});
             }
         }
 

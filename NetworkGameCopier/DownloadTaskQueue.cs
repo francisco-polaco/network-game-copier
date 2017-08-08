@@ -1,0 +1,76 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace NetworkGameCopier
+{
+    class DownloadTaskQueue
+    {
+        private static readonly DownloadTaskQueue Instance = new DownloadTaskQueue();
+
+        public static DownloadTaskQueue GetInstance()
+        {
+            return Instance;
+        }
+
+        private readonly Queue<Task> _queue = new Queue<Task>();
+        private readonly Thread _workerThread;
+        private readonly ManualResetEvent _manualResetEvent = new ManualResetEvent(false);
+
+        private DownloadTaskQueue()
+        {
+            _workerThread = new Thread(() =>
+            {
+                while (true)
+                {
+                    if (_queue.Count == 0)
+                        _manualResetEvent.WaitOne();
+                    else
+                    {
+                        Monitor.Enter(_queue);
+                        Task toRun = _queue.Dequeue();
+                        Monitor.Exit(_queue);
+                        toRun.RunSynchronously();
+                    }
+                }
+            });
+            _workerThread.Start();
+        }
+
+        public void QueueJob(GameProviderOperationsBase provider, string gameName, NetworkManager client,
+            string selectedComputer, AsyncPack asyncPack)
+        {
+            Task toQueue = new Task(() =>
+            {
+                provider.RetrieveGame(gameName, client, selectedComputer, asyncPack);
+            });
+            Monitor.Enter(_queue);
+            _queue.Enqueue(toQueue);
+            Monitor.Exit(_queue);
+            _manualResetEvent.Set();
+        }
+
+        //public void SoftStop()
+        //{
+        //    _queue.Clear();
+        //}
+
+        public void ForceStop()
+        {
+            // Force Stop
+            try
+            {
+                _workerThread.Abort();
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
+    }
+
+}

@@ -89,13 +89,18 @@ namespace NetworkGameCopier
 
         public string GetDefaultSteamLibrary()
         {
-            return _settings[SettingsKey.SteamLibKey];
+            #if DEBUG
+                return @"C:\teste";
+            #endif
+                return _settings[SettingsKey.SteamLibKey];
         }
 
         public string GetDefaultBlizzardPath()
         {
-            //return @"C:\teste";
-            return _settings[SettingsKey.BlizzardPathKey];
+            #if DEBUG
+                return @"C:\teste";
+            #endif
+                return _settings[SettingsKey.BlizzardPathKey];
         }
 
         private void IoDone()
@@ -129,7 +134,7 @@ namespace NetworkGameCopier
     public class SerializableDictionary<TKey, TValue>
         : Dictionary<TKey, TValue>, IXmlSerializable
     {
-        #region IXmlSerializable Members
+#region IXmlSerializable Members
         public XmlSchema GetSchema()
         {
             return null;
@@ -185,6 +190,6 @@ namespace NetworkGameCopier
                 writer.WriteEndElement();
             }
         }
-        #endregion
+#endregion
     }
 }

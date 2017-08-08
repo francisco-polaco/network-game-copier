@@ -170,8 +170,8 @@
                     EHEHEHE
                 </materialDesign:DialogHost>-->
                         <TextBlock x:Name="StateText" TextAlignment="Right" Margin="-1,395,529,10.2" Grid.Row="1">Idle</TextBlock>
-                        <ProgressBar x:Name="ProgressBar" Opacity="100" Orientation="Horizontal" Value="0" Margin="92,395,57,10.2" Height="Auto" Grid.Row="1" />
-                        <TextBlock x:Name="Percentage" Opacity="100" TextAlignment="Right" Margin="494,395,10,10.2" Grid.Row="1">100</TextBlock>
+                        <ProgressBar x:Name="ProgressBar" Opacity="0" Orientation="Horizontal" Value="0" Margin="92,395,57,10.2" Height="Auto" Grid.Row="1" />
+                        <TextBlock x:Name="Percentage" Opacity="0" TextAlignment="Right" Margin="494,395,10,10.2" Grid.Row="1">100</TextBlock>
                     </Grid>
                 </materialDesign:DrawerHost>
             </StackPanel>
