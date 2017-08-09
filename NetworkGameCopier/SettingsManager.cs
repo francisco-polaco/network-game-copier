@@ -24,11 +24,12 @@ namespace NetworkGameCopier
         public enum SettingsKey
         {
             SteamLibKey,
-            BlizzardPathKey
+            BlizzardPathKey,
+            ShutdownAfterDownloads // 08 Patch
         }
 
-        private readonly SerializableDictionary<SettingsKey, string> _settings
-            = new SerializableDictionary<SettingsKey, string>();
+        private readonly SerializableDictionary<SettingsKey, object> _settings
+            = new SerializableDictionary<SettingsKey, object>();
 
         private bool _isIoNeeded = false;
 
@@ -67,12 +68,21 @@ namespace NetworkGameCopier
             {
                 _settings.ReadXml(reader);
             }
+            CompatabilitySettings();
+        }
+
+        // This method is used to port the settings from a previous version.
+        private void CompatabilitySettings()
+        {
+            if(!_settings.ContainsKey(SettingsKey.ShutdownAfterDownloads))
+                SetShutdownAfterDownload(false);
         }
 
         public void LoadDefaultValues()
         {
             SetDefaultBlizzardPath(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
             SetDefaultSteamLibrary(Path.Combine(SteamOperations.GetInstance().SteamappsPath, "common"));
+            SetShutdownAfterDownload(false);
         }
 
         public void SetDefaultSteamLibrary(string path)
@@ -87,12 +97,18 @@ namespace NetworkGameCopier
             IoDone();
         }
 
+        public void SetShutdownAfterDownload(bool? isChecked)
+        {
+            _settings[SettingsKey.ShutdownAfterDownloads] = isChecked;
+            IoDone();
+        }
+
         public string GetDefaultSteamLibrary()
         {
             #if DEBUG
                 return @"C:\teste";
             #endif
-                return _settings[SettingsKey.SteamLibKey];
+                return _settings[SettingsKey.SteamLibKey] as string;
         }
 
         public string GetDefaultBlizzardPath()
@@ -100,7 +116,11 @@ namespace NetworkGameCopier
             #if DEBUG
                 return @"C:\teste";
             #endif
-                return _settings[SettingsKey.BlizzardPathKey];
+                return _settings[SettingsKey.BlizzardPathKey] as string;
+        }
+        public bool? GetShutdownAfterDownloads()
+        {
+            return _settings[SettingsKey.ShutdownAfterDownloads] as bool?;
         }
 
         private void IoDone()
@@ -126,6 +146,7 @@ namespace NetworkGameCopier
             _isIoNeeded = false;
         }
 
+       
     }
 
 

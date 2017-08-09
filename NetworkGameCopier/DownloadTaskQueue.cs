@@ -45,6 +45,7 @@ namespace NetworkGameCopier
         {
             Task toQueue = new Task(() =>
             {
+                asyncPack.Window.Dispatcher.Invoke(asyncPack.ToExecute, 0);
                 provider.RetrieveGame(gameName, client, selectedComputer, asyncPack);
             });
             Monitor.Enter(_queue);

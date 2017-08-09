@@ -36,7 +36,7 @@ namespace NetworkGameCopier
             MySnackbar.MessageQueue = 
                 new SnackbarMessageQueue(TimeSpan.FromSeconds(Properties.Resources.SnackbarSecondsDuration));
             GameProviderSingleton.GetInstance();
-            SettingsManager.GetInstance();
+            CheckBoxShutdownAfter.IsChecked = SettingsManager.GetInstance().GetShutdownAfterDownloads();
             Refresh_Button_Click(null, null);
             LaunchUpdater();
             //_network = NetworkPerformanceReporter.Create();
@@ -140,7 +140,6 @@ namespace NetworkGameCopier
             NameSizePair gamePair = e.AddedItems[0] as NameSizePair;
             if (gamePair != null)
             {
-                Progress(0);
                 DownloadTaskQueue.GetInstance().QueueJob(
                     GameProviderSingleton.GetInstance().Active, 
                     gamePair.Name, _client, _targetClientIp, 
@@ -257,7 +256,7 @@ namespace NetworkGameCopier
             * Check XAML Toolkit Sources, namely a constructor at line 77
             * https://github.com/ButchersBoy/MaterialDesignInXamlToolkit/blob/master/MaterialDesignThemes.Wpf/DrawerHost.cs
             */
-            if(!(sender == null && e == null)) Drawer.CommandBindings[1].Command.Execute(null);
+            //if(!(sender == null && e == null)) Drawer.CommandBindings[1].Command.Execute(null);
         }
 
         private void ButtonBrowseSteam_OnClick(object sender, RoutedEventArgs e)
@@ -307,6 +306,13 @@ namespace NetworkGameCopier
         {
             SettingsManager.GetInstance().LoadSettings();
             ButtonSettings_OnClick(null, null);
+        }
+
+        private void CheckBoxShutdownAfter_OnClick(object sender, RoutedEventArgs e)
+        {
+            LogManager.GetCurrentClassLogger().Debug(CheckBoxShutdownAfter.IsChecked);
+            SettingsManager.GetInstance().SetShutdownAfterDownload(CheckBoxShutdownAfter.IsChecked);
+            new Thread(SettingsManager.GetInstance().ForceSave).Start();
         }
     }
 
