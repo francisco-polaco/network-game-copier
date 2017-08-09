@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -34,10 +35,29 @@ namespace NetworkGameCopier
                         Task toRun = _queue.Dequeue();
                         Monitor.Exit(_queue);
                         toRun.RunSynchronously();
+                        if (_queue.Count == 0)
+                        {
+                            // Work is over
+                            var shutdownAfterDownloads = SettingsManager.GetInstance().GetShutdownAfterDownloads();
+                            if (shutdownAfterDownloads != null && (bool) shutdownAfterDownloads)
+                            {
+                                ShutdownComputer();
+                            }
+                        }
                     }
                 }
             });
             _workerThread.Start();
+        }
+
+        private void ShutdownComputer()
+        {
+            var psi = new ProcessStartInfo("shutdown", "/s /t 0")
+            {
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+            Process.Start(psi);
         }
 
         public void QueueJob(GameProviderOperationsBase provider, string gameName, NetworkManager client,
