@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FubarDev.FtpServer.AuthTls</name>
+    </assembly>
+    <members>
+        <member name="T:FubarDev.FtpServer.AuthTls.AuthTlsCommandHandler">
+            <summary>
+            The <code>AUTH TLS</code> command handler
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.AuthTlsCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AuthTls.AuthTlsCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection this instance is used for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.AuthTls.AuthTlsCommandHandler.ServerCertificate">
+            <summary>
+            Gets or sets the server certificate
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.AuthTls.AuthTlsCommandHandler.IsLoginRequired">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.AuthTlsCommandHandler.GetSupportedFeatures">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.AuthTlsCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.AuthTls.FixedSslStream">
+            <summary>
+            Fixed SslStream that doesn't trigger the GnuTLS error -110.
+            </summary>
+            <remarks>
+            <para>Found here: <code>http://stackoverflow.com/questions/237807/net-sslstream-doesnt-close-tls-connection-properly</code></para>
+            <para>Author: <code>http://stackoverflow.com/users/1655991/neco</code></para>
+            </remarks>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.FixedSslStream.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AuthTls.FixedSslStream"/> class.
+            </summary>
+            <param name="innerStream">The inner stream</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.FixedSslStream.#ctor(System.IO.Stream,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AuthTls.FixedSslStream"/> class.
+            </summary>
+            <param name="innerStream">The inner stream</param>
+            <param name="leaveInnerStreamOpen">Leave the inner stream open after closing this stream?</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.FixedSslStream.#ctor(System.IO.Stream,System.Boolean,System.Net.Security.RemoteCertificateValidationCallback)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AuthTls.FixedSslStream"/> class.
+            </summary>
+            <param name="innerStream">The inner stream</param>
+            <param name="leaveInnerStreamOpen">Leave the inner stream open after closing this stream?</param>
+            <param name="userCertificateValidationCallback">The user certificate validation callback</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.FixedSslStream.#ctor(System.IO.Stream,System.Boolean,System.Net.Security.RemoteCertificateValidationCallback,System.Net.Security.LocalCertificateSelectionCallback)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AuthTls.FixedSslStream"/> class.
+            </summary>
+            <param name="innerStream">The inner stream</param>
+            <param name="leaveInnerStreamOpen">Leave the inner stream open after closing this stream?</param>
+            <param name="userCertificateValidationCallback">The user certificate validation callback</param>
+            <param name="userCertificateSelectionCallback">The user certificate selection callback</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.FixedSslStream.#ctor(System.IO.Stream,System.Boolean,System.Net.Security.RemoteCertificateValidationCallback,System.Net.Security.LocalCertificateSelectionCallback,System.Net.Security.EncryptionPolicy)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AuthTls.FixedSslStream"/> class.
+            </summary>
+            <param name="innerStream">The inner stream</param>
+            <param name="leaveInnerStreamOpen">Leave the inner stream open after closing this stream?</param>
+            <param name="userCertificateValidationCallback">The user certificate validation callback</param>
+            <param name="userCertificateSelectionCallback">The user certificate selection callback</param>
+            <param name="encryptionPolicy">The encryption policy</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.FixedSslStream.Close">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.AuthTls.ProtCommandHandler">
+            <summary>
+            The <code>PROT</code> command handler
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.ProtCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AuthTls.ProtCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.AuthTls.ProtCommandHandler.IsLoginRequired">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.ProtCommandHandler.GetSupportedFeatures">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.ProtCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.AuthTls.PbszCommandHandler">
+            <summary>
+            The <code>PBSZ</code> command handler
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.PbszCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AuthTls.PbszCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.AuthTls.PbszCommandHandler.IsLoginRequired">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.PbszCommandHandler.GetSupportedFeatures">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.AuthTls.PbszCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>

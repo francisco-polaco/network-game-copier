@@ -1,0 +1,2224 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FubarDev.FtpServer</name>
+    </assembly>
+    <members>
+        <member name="T:FubarDev.FtpServer.Address">
+            <summary>
+            Abstraction for an IP address
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.Address.#ctor(FubarDev.FtpServer.AddressFamily,System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.Address"/> class.
+            </summary>
+            <param name="addressFamily">The IP address family</param>
+            <param name="address">The IP address</param>
+            <param name="port">The port</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.Address.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.Address"/> class.
+            </summary>
+            <param name="address">IPv4 address</param>
+            <param name="port">The port</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.Address.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.Address"/> class.
+            </summary>
+            <param name="port">The port</param>
+            <remarks>
+            This constructor omits the address part.
+            </remarks>
+        </member>
+        <member name="P:FubarDev.FtpServer.Address.AddressFamily">
+            <summary>
+            Gets the IP address family
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.Address.IpAddress">
+            <summary>
+            Gets the IP address
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.Address.IpPort">
+            <summary>
+            Gets the port
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.Address.Parse(System.String)">
+            <summary>
+            Parses an IP address
+            </summary>
+            <param name="address">The IP address to parse</param>
+            <returns>The parsed IP address</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.Address.ToUri">
+            <summary>
+            Converts this address to an URI
+            </summary>
+            <returns>The newly created URI</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.Address.ToString(System.Boolean)">
+            <summary>
+            Converts the IP address into a string
+            </summary>
+            <param name="logFormat"><code>true</code> when it should be converted to a loggable format, otherwise the FTP format is used</param>
+            <returns>The IP address as string</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.Address.ToString">
+            <summary>
+            Converts the IP address to a string as required by the PASV command
+            </summary>
+            <returns>The IP address as string</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.AddressFamily">
+            <summary>
+            The IP address family
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.AddressFamily.IPv4">
+            <summary>
+            IPv4 address family
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.AddressFamily.IPv6">
+            <summary>
+            IPv6 address family
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.BackgroundCommandHandler">
+            <summary>
+            Asynchronous processing of an FTP command
+            </summary>
+            <remarks>
+            This allows the implementation of the <code>ABOR</code> command.
+            </remarks>
+        </member>
+        <member name="M:FubarDev.FtpServer.BackgroundCommandHandler.Execute(FubarDev.FtpServer.FtpCommandHandlerBase,FubarDev.FtpServer.FtpCommand)">
+            <summary>
+            Executes the FTP <paramref name="command"/> with the given FTP command <paramref name="handler"/>.
+            </summary>
+            <param name="handler">The command handler that processes the given <paramref name="command"/></param>
+            <param name="command">The command to process by the <paramref name="handler"/></param>
+            <returns><code>null</code> when the command could not be processed</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.BackgroundCommandHandler.Cancel">
+            <summary>
+            Cancels the processing of the current command
+            </summary>
+            <returns><code>true</code> when there was a command execution that could be cancelled</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.BackgroundCommandHandler.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandExtensions.SiteBlstCommandExtension">
+            <summary>
+            The implementation of the <code>SITE BLST</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandExtensions.SiteBlstCommandExtension.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandExtensions.SiteBlstCommandExtension"/> class.
+            </summary>
+            <param name="connection">The connection this instance is used for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandExtensions.SiteBlstCommandExtension.IsLoginRequired">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandExtensions.SiteBlstCommandExtension.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandExtensions.SiteUtimeCommandExtension">
+            <summary>
+            The implementation of the <code>SITE UTIME</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandExtensions.SiteUtimeCommandExtension.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandExtensions.SiteUtimeCommandExtension"/> class.
+            </summary>
+            <param name="connection">The connection this instance is used for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandExtensions.SiteUtimeCommandExtension.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandExtensions.FtpCommandHandlerExtension">
+            <summary>
+            The base class for FTP command extensions
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandExtensions.FtpCommandHandlerExtension.#ctor(FubarDev.FtpServer.FtpConnection,System.String,System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandExtensions.FtpCommandHandlerExtension"/> class.
+            </summary>
+            <param name="connection">The connection this instance is used for</param>
+            <param name="extensionFor">The name of the command this extension is for</param>
+            <param name="name">The command name</param>
+            <param name="alternativeNames">Alternative names</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandExtensions.FtpCommandHandlerExtension.IsLoginRequired">
+            <summary>
+            Gets or sets a value indicating whether a login is required to execute this command
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandExtensions.FtpCommandHandlerExtension.ExtensionFor">
+            <summary>
+            Gets a name of the command this extension is for.
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandExtensions.GenericFtpCommandHandlerExtension">
+            <summary>
+            A generic FTP command extension
+            </summary>
+            <remarks>
+            This class is only useful when FTP commands provide their own extensions (<see cref="M:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler.GetExtensions"/>)
+            </remarks>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandExtensions.GenericFtpCommandHandlerExtension.#ctor(FubarDev.FtpServer.FtpConnection,System.String,System.String,FubarDev.FtpServer.FtpCommandHandlerProcessDelegate,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandExtensions.GenericFtpCommandHandlerExtension"/> class.
+            </summary>
+            <param name="connection">The connection this instance is used for</param>
+            <param name="extensionFor">The name of the command this extension is for</param>
+            <param name="name">The command name</param>
+            <param name="processCommand">The function to process the received command with</param>
+            <param name="alternativeNames">Alternative names</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandExtensions.GenericFtpCommandHandlerExtension.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <summary>
+            Processes the command
+            </summary>
+            <param name="command">The command to process</param>
+            <param name="cancellationToken">The cancellation token to signal command abortion</param>
+            <returns>The FTP response</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.AborCommandHandler">
+            <summary>
+            Implements the <code>ABOR</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.AborCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.AborCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.AborCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.AlloCommandHandler">
+            <summary>
+            Implements the <code>ALLO</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.AlloCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.AlloCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.AlloCommandHandler.IsLoginRequired">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.AlloCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.CdUpCommandHandler">
+            <summary>
+            Implements the <code>CDUP</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.CdUpCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.CdUpCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.CdUpCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.MfctCommandHandler">
+            <summary>
+            Implements the <code>MFCT</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MfctCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.MfctCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MfctCommandHandler.GetSupportedFeatures">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MfctCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.MffCommandHandler">
+            <summary>
+            Implements the <code>MFF</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MffCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.MffCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MffCommandHandler.GetSupportedFeatures">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MffCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.MfmtCommandHandler">
+            <summary>
+            Implements the <code>MFMT</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MfmtCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.MfmtCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MfmtCommandHandler.GetSupportedFeatures">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MfmtCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.HelpCommandHandler">
+            <summary>
+            The <code>HELP</code> command handler
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.HelpCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.HelpCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.HelpCommandHandler.IsLoginRequired">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.HelpCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.IFtpCommandHandlerExtensionHost">
+            <summary>
+            Interface indicating that a command handler can act as an extension host.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.IFtpCommandHandlerExtensionHost.Extensions">
+            <summary>
+            Gets the extensions hosted by the <see cref="T:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler"/>
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.MlstCommandHandler">
+            <summary>
+            The implementation of the <code>MLST</code> command
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MlstCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.MlstCommandHandler"/> class.
+            </summary>
+            <param name="connection">The FTP connection this command handler is created for.</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MlstCommandHandler.GetSupportedFeatures">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MlstCommandHandler.GetExtensions">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MlstCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.RestCommandHandler">
+            <summary>
+            Implements the <code>REST</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.RestCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.RestCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.RestCommandHandler.GetSupportedFeatures">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.RestCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.RntoCommandHandler">
+            <summary>
+            Implements the <code>RNTO</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.RntoCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.RntoCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.RntoCommandHandler.IsAbortable">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.RntoCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.RnfrCommandHandler">
+            <summary>
+            Implements the <code>RNFR</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.RnfrCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.RnfrCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.RnfrCommandHandler.IsAbortable">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.RnfrCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.RetrCommandHandler">
+            <summary>
+            Implements the <code>RETR</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.RetrCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.RetrCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.RetrCommandHandler.IsAbortable">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.RetrCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.AppeCommandHandler">
+            <summary>
+            Implements the <code>APPE</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.AppeCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.AppeCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.AppeCommandHandler.IsAbortable">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.AppeCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.MdtmCommandHandler">
+            <summary>
+            Implements the <code>MDTM</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MdtmCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.MdtmCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MdtmCommandHandler.GetSupportedFeatures">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MdtmCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.SiteCommandHandler">
+            <summary>
+            The <code>SITE</code> command handler
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.SiteCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.SiteCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.SiteCommandHandler.Extensions">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.SiteCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.StatCommandHandler">
+            <summary>
+            The <code>STAT</code> command handler
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.StatCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.StatCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.StatCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.XrmdCommandHandler">
+            <summary>
+            Implements the <code>XRMD</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.XrmdCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.XrmdCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.XrmdCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.XmkdCommandHandler">
+            <summary>
+            Implements the <code>XMKD</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.XmkdCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.XmkdCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.XmkdCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.XcwdCommandHandler">
+            <summary>
+            Implements the <code>XCWD</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.XcwdCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.XcwdCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.XcwdCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.CwdCommandHandler">
+            <summary>
+            Implements the <code>CWD</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.CwdCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.CwdCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.CwdCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.FeatCommandHandler">
+            <summary>
+            Implements the <code>FEAT</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.FeatCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.FeatCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.FeatCommandHandler.IsLoginRequired">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.FeatCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.ListCommandHandler">
+            <summary>
+            Implements the <code>LIST</code> and <code>NLST</code> commands.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.ListCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.ListCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.ListCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.ListCommandHandler.DirectoryQueueItem">
+            <summary>
+            Directory to process during recursive directory listing
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.ListCommandHandler.DirectoryQueueItem.#ctor(System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry},System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.ListCommandHandler.DirectoryQueueItem"/> class.
+            </summary>
+            <param name="path">The path to list</param>
+            <param name="mask">The file mask to list</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.ListCommandHandler.DirectoryQueueItem.Path">
+            <summary>
+            Gets the path to list
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.ListCommandHandler.DirectoryQueueItem.Mask">
+            <summary>
+            Gets the file mask to list
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.ListCommandHandler.ListArguments">
+            <summary>
+            LIST command arguments
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.ListCommandHandler.ListArguments.All">
+            <summary>
+            Gets a value indicating whether <code>LIST</code> returns all entries (including <code>.</code> and <code>..</code>)
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.ListCommandHandler.ListArguments.Recursive">
+            <summary>
+            Gets a value indicating whether <code>LIST</code> returns all file system entries recursively
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.ListCommandHandler.ListArguments.Path">
+            <summary>
+            Gets the path argument (optionally with wildcard)
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.MkdCommandHandler">
+            <summary>
+            Implements the <code>MKD</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MkdCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.MkdCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.MkdCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.ModeCommandHandler">
+            <summary>
+            Implements the <code>MODE</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.ModeCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.ModeCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.ModeCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.NoOpCommandHandler">
+            <summary>
+            Implements the <code>NOOP</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.NoOpCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.NoOpCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.NoOpCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.OptsCommandHandler">
+            <summary>
+            Implements the <code>OPTS</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.OptsCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.OptsCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.OptsCommandHandler.Extensions">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.OptsCommandHandler.GetSupportedFeatures">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.OptsCommandHandler.GetExtensions">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.OptsCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.PassCommandHandler">
+            <summary>
+            Implements the <code>PASS</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.PassCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.PassCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.PassCommandHandler.IsLoginRequired">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.PassCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.PasvCommandHandler">
+            <summary>
+            The command handler for the <code>PASV</code> (4.1.2.) and <code>EPSV</code> commands
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.PasvCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.PasvCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection this command handler is created for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.PasvCommandHandler.GetSupportedFeatures">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.PasvCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.PortCommandHandler">
+            <summary>
+            Implements the <code>PORT</code> and <code>EPRT</code> commands.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.PortCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.PortCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.PortCommandHandler.GetSupportedFeatures">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.PortCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.PwdCommandHandler">
+            <summary>
+            Implements the <code>PWD</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.PwdCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.PwdCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.PwdCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.DeleCommandHandler">
+            <summary>
+            Implements the <code>DELE</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.DeleCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.DeleCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.DeleCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.QuitCommandHandler">
+            <summary>
+            Implements the <code>QUIT</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.QuitCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.QuitCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.QuitCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.RmdCommandHandler">
+            <summary>
+            Implements the <code>RMD</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.RmdCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.RmdCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.RmdCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.SizeCommandHandler">
+            <summary>
+            Implements the <code>SIZE</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.SizeCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.SizeCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.SizeCommandHandler.GetSupportedFeatures">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.SizeCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.StorCommandHandler">
+            <summary>
+            This class implements the STOR command (4.1.3.)
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.StorCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.StorCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection this command handler is created for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.StorCommandHandler.IsAbortable">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.StorCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.StruCommandHandler">
+            <summary>
+            Implements the <code>STRU</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.StruCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.StruCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.StruCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.SystCommandHandler">
+            <summary>
+            Implements the <code>SYST</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.SystCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.SystCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.SystCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.TypeCommandHandler">
+            <summary>
+            Implements the <code>TYPE</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.TypeCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.TypeCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.TypeCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.UserCommandHandler">
+            <summary>
+            Implements the <code>USER</code> command.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.UserCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.UserCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection to create this command handler for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.UserCommandHandler.IsLoginRequired">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.UserCommandHandler.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler">
+            <summary>
+            The base class for all FTP command handlers
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler.#ctor(FubarDev.FtpServer.FtpConnection,System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler"/> class.
+            </summary>
+            <param name="connection">The connection this instance is used for</param>
+            <param name="name">The command name</param>
+            <param name="alternativeNames">Alternative names</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler.IsLoginRequired">
+            <summary>
+            Gets a value indicating whether a login is required to execute this command
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler.IsAbortable">
+            <summary>
+            Gets a value indicating whether this command is abortable
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler.GetExtensions">
+            <summary>
+            Gets a collection of command handler extensions provided by this command handler.
+            </summary>
+            <returns>A collection of command handler extensions provided by this command handler</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.FtpCommandHandlerBase">
+            <summary>
+            The base class for all FTP command handlers
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpCommandHandlerBase.#ctor(FubarDev.FtpServer.FtpConnection,System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FtpCommandHandlerBase"/> class.
+            </summary>
+            <param name="connection">The connection this instance is used for</param>
+            <param name="name">The command name</param>
+            <param name="alternativeNames">Alternative names</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpCommandHandlerBase.Names">
+            <summary>
+            Gets a collection of all command names for this command
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpCommandHandlerBase.Connection">
+            <summary>
+            Gets the connection this command was created for
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpCommandHandlerBase.Server">
+            <summary>
+            Gets the server the command belongs to
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpCommandHandlerBase.Data">
+            <summary>
+            Gets the connection data
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpCommandHandlerBase.GetSupportedFeatures">
+            <summary>
+            Gets a collection of features supported by this command handler.
+            </summary>
+            <returns>A list of features supported by this command handler</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpCommandHandlerBase.Process(FubarDev.FtpServer.FtpCommand,System.Threading.CancellationToken)">
+            <summary>
+            Processes the command
+            </summary>
+            <param name="command">The command to process</param>
+            <param name="cancellationToken">The cancellation token to signal command abortion</param>
+            <returns>The FTP response</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.FtpCommandHandlerProcessDelegate">
+            <summary>
+            Processes the command
+            </summary>
+            <param name="command">The command to process</param>
+            <param name="cancellationToken">The cancellation token to signal command abortion</param>
+            <returns>The FTP response</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.ConnectionEventArgs">
+            <summary>
+            Event arguments for a connection event
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.ConnectionEventArgs.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.ConnectionEventArgs"/> class.
+            </summary>
+            <param name="connection">The connection of the event</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.ConnectionEventArgs.Connection">
+            <summary>
+            Gets the connection for this event
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.CreateEncryptedStreamDelegate">
+            <summary>
+            A delegate that's used to create an encrypted stream (<see cref="P:FubarDev.FtpServer.FtpConnectionData.CreateEncryptedStream"/>)
+            </summary>
+            <param name="unencryptedStream">The unencrypted stream</param>
+            <returns>The encrypted stream</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.AssemblyFtpCommandHandlerFactory">
+            <summary>
+            Searches assemblies for <see cref="T:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler"/> and <see cref="T:FubarDev.FtpServer.CommandExtensions.FtpCommandHandlerExtension"/> implementations
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.AssemblyFtpCommandHandlerFactory.#ctor(System.Reflection.Assembly,System.Reflection.Assembly[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AssemblyFtpCommandHandlerFactory"/> class.
+            </summary>
+            <param name="assembly">The assembly to search for <see cref="T:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler"/> and <see cref="T:FubarDev.FtpServer.CommandExtensions.FtpCommandHandlerExtension"/> implementations</param>
+            <param name="assemblies">The other assembly to search for the <see cref="T:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler"/> and <see cref="T:FubarDev.FtpServer.CommandExtensions.FtpCommandHandlerExtension"/> implementations</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.AssemblyFtpCommandHandlerFactory.CreateCommandHandlers(FubarDev.FtpServer.FtpConnection)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.AssemblyFtpCommandHandlerFactory.CreateCommandHandlerExtensions(FubarDev.FtpServer.FtpConnection)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.IFtpCommandHandlerFactory">
+            <summary>
+            A factory to create a command handler for a given connection
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpCommandHandlerFactory.CreateCommandHandlers(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Create all command handlers for the given <paramref name="connection"/>
+            </summary>
+            <param name="connection">The connection to create the command handlers for</param>
+            <returns>The new <see cref="T:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler"/>s</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpCommandHandlerFactory.CreateCommandHandlerExtensions(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Create all command handler extensions for the given <paramref name="connection"/>
+            </summary>
+            <param name="connection">The connection to create the command handler extensions for</param>
+            <returns>The new <see cref="T:FubarDev.FtpServer.CommandExtensions.FtpCommandHandlerExtension"/>s</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.FeatureHandlerDelgate">
+            <summary>
+            The delegate to handle feature options
+            </summary>
+            <param name="connection">The connection to handle the feature options for</param>
+            <param name="argument">The arguments for the feature option</param>
+            <returns>The response to be sent to the client</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.GenericFeatureInfo">
+            <summary>
+            Generic feature information
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.GenericFeatureInfo.#ctor(System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.GenericFeatureInfo"/> class.
+            </summary>
+            <param name="name">The feature name</param>
+            <param name="additionalNames">The additional feature names</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.GenericFeatureInfo.#ctor(System.String,System.Func{FubarDev.FtpServer.FtpConnection,System.String},System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.GenericFeatureInfo"/> class.
+            </summary>
+            <param name="name">The feature name</param>
+            <param name="toString">The function to use to create a <code>FEAT</code> string</param>
+            <param name="additionalNames">The additional feature names</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.GenericFeatureInfo.Names">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.GenericFeatureInfo.BuildInfo(FubarDev.FtpServer.FtpConnection)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.FtpCommandCollector">
+            <summary>
+            Collects FTP commands using the current <see cref="T:System.Text.Encoding"/>
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpCommandCollector.#ctor(System.Func{System.Text.Encoding})">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FtpCommandCollector"/> class.
+            </summary>
+            <param name="getActiveEncodingFunc">The delegate to get the current encoding for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpCommandCollector.Encoding">
+            <summary>
+            Gets the currently active <see cref="T:System.Text.Encoding"/>
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpCommandCollector.IsEmpty">
+            <summary>
+            Gets a value indicating whether this collector contains unused data
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpCommandCollector.Collect(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Collects the data from the <paramref name="buffer"/> and tries to build <see cref="T:FubarDev.FtpServer.FtpCommand"/> objects from it.
+            </summary>
+            <param name="buffer">The buffer to collect the data from</param>
+            <param name="offset">An offset into the buffer to collect the data from</param>
+            <param name="length">The length of the data to collect</param>
+            <returns>The found <see cref="T:FubarDev.FtpServer.FtpCommand"/>s</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpCommandCollector.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.FtpCommand">
+            <summary>
+            FTP command with argument
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpCommand.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FtpCommand"/> class.
+            </summary>
+            <param name="commandName">The command name</param>
+            <param name="commandArgument">The command argument</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpCommand.Name">
+            <summary>
+            Gets the command name
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpCommand.Argument">
+            <summary>
+            Gets the command argument
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpCommand.Parse(System.String)">
+            <summary>
+            Splits the <paramref name="command"/> into the name and its arguments.
+            </summary>
+            <param name="command">The command to split into name and arguments</param>
+            <returns>The created <see cref="T:FubarDev.FtpServer.FtpCommand"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpCommand.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.FtpFileType">
+            <summary>
+            FTP data type (3.1.1)
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.FtpFileType.Ascii">
+            <summary>
+            ASCII data type (3.1.1.1.)
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.FtpFileType.Ebcdic">
+            <summary>
+            EBCDIC data type (3.1.1.2.)
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.FtpFileType.Image">
+            <summary>
+            IMAGE data type (3.1.1.3.)
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.FtpFileType.Local">
+            <summary>
+            LOCAL data type (3.1.1.4.)
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.FtpFileTypeInterpreterMode">
+            <summary>
+            Format control (RFC 959 chapter 3.1.1.5)
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.FtpFileTypeInterpreterMode.NonPrint">
+            <summary>
+            Default format (3.1.1.5.1)
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.FtpFileTypeInterpreterMode.Telnet">
+            <summary>
+            Telnet format controls (3.1.1.5.2)
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.FtpFileTypeInterpreterMode.AsaCarriageControl">
+            <summary>
+            Carriage Control (ASA, 3.1.1.5.3)
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.FtpLogExtensions">
+            <summary>
+            Extension methods for logging <see cref="T:FubarDev.FtpServer.FtpCommand"/> and <see cref="T:FubarDev.FtpServer.FtpResponse"/> objects.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpLogExtensions.Trace(FubarDev.FtpServer.IFtpLog,FubarDev.FtpServer.FtpCommand)">
+            <summary>
+            Logs a trace message with the data of the <see cref="T:FubarDev.FtpServer.FtpCommand"/>
+            </summary>
+            <param name="log">The <see cref="T:FubarDev.FtpServer.IFtpLog"/> to use</param>
+            <param name="command">The <see cref="T:FubarDev.FtpServer.FtpCommand"/> to log</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpLogExtensions.Trace(FubarDev.FtpServer.IFtpLog,FubarDev.FtpServer.FtpResponse)">
+            <summary>
+            Logs a trace message with the data of the <see cref="T:FubarDev.FtpServer.FtpResponse"/>
+            </summary>
+            <param name="log">The <see cref="T:FubarDev.FtpServer.IFtpLog"/> to use</param>
+            <param name="response">The <see cref="T:FubarDev.FtpServer.FtpResponse"/> to log</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpLogExtensions.Debug(FubarDev.FtpServer.IFtpLog,FubarDev.FtpServer.FtpResponse)">
+            <summary>
+            Logs a debug message with the data of the <see cref="T:FubarDev.FtpServer.FtpResponse"/>
+            </summary>
+            <param name="log">The <see cref="T:FubarDev.FtpServer.IFtpLog"/> to use</param>
+            <param name="response">The <see cref="T:FubarDev.FtpServer.FtpResponse"/> to log</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpLogExtensions.Info(FubarDev.FtpServer.IFtpLog,FubarDev.FtpServer.FtpResponse)">
+            <summary>
+            Logs a info message with the data of the <see cref="T:FubarDev.FtpServer.FtpResponse"/>
+            </summary>
+            <param name="log">The <see cref="T:FubarDev.FtpServer.IFtpLog"/> to use</param>
+            <param name="response">The <see cref="T:FubarDev.FtpServer.FtpResponse"/> to log</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpLogExtensions.Warn(FubarDev.FtpServer.IFtpLog,FubarDev.FtpServer.FtpResponse)">
+            <summary>
+            Logs a warning message with the data of the <see cref="T:FubarDev.FtpServer.FtpResponse"/>
+            </summary>
+            <param name="log">The <see cref="T:FubarDev.FtpServer.IFtpLog"/> to use</param>
+            <param name="response">The <see cref="T:FubarDev.FtpServer.FtpResponse"/> to log</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpLogExtensions.Error(FubarDev.FtpServer.IFtpLog,FubarDev.FtpServer.FtpResponse)">
+            <summary>
+            Logs an error message with the data of the <see cref="T:FubarDev.FtpServer.FtpResponse"/>
+            </summary>
+            <param name="log">The <see cref="T:FubarDev.FtpServer.IFtpLog"/> to use</param>
+            <param name="response">The <see cref="T:FubarDev.FtpServer.FtpResponse"/> to log</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpLogExtensions.Log(FubarDev.FtpServer.IFtpLog,FubarDev.FtpServer.FtpResponse)">
+            <summary>
+            Logs a message with the data of the <see cref="T:FubarDev.FtpServer.FtpResponse"/>
+            </summary>
+            <param name="log">The <see cref="T:FubarDev.FtpServer.IFtpLog"/> to use</param>
+            <param name="response">The <see cref="T:FubarDev.FtpServer.FtpResponse"/> to log</param>
+            <remarks>
+            It logs either a trace, debug, or warning message depending on the
+            <see cref="P:FubarDev.FtpServer.FtpResponse.Code"/>.
+            </remarks>
+        </member>
+        <member name="T:FubarDev.FtpServer.FtpResponse">
+            <summary>
+            FTP response
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpResponse.#ctor(System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FtpResponse"/> class.
+            </summary>
+            <param name="code">The response code</param>
+            <param name="message">The response message</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpResponse.Code">
+            <summary>
+            Gets the response code
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpResponse.Message">
+            <summary>
+            Gets the response message
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpResponse.AfterWriteAction">
+            <summary>
+            Gets or sets the <see cref="T:System.Action"/> to execute after sending the response to the client.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpResponse.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.FtpConnection">
+            <summary>
+            This class represents a FTP connection
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpConnection.#ctor(FubarDev.FtpServer.FtpServer,Sockets.Plugin.Abstractions.ITcpSocketClient,System.Text.Encoding)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FtpConnection"/> class.
+            </summary>
+            <param name="server">The server this connection belongs to</param>
+            <param name="socket">The socket to use to communicate with the client</param>
+            <param name="encoding">The encoding to use for the LIST/NLST commands</param>
+        </member>
+        <member name="E:FubarDev.FtpServer.FtpConnection.Closed">
+            <summary>
+            Gets or sets the event handler that is triggered when the connection is closed.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnection.CommandHandlers">
+            <summary>
+            Gets the dictionary of all known command handlers
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnection.Server">
+            <summary>
+            Gets the server this connection belongs to
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnection.Encoding">
+            <summary>
+            Gets or sets the encoding for the LIST/NLST commands
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnection.Data">
+            <summary>
+            Gets the FTP connection data
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnection.Log">
+            <summary>
+            Gets or sets the FTP connection log
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnection.OriginalStream">
+            <summary>
+            Gets the control connection stream
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnection.SocketStream">
+            <summary>
+            Gets or sets the control connection stream
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnection.IsSecure">
+            <summary>
+            Gets a value indicating whether this is a secure connection
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnection.RemoteAddress">
+            <summary>
+            Gets the remote address of the client
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnection.CancellationToken">
+            <summary>
+            Gets the cancellation token to use to signal a task cancellation
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpConnection.Start">
+            <summary>
+            Starts processing of messages for this connection
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpConnection.Close">
+            <summary>
+            Closes the connection
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpConnection.WriteAsync(FubarDev.FtpServer.FtpResponse,System.Threading.CancellationToken)">
+            <summary>
+            Writes a FTP response to a client
+            </summary>
+            <param name="response">The response to write to the client</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The task</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpConnection.WriteAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Writes response to a client
+            </summary>
+            <param name="response">The response to write to the client</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The task</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpConnection.CreateResponseSocket">
+            <summary>
+            Creates a response socket for e.g. LIST/NLST
+            </summary>
+            <returns>The data connection</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpConnection.CreateEncryptedStream(System.IO.Stream)">
+            <summary>
+            Create an encrypted stream
+            </summary>
+            <param name="unencryptedStream">The stream to encrypt</param>
+            <returns>The encrypted stream</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpConnection.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpConnection.Write(FubarDev.FtpServer.FtpResponse)">
+            <summary>
+            Writes a FTP response to a client
+            </summary>
+            <param name="response">The response to write to the client</param>
+        </member>
+        <member name="T:FubarDev.FtpServer.FtpConnectionData">
+            <summary>
+            Common data for a <see cref="T:FubarDev.FtpServer.FtpConnection"/>
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpConnectionData.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FtpConnectionData"/> class.
+            </summary>
+            <param name="connection">The <see cref="T:FubarDev.FtpServer.FtpConnection"/> to create the data for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.User">
+            <summary>
+            Gets or sets the current user name
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.IsLoggedIn">
+            <summary>
+            Gets or sets a value indicating whether the user with the <see cref="P:FubarDev.FtpServer.FtpConnectionData.User"/>
+            is logged in.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.IsAnonymous">
+            <summary>
+            Gets or sets a value indicating whether the current user is anonymous.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.NlstEncoding">
+            <summary>
+            Gets or sets the <see cref="T:System.Text.Encoding"/> for the <code>NLST</code> command.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.FileSystem">
+            <summary>
+            Gets or sets the <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/> to use for the user.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.Path">
+            <summary>
+            Gets or sets the current path into the <see cref="P:FubarDev.FtpServer.FtpConnectionData.FileSystem"/>
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.CurrentDirectory">
+            <summary>
+            Gets the current <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/> of the current <see cref="P:FubarDev.FtpServer.FtpConnectionData.Path"/>
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.TransferMode">
+            <summary>
+            Gets or sets the <see cref="T:FubarDev.FtpServer.FtpTransferMode"/>
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.PortAddress">
+            <summary>
+            Gets or sets the address to use for an active data connection.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.PassiveSocketClient">
+            <summary>
+            Gets or sets the data connection for a passive data transfer
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.BackgroundCommandHandler">
+            <summary>
+            Gets the <see cref="P:FubarDev.FtpServer.FtpConnectionData.BackgroundCommandHandler"/> that's required for the <code>ABOR</code> command.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.TransferTypeCommandUsed">
+            <summary>
+            Gets or sets the last used transfer type command.
+            </summary>
+            <remarks>
+            It's not allowed to use PASV when PORT was used previously - and vice versa.
+            </remarks>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.RestartPosition">
+            <summary>
+            Gets or sets the restart position for appending data to a file.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.RenameFrom">
+            <summary>
+            Gets or sets the <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileEntry"/> to use for a <code>RNTO</code> operation.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.ActiveMlstFacts">
+            <summary>
+            Gets the active <see cref="T:FubarDev.FtpServer.ListFormatters.Facts.IFact"/> sent by <code>MLST</code> and <code>MLSD</code>
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.CreateEncryptedStream">
+            <summary>
+            Gets or sets a delegate that allows the creation of an encrypted stream.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpConnectionData.UserData">
+            <summary>
+            Gets or sets user data as <code>dynamic</code> object
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpConnectionData.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.FtpServer">
+            <summary>
+            The portable FTP server
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.FtpServer._stopLocker">
+            <summary>
+            Mutext for Stopped field.
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.FtpServer._stopped">
+            <summary>
+            Don't use this directly, use the Stopped property instead. It is protected by a mutex.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpServer.#ctor(FubarDev.FtpServer.FileSystem.IFileSystemClassFactory,FubarDev.FtpServer.AccountManagement.IMembershipProvider,Sockets.Plugin.Abstractions.ICommsInterface)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FtpServer"/> class.
+            </summary>
+            <param name="fileSystemClassFactory">The <see cref="T:FubarDev.FtpServer.FileSystem.IFileSystemClassFactory"/> to use to create the <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/> for the logged in user.</param>
+            <param name="membershipProvider">The <see cref="T:FubarDev.FtpServer.AccountManagement.IMembershipProvider"/> used to validate a login attempt</param>
+            <param name="commsInterface">The <see cref="T:Sockets.Plugin.Abstractions.ICommsInterface"/> that identifies the public IP address (required for <code>PASV</code> and <code>EPSV</code>)</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpServer.#ctor(FubarDev.FtpServer.FileSystem.IFileSystemClassFactory,FubarDev.FtpServer.AccountManagement.IMembershipProvider,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FtpServer"/> class.
+            </summary>
+            <param name="fileSystemClassFactory">The <see cref="T:FubarDev.FtpServer.FileSystem.IFileSystemClassFactory"/> to use to create the <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/> for the logged in user.</param>
+            <param name="membershipProvider">The <see cref="T:FubarDev.FtpServer.AccountManagement.IMembershipProvider"/> used to validate a login attempt</param>
+            <param name="serverAddress">The public IP address (required for <code>PASV</code> and <code>EPSV</code>)</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpServer.#ctor(FubarDev.FtpServer.FileSystem.IFileSystemClassFactory,FubarDev.FtpServer.AccountManagement.IMembershipProvider,Sockets.Plugin.Abstractions.ICommsInterface,System.Int32,FubarDev.FtpServer.IFtpCommandHandlerFactory)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FtpServer"/> class.
+            </summary>
+            <param name="fileSystemClassFactory">The <see cref="T:FubarDev.FtpServer.FileSystem.IFileSystemClassFactory"/> to use to create the <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/> for the logged in user.</param>
+            <param name="membershipProvider">The <see cref="T:FubarDev.FtpServer.AccountManagement.IMembershipProvider"/> used to validate a login attempt</param>
+            <param name="commsInterface">The <see cref="T:Sockets.Plugin.Abstractions.ICommsInterface"/> that identifies the public IP address (required for <code>PASV</code> and <code>EPSV</code>)</param>
+            <param name="port">The port of the FTP server (usually 21)</param>
+            <param name="handlerFactory">The handler factories to create <see cref="T:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler"/> and <see cref="T:FubarDev.FtpServer.CommandExtensions.FtpCommandHandlerExtension"/> instances for new <see cref="T:FubarDev.FtpServer.FtpConnection"/> objects</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpServer.#ctor(FubarDev.FtpServer.FileSystem.IFileSystemClassFactory,FubarDev.FtpServer.AccountManagement.IMembershipProvider,System.String,System.Int32,FubarDev.FtpServer.IFtpCommandHandlerFactory)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FtpServer"/> class.
+            </summary>
+            <param name="fileSystemClassFactory">The <see cref="T:FubarDev.FtpServer.FileSystem.IFileSystemClassFactory"/> to use to create the <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/> for the logged in user.</param>
+            <param name="membershipProvider">The <see cref="T:FubarDev.FtpServer.AccountManagement.IMembershipProvider"/> used to validate a login attempt</param>
+            <param name="serverAddress">The public IP address (required for <code>PASV</code> and <code>EPSV</code>)</param>
+            <param name="port">The port of the FTP server (usually 21)</param>
+            <param name="handlerFactory">The handler factories to create <see cref="T:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler"/> and <see cref="T:FubarDev.FtpServer.CommandExtensions.FtpCommandHandlerExtension"/> instances for new <see cref="T:FubarDev.FtpServer.FtpConnection"/> objects</param>
+        </member>
+        <member name="E:FubarDev.FtpServer.FtpServer.ConfigureConnection">
+            <summary>
+            This event is raised when the connection is ready to be configured
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpServer.OperatingSystem">
+            <summary>
+            Gets or sets the returned operating system (default: UNIX)
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpServer.Statistics">
+            <summary>
+            Gets the FTP server statistics
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpServer.CommandsHandlerFactory">
+            <summary>
+            Gets the list of <see cref="T:FubarDev.FtpServer.IFtpCommandHandlerFactory"/> implementations to
+            create <see cref="T:FubarDev.FtpServer.CommandHandlers.FtpCommandHandler"/> instances for new <see cref="T:FubarDev.FtpServer.FtpConnection"/> objects.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpServer.ServerAddress">
+            <summary>
+            Gets the public IP address (required for <code>PASV</code> and <code>EPSV</code>)
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpServer.Port">
+            <summary>
+            Gets the port on which the FTP server is listening for incoming connections
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpServer.DefaultEncoding">
+            <summary>
+            Gets or sets the default text encoding for textual data
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpServer.FileSystemClassFactory">
+            <summary>
+            Gets the <see cref="T:FubarDev.FtpServer.FileSystem.IFileSystemClassFactory"/> to use to create the <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/> for the logged-in user.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpServer.MembershipProvider">
+            <summary>
+            Gets the <see cref="T:FubarDev.FtpServer.AccountManagement.IMembershipProvider"/> used to validate a login attempt
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpServer.LogManager">
+            <summary>
+            Gets or sets the login manager used to create new <see cref="T:FubarDev.FtpServer.IFtpLog"/> objects.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpServer.Ready">
+            <summary>
+            Gets or sets a value indicating whether server ready to receive incoming connectoions
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpServer.Stopped">
+            <summary>
+            The Stopped property. Mutexed so it can be accessed concurrently by different threads.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpServer.Start">
+            <summary>
+            Starts the FTP server in the background
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpServer.Stop">
+            <summary>
+            Stops the FTP server
+            </summary>
+            <remarks>
+            The FTP server cannot be started again after it was stopped.
+            </remarks>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpServer.GetBackgroundTaskStates">
+            <summary>
+            Get the background transfer states for all active <see cref="T:FubarDev.FtpServer.FileSystem.IBackgroundTransfer"/> objects.
+            </summary>
+            <returns>The background transfer states for all active <see cref="T:FubarDev.FtpServer.FileSystem.IBackgroundTransfer"/> objects</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpServer.EnqueueBackgroundTransfer(FubarDev.FtpServer.FileSystem.IBackgroundTransfer,FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Enqueue a new <see cref="T:FubarDev.FtpServer.FileSystem.IBackgroundTransfer"/> for the given <paramref name="connection"/>
+            </summary>
+            <param name="backgroundTransfer">The background transfer to enqueue</param>
+            <param name="connection">The connection to enqueue the background transfer for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpServer.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.FtpServerStatistics">
+            <summary>
+            Statistics about the FTP server
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpServerStatistics.TotalConnections">
+            <summary>
+            Gets the total number of connections
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpServerStatistics.ActiveConnections">
+            <summary>
+            Gets the currently active number of connections
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.FtpTransferMode">
+            <summary>
+            FTP transfer mode (RFC 959, 3.4.)
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpTransferMode.#ctor(FubarDev.FtpServer.FtpFileType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FtpTransferMode"/> class.
+            </summary>
+            <param name="fileType">The file data type of this transfer mode</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpTransferMode.FileType">
+            <summary>
+            Gets the file data type
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpTransferMode.InterpreterMode">
+            <summary>
+            Gets the interpreter mode
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpTransferMode.Bits">
+            <summary>
+            Gets the bits of a binary transfer mode
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FtpTransferMode.IsBinary">
+            <summary>
+            Gets a value indicating whether the transfer mode is binary.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpTransferMode.Parse(System.String)">
+            <summary>
+            Parses a transfer mode
+            </summary>
+            <param name="type">The transfer mode to parse</param>
+            <returns>The new <see cref="T:FubarDev.FtpServer.FtpTransferMode"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FtpTransferMode.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.IFeatureInfo">
+            <summary>
+            Defines a feature and its handler.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.IFeatureInfo.Names">
+            <summary>
+            Gets the name of the feature
+            </summary>
+            <remarks>
+            Used by the <code>OPTS</code> command to find the handler of the feature to modify.
+            </remarks>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFeatureInfo.BuildInfo(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Build an informational string to be sent by the <code>FEAT</code> command
+            </summary>
+            <param name="connection">The configured connection</param>
+            <returns>the informational string to be sent by the <code>FEAT</code> command</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.IFtpLog">
+            <summary>
+            A logging interface
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLog.Trace(System.String,System.Object[])">
+            <summary>
+            Writes a trace log entry
+            </summary>
+            <param name="format">The message format</param>
+            <param name="args">The message format arguments</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLog.Trace(System.Exception,System.String,System.Object[])">
+            <summary>
+            Writes a trace log entry with exception information
+            </summary>
+            <param name="ex">The exception information to log</param>
+            <param name="format">The message format</param>
+            <param name="args">The message format arguments</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLog.Debug(System.String,System.Object[])">
+            <summary>
+            Writes a debug log entry
+            </summary>
+            <param name="format">The message format</param>
+            <param name="args">The message format arguments</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLog.Debug(System.Exception,System.String,System.Object[])">
+            <summary>
+            Writes a debug log entry with exception information
+            </summary>
+            <param name="ex">The exception information to log</param>
+            <param name="format">The message format</param>
+            <param name="args">The message format arguments</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLog.Info(System.String,System.Object[])">
+            <summary>
+            Writes an info log entry
+            </summary>
+            <param name="format">The message format</param>
+            <param name="args">The message format arguments</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLog.Info(System.Exception,System.String,System.Object[])">
+            <summary>
+            Writes an info log entry with exception information
+            </summary>
+            <param name="ex">The exception information to log</param>
+            <param name="format">The message format</param>
+            <param name="args">The message format arguments</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLog.Warn(System.String,System.Object[])">
+            <summary>
+            Writes a warning log entry
+            </summary>
+            <param name="format">The message format</param>
+            <param name="args">The message format arguments</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLog.Warn(System.Exception,System.String,System.Object[])">
+            <summary>
+            Writes a warning log entry with exception information
+            </summary>
+            <param name="ex">The exception information to log</param>
+            <param name="format">The message format</param>
+            <param name="args">The message format arguments</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLog.Error(System.String,System.Object[])">
+            <summary>
+            Writes an error log entry
+            </summary>
+            <param name="format">The message format</param>
+            <param name="args">The message format arguments</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLog.Error(System.Exception,System.String,System.Object[])">
+            <summary>
+            Writes an error log entry with exception information
+            </summary>
+            <param name="ex">The exception information to log</param>
+            <param name="format">The message format</param>
+            <param name="args">The message format arguments</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLog.Fatal(System.String,System.Object[])">
+            <summary>
+            Writes a fatal log entry
+            </summary>
+            <param name="format">The message format</param>
+            <param name="args">The message format arguments</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLog.Fatal(System.Exception,System.String,System.Object[])">
+            <summary>
+            Writes a fatal log entry with exception information
+            </summary>
+            <param name="ex">The exception information to log</param>
+            <param name="format">The message format</param>
+            <param name="args">The message format arguments</param>
+        </member>
+        <member name="T:FubarDev.FtpServer.IFtpLogManager">
+            <summary>
+            A log manager which is used to create a logger
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLogManager.CreateLog(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Creates a logger for FTP connection logging
+            </summary>
+            <param name="connection">The connection to create the logger for</param>
+            <returns>The new logger</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLogManager.CreateLog(System.String)">
+            <summary>
+            Creates a logger using a name
+            </summary>
+            <param name="name">The name to create the logger for</param>
+            <returns>The new logger</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.IFtpLogManager.CreateLog(System.Type)">
+            <summary>
+            Creates a logger for a type
+            </summary>
+            <param name="type">The type to create the logger for</param>
+            <returns>The new logger</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.IListFormatter">
+            <summary>
+            Interface that provides the text to output for the <code>LIST</code> and <code>NLST</code> commands
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.IListFormatter.Format(FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry,System.String)">
+            <summary>
+            Gets the output line to write for the given <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/>
+            </summary>
+            <param name="entry">The entry to create the output line for</param>
+            <param name="entryName">The name of the entry (can be null if the original entry name should be used)</param>
+            <returns>The text to write to the client</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.ListFormatters.FactsListFormatter">
+            <summary>
+            A formatter for the <code>MLST</code> command
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.FactsListFormatter.#ctor(FubarDev.FtpServer.AccountManagement.FtpUser,FubarDev.FtpServer.Utilities.DirectoryListingEnumerator,System.Collections.Generic.ISet{System.String},System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.ListFormatters.FactsListFormatter"/> class.
+            </summary>
+            <param name="user">The user to create this formatter for</param>
+            <param name="enumerator">The enumerator for the directory listing to format</param>
+            <param name="activeFacts">The active facts to return for the entries</param>
+            <param name="absoluteName">Returns an absolute entry name</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.FactsListFormatter.Format(FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.ListFormatters.Facts.CurrentDirectoryFact">
+            <summary>
+            The <code>cdir</code> fact
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.Facts.CurrentDirectoryFact.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.ListFormatters.Facts.CurrentDirectoryFact"/> class.
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.ListFormatters.Facts.GenericFact">
+            <summary>
+            A generic fact to be used when no predefined exists
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.Facts.GenericFact.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.ListFormatters.Facts.GenericFact"/> class.
+            </summary>
+            <param name="name">The fact name</param>
+            <param name="value">The fact value</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.GenericFact.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.GenericFact.Value">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.ListFormatters.Facts.IFact">
+            <summary>
+            The basic interface for a fact (<code>MLST</code>)
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.IFact.Name">
+            <summary>
+            Gets the name of the fact
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.IFact.Value">
+            <summary>
+            Gets the value of the fact
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.ListFormatters.Facts.CreateFact">
+            <summary>
+            The <code>create</code> fact
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.Facts.CreateFact.#ctor(System.DateTimeOffset)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.ListFormatters.Facts.CreateFact"/> class.
+            </summary>
+            <param name="timestamp">The creation timestamp</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.CreateFact.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.CreateFact.Timestamp">
+            <summary>
+            Gets the creation time stamp
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.CreateFact.Value">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.ListFormatters.Facts.ModifyFact">
+            <summary>
+            The <code>modify</code> fact
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.Facts.ModifyFact.#ctor(System.DateTimeOffset)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.ListFormatters.Facts.ModifyFact"/> class.
+            </summary>
+            <param name="timestamp">The modification time stamp</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.ModifyFact.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.ModifyFact.Timestamp">
+            <summary>
+            Gets the modification time stamp
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.ModifyFact.Value">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.ListFormatters.Facts.ParentDirectoryFact">
+            <summary>
+            The <code>pdir</code> fact
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.Facts.ParentDirectoryFact.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.ListFormatters.Facts.ParentDirectoryFact"/> class.
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.ListFormatters.Facts.PermissionsFact">
+            <summary>
+            The <code>perm</code> fact
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.Facts.PermissionsFact.#ctor(FubarDev.FtpServer.AccountManagement.FtpUser,FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,FubarDev.FtpServer.FileSystem.IUnixFileEntry)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.ListFormatters.Facts.PermissionsFact"/> class.
+            </summary>
+            <param name="user">The current user</param>
+            <param name="dir">The current directory</param>
+            <param name="entry">The file to create the permissions for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.Facts.PermissionsFact.#ctor(FubarDev.FtpServer.AccountManagement.FtpUser,FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.ListFormatters.Facts.PermissionsFact"/> class.
+            </summary>
+            <param name="user">The current user</param>
+            <param name="dir">The current directory</param>
+            <param name="entry">The directory entry to get the permissions for</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.PermissionsFact.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.PermissionsFact.Value">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.ListFormatters.Facts.SizeFact">
+            <summary>
+            The <code>size</code> fact
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.Facts.SizeFact.#ctor(System.Int64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.ListFormatters.Facts.SizeFact"/> class.
+            </summary>
+            <param name="size">The file system entry size</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.SizeFact.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.SizeFact.Value">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.ListFormatters.Facts.TypeFact">
+            <summary>
+            The <code>type</code> fact
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.Facts.TypeFact.#ctor(FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.ListFormatters.Facts.TypeFact"/> class.
+            </summary>
+            <param name="entry">The file system entry to get the <code>type</code> fact for</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.Facts.TypeFact.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.ListFormatters.Facts.TypeFact"/> class.
+            </summary>
+            <param name="type">The value of this fact (usually <code>file</code> or <code>dir</code>)</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.TypeFact.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.ListFormatters.Facts.TypeFact.Value">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.ListFormatters.LongListFormatter">
+            <summary>
+            The <see cref="T:FubarDev.FtpServer.IListFormatter"/> for the long directory listing format
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.LongListFormatter.Format(FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.ListFormatters.ShortListFormatter">
+            <summary>
+            The <see cref="T:FubarDev.FtpServer.IListFormatter"/> for the short directory listing format (name only)
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.ListFormatters.ShortListFormatter.Format(FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.Log.MergeLog">
+            <summary>
+            WriteAsync an FTP log entry to multiple <see cref="T:FubarDev.FtpServer.IFtpLog"/> implementations
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.MergeLog.#ctor(FubarDev.FtpServer.IFtpLog,FubarDev.FtpServer.IFtpLog[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.Log.MergeLog"/> class.
+            </summary>
+            <param name="log">The log to write the log messages to</param>
+            <param name="logs">The additional logs to write the log messages to</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.MergeLog.Trace(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.MergeLog.Trace(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.MergeLog.Debug(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.MergeLog.Debug(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.MergeLog.Info(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.MergeLog.Info(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.MergeLog.Warn(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.MergeLog.Warn(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.MergeLog.Error(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.MergeLog.Error(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.MergeLog.Fatal(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.MergeLog.Fatal(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.Log.TraceLog">
+            <summary>
+            Writes the log entries using the <see cref="T:System.Diagnostics.Debug"/> class.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.TraceLog.#ctor(FubarDev.FtpServer.FtpConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.Log.TraceLog"/> class.
+            </summary>
+            <param name="connection">The connection for this log</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.TraceLog.Trace(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.TraceLog.Trace(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.TraceLog.Debug(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.TraceLog.Debug(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.TraceLog.Info(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.TraceLog.Info(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.TraceLog.Warn(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.TraceLog.Warn(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.TraceLog.Error(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.TraceLog.Error(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.TraceLog.Fatal(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.Log.TraceLog.Fatal(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.PermissionsExtensions">
+            <summary>
+            Extension methods for <see cref="T:FubarDev.FtpServer.FileSystem.IUnixPermissions"/>
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.PermissionsExtensions.GetAccessModeFor(FubarDev.FtpServer.FileSystem.IUnixPermissions,FubarDev.FtpServer.FileSystem.IUnixOwner,FubarDev.FtpServer.AccountManagement.FtpUser)">
+            <summary>
+            Gets the effective access mode for an <paramref name="entity"/> for the given <paramref name="user"/>
+            </summary>
+            <param name="permissions">The permissions used to build the access mode</param>
+            <param name="entity">The entity owner information</param>
+            <param name="user">The FTP user to determine the access mode for</param>
+            <returns>The effective access mode for the <paramref name="user"/></returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.StringExtensions">
+            <summary>
+            Extension methods for <see cref="T:System.String"/>
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.StringExtensions.TryParseTimestamp(System.String,System.String,System.DateTimeOffset@)">
+            <summary>
+            Try to parse a timestamp from the parameter <paramref name="timestamp"/>.
+            </summary>
+            <param name="timestamp">The time stamp to parse</param>
+            <param name="timezone">The time zone of the timestamp (must always be <code>UTC</code>)</param>
+            <param name="result">The parsed timestamp</param>
+            <returns><code>true</code> when timestamp and timezone were valid.</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.TelnetInputParser`1">
+            <summary>
+            Filters the TELNET commands usually sent before an ABOR command
+            </summary>
+            <typeparam name="T">The return type of a <see cref="M:FubarDev.FtpServer.TelnetInputParser`1.Collect(System.Byte[],System.Int32,System.Int32)"/> operation</typeparam>
+        </member>
+        <member name="M:FubarDev.FtpServer.TelnetInputParser`1.Collect(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Collects data and handles the <code>Synch</code> and <code>Interrupt Process</code> TELNET commands.
+            </summary>
+            <param name="data">The data buffer</param>
+            <param name="offset">The offset into the data buffer</param>
+            <param name="length">The length of the data to read from the data buffer</param>
+            <returns>The list of items found inside the collected data</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.TelnetInputParser`1.DataReceived(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Collects all non-TELNET data.
+            </summary>
+            <param name="data">The data buffer</param>
+            <param name="offset">The offset into the data buffer</param>
+            <param name="length">The length of the data to be collected</param>
+            <returns>The collected items</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.TelnetInputParser`1.Synch">
+            <summary>
+            Handles the <code>Synch</code> command
+            </summary>
+            <returns>The collected items</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.TelnetInputParser`1.InterruptProcess">
+            <summary>
+            Handles the <code>Interrupt Process</code> command
+            </summary>
+            <returns>The collected items</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.Utilities.ConcurrentHashSet`1.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.Utilities.DirectoryListingEnumerator">
+            <summary>
+            Helps to enumerate a directory with virtual <code>.</code> and <code>..</code> entries
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.Utilities.DirectoryListingEnumerator.#ctor(System.Collections.Generic.IEnumerable{FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry},FubarDev.FtpServer.FileSystem.IUnixFileSystem,System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry},System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.Utilities.DirectoryListingEnumerator"/> class.
+            </summary>
+            <param name="entries">The file system entries to enumerate</param>
+            <param name="fileSystem">The file system of the file system entries</param>
+            <param name="pathEntries">The path entries of the current directory</param>
+            <param name="returnDotEntries"><code>true</code> when this enumerator should return the dot entries</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.Utilities.DirectoryListingEnumerator.CurrentDirectory">
+            <summary>
+            Gets the current directory
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.Utilities.DirectoryListingEnumerator.ParentDirectory">
+            <summary>
+            Gets the parent directory
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.Utilities.DirectoryListingEnumerator.GrandParentDirectory">
+            <summary>
+            Gets the grand parent directory
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.Utilities.DirectoryListingEnumerator.Name">
+            <summary>
+            Gets the name of the entry which might be different from the original entries name.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.Utilities.DirectoryListingEnumerator.Entry">
+            <summary>
+            Gets the file system entry
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.Utilities.DirectoryListingEnumerator.IsDotEntry">
+            <summary>
+            Gets a value indicating whether the current entry is either the <code>.</code> or <code>..</code> entry.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.Utilities.DirectoryListingEnumerator.MoveNext">
+            <summary>
+            Called to enumerate the next directory listing entry.
+            </summary>
+            <returns><code>true</code> when there is a value for <see cref="P:FubarDev.FtpServer.Utilities.DirectoryListingEnumerator.Entry"/> and <see cref="P:FubarDev.FtpServer.Utilities.DirectoryListingEnumerator.Name"/></returns>
+        </member>
+    </members>
+</doc>

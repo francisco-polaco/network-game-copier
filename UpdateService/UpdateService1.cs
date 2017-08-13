@@ -36,7 +36,8 @@ namespace UpdateService
                         .Replace("\"", "")
                         .Replace("}", "")
                         .Replace("]", "");
-                    if (VersionIsUpdatable(downloadUrl))
+                    ulong newVersion;
+                    if (VersionIsUpdatable(downloadUrl, out newVersion))
                     {
                         var dirName = Path.Combine(Path.GetTempPath(), "NetworkGameCopier_update");
                         var updateDir = new DirectoryInfo(dirName);
@@ -52,6 +53,10 @@ namespace UpdateService
                         {
                             zip.ExtractAll(ReadExecutionLocation(), ExtractExistingFileAction.OverwriteSilently);
                         }
+                        using (var streamWriter = new StreamWriter(Path.Combine(ReadExecutionLocation(), "version.dat")))
+                        {
+                            streamWriter.Write(newVersion.ToString());
+                        }
                         // Cleaning up the trash
                         updateDir.Delete(true);
                     }
@@ -61,17 +66,17 @@ namespace UpdateService
             Stop();
         }
 
-        private bool VersionIsUpdatable(string downloadUrl)
+        private bool VersionIsUpdatable(string downloadUrl, out ulong mostRecentVersion)
         {
             StreamReader sr = new StreamReader(
                 Path.Combine(ReadExecutionLocation(), "version.dat"));
-            UInt64 version = UInt64.Parse(sr.ReadToEnd());
+            ulong version = UInt64.Parse(sr.ReadToEnd());
             // get downloaded version
-            UInt64 downloadVersion = 
+            mostRecentVersion = 
                 ulong.Parse(downloadUrl.Substring(downloadUrl.IndexOf("2", downloadUrl.Length - 1 - 15))
                 .Replace(".zip", ""));
-            Console.WriteLine("Version: " + version + " VS " + downloadVersion);
-            return version < downloadVersion;
+            Console.WriteLine("Version: " + version + " VS " + mostRecentVersion);
+            return version < mostRecentVersion;
         }
 
         private string ReadExecutionLocation()

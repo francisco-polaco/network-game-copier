@@ -53,22 +53,6 @@ namespace NetworkGameCopier
             service.Start();
         }
 
-        // This function is outdated, it will be deleted as soon as it has 0 value.
-        public void RegisterUpdateService()
-        {
-            Process process = new Process();
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.FileName = "cmd.exe";
-            #if DEBUG
-                startInfo.Arguments = @"/C ..\..\..\UpdateService\bin\Debug\UpdateService.exe -install";
-            #else
-                startInfo.Arguments = "/C UpdateService.exe -install";
-            #endif
-            process.StartInfo = startInfo;
-            process.Start();
-        }
-
 
         private void Init()
         {

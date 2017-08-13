@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -44,8 +45,8 @@ namespace NetworkGameCopier
                 // Fresh start!
                 LogManager.GetCurrentClassLogger().Info("Fresh start! " + e.Message);
                 LoadDefaultValues();
+                RegisterUpdateService();
                 RegistryManager.WriteExecutionLocation();
-                //MainWindow.RegisterUpdateService();
                 new Thread(ForceSave).Start();
                 new Thread(() =>
                 {
@@ -146,7 +147,20 @@ namespace NetworkGameCopier
             _isIoNeeded = false;
         }
 
-       
+        private void RegisterUpdateService()
+        {
+            #if DEBUG
+                return;
+            #endif
+            Process process = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.FileName = "cmd.exe";
+            startInfo.Arguments = "/C InstallService.bat";
+            process.StartInfo = startInfo;
+            process.Start();
+        }
+
     }
 
 

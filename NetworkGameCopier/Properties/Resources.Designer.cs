@@ -89,7 +89,7 @@ namespace NetworkGameCopier.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 20170808.
+        ///   Looks up a localized string similar to 20170813.
         /// </summary>
         public static string VersionNumber {
             get {

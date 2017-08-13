@@ -52,7 +52,7 @@ namespace NetworkGameCopier
 
         private void ShutdownComputer()
         {
-            var psi = new ProcessStartInfo("shutdown", "/s /t 0")
+            var psi = new ProcessStartInfo("shutdown", "/s /t 60")
             {
                 CreateNoWindow = true,
                 UseShellExecute = false

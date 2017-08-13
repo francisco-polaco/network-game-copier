@@ -128,7 +128,7 @@
     <value>5</value>
   </data>
   <data name="VersionNumber" xml:space="preserve">
-    <value>20170808</value>
+    <value>20170813</value>
     <comment>Version Number. Increase to indicate an update.</comment>
   </data>
 </root>
