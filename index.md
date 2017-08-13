@@ -10,6 +10,7 @@ It has a cute but far from perfect GUI that allows users to list the Steam and B
 * Integrity verification of updates;
 * Resume aborted downloads;
 * Deletion of explicit stopped downloads.
+
 ### Security
 Every message are susceptible to attacks and are in plain text. Since this tool will be used in a supposed friendly LAN and it will be used to copy games, introduce SFTP or SSL will bring an overhead that we do not need.
 ### Support
