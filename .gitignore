@@ -290,3 +290,4 @@ __pycache__/
 #Releases
 !Releases/
 *.lnk
+/Releases/NIGHTLY-20170807

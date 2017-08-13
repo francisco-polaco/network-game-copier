@@ -55,7 +55,7 @@ namespace UpdateService
                         }
                         using (var streamWriter = new StreamWriter(Path.Combine(ReadExecutionLocation(), "version.dat")))
                         {
-                            streamWriter.Write(newVersion.ToString());
+                            streamWriter.Write(newVersion);
                         }
                         // Cleaning up the trash
                         updateDir.Delete(true);

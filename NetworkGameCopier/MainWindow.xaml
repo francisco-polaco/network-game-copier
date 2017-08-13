@@ -188,7 +188,7 @@
                                    Margin="-37,471,564.6,9.8" Grid.Row="1">Idle</TextBlock>
                         <ProgressBar x:Name="ProgressBar" Opacity="100" 
                                      Orientation="Horizontal" Value="0" 
-                                     Margin="70,470,70,11.8" Height="Auto" 
+                                     Margin="70,470,69.6,11.8" Height="Auto" 
                                      Grid.Row="1" />
                         <TextBlock x:Name="Percentage" Opacity="100" 
                                    TextAlignment="Right" Margin="573,470,9.6,-1.2" 

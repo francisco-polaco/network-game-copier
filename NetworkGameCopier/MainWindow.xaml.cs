@@ -48,9 +48,17 @@ namespace NetworkGameCopier
 
         private void LaunchUpdater()
         {
-                                                           // "Network Game Copier Updater"
-            ServiceController service = new ServiceController("Network Game Copier Updater");
-            service.Start();
+            try
+            {
+                ServiceController service = new ServiceController("Network Game Copier Updater");
+                service.Start();
+            }
+            catch(Exception e)
+            {
+                // ignored
+                // What should I do here? Warn the user about the updater service?
+                LogManager.GetCurrentClassLogger().Error("Updater service: " + e.Message);
+            }
         }
 
 
