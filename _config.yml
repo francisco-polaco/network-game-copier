@@ -1,2 +1,11 @@
 theme: jekyll-theme-cayman
+plugins:
+  - jekyll-seo-tag
 title: Network Game Copier
+description: A website dedicated to show NGC to the world.
+social:
+  name: Francisco Santos
+  links: 
+  - https://www.facebook.com/f.polac0
+  - https://www.linkedin.com/in/francisco-santos-bb6054115/
+  - https://github.com/francisco-polaco
