@@ -2,7 +2,7 @@ theme: jekyll-theme-cayman
 plugins:
   - jekyll-seo-tag
 title: Network Game Copier
-description: A website dedicated to show NGC to the world.
+description: A tool that allows users to copy their games over the local network.
 social:
   name: Francisco Santos
   links: 
