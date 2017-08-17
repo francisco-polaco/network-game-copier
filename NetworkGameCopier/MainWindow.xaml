@@ -122,7 +122,7 @@
                             CommandParameter="{x:Static Dock.Left}">
                                 Steam
                             </Button>
-                            
+
                         </StackPanel>
                     </materialDesign:DrawerHost.LeftDrawerContent>
 
@@ -161,10 +161,10 @@
 
                         <ComboBox x:Name="ComputerComboBox" IsEnabled="False" materialDesign:HintAssist.Hint="Computers"
                           SelectionChanged="ComputerComboBox_OnSelectionChanged"
-                          Height="40" Margin="364,75,94.6,389.8" Grid.Row="1">
+                          Height="40" Margin="398,75,60.6,389.8" Grid.Row="1">
                         </ComboBox>
                         <Button x:Name="RefreshButton" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                        Margin="544,70,0,389.8" HorizontalAlignment="Left"
+                        Margin="578,70,0,389.8" HorizontalAlignment="Left"
                         ToolTip="MaterialDesignFloatingActionMiniButton" RenderTransformOrigin="6.884,-3.003" Click="Refresh_Button_Click" Height="Auto" Width="45"
                         Grid.Row="0" Grid.RowSpan="2">
                             <materialDesign:PackIcon Kind="Refresh" Height="24" Width="24" RenderTransformOrigin="13.97,-5.296" />
