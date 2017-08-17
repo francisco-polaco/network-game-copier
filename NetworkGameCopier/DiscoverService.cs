@@ -42,8 +42,16 @@ namespace NetworkGameCopier
             byte[] bytes = _udpListener.EndReceive(ar, ref ip);
             string message = Encoding.ASCII.GetString(bytes);
             LogManager.GetCurrentClassLogger().Info("From {0} received: {1} ", ip.Address, message);
-            // To prevent to add ourselves to the list, uncomment below.
-            // if (Dns.GetHostEntry(ip.Address).HostName.Equals(Dns.GetHostName() + ".lan")) return;
+            
+            // To prevent to add ourselves to the list, in release flavour.
+            bool isItMe = Dns.GetHostEntry(ip.Address).HostName.Equals(Dns.GetHostName() + ".lan");
+            
+            #if DEBUG
+                isItMe = false;
+            #endif
+
+            if (isItMe) return;
+
             if (message.Equals(Message))
             {
                 LogManager.GetCurrentClassLogger().Info("Request from discover service received.");

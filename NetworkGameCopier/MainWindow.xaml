@@ -170,10 +170,13 @@
                             <materialDesign:PackIcon Kind="Refresh" Height="24" Width="24" RenderTransformOrigin="13.97,-5.296" />
                         </Button>
 
-                        <ListView x:Name="GamesList" ItemsSource="{Binding games_list}" Margin="10,128,9.6,56.8" SelectionChanged="GamesList_SelectionChanged" Grid.Row="1" >
+                        <ListView x:Name="GamesList" 
+                                  ItemsSource="{Binding games_list}" 
+                                  Margin="10,128,9.6,56.8" 
+                                  SelectionChanged="GamesList_SelectionChanged" Grid.Row="1" >
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="400" />
                                     <GridViewColumn DisplayMemberBinding="{Binding Size}" Header="Size (MB)" />
                                 </GridView>
                             </ListView.View>
