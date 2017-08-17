@@ -176,6 +176,15 @@
                                   SelectionChanged="GamesList_SelectionChanged" Grid.Row="1" >
                             <ListView.View>
                                 <GridView>
+                                    <GridViewColumn>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox 
+                                                          IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}, 
+                                                    Path=IsSelected}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
                                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="400" />
                                     <GridViewColumn DisplayMemberBinding="{Binding Size}" Header="Size (MB)" />
                                 </GridView>
@@ -196,6 +205,11 @@
                         <TextBlock x:Name="Percentage" Opacity="100" 
                                    TextAlignment="Right" Margin="552,462,30.6,15.8" 
                                    Grid.Row="1">100.0%</TextBlock>
+                        <Button Grid.Row="0" Style="{StaticResource MaterialDesignRaisedButton}"
+                        x:Name="ButtonGo"
+                        IsDefault="True"
+                        Margin="10,83,479.6,389.8" Grid.RowSpan="2" Content="GO!"
+                                Click="ButtonGo_OnClick"/>
                     </Grid>
                 </materialDesign:DrawerHost>
             </StackPanel>

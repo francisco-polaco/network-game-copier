@@ -118,6 +118,7 @@ namespace NetworkGameCopier
             //logger.Fatal("fatal log message");
         }
 
+        private List<NameSizePair> _checkedGamesList = new List<NameSizePair>();
         private void GamesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -129,16 +130,37 @@ namespace NetworkGameCopier
                 // Avoid crashing after selecting a game and changing provider
                 return;
             }
-            NameSizePair gamePair = e.AddedItems[0] as NameSizePair;
-            if (gamePair != null)
+            foreach (var eAddedItem in e.AddedItems)
+            {
+                if(!_checkedGamesList.Contains(eAddedItem as NameSizePair))
+                    _checkedGamesList.Add(eAddedItem as NameSizePair);
+            }
+            foreach (var eRemovedItem in e.RemovedItems)
+            {
+                _checkedGamesList.Remove(eRemovedItem as NameSizePair);
+            }
+
+            // Special case where user untick a game but it's not contemplated in removedItems
+            List<NameSizePair> temp = new List<NameSizePair>(_checkedGamesList);
+            foreach (var nameSizePair in _checkedGamesList)
+            {
+                if (!GamesList.SelectedItems.Contains(nameSizePair))
+                {
+                    temp.Remove(nameSizePair);
+                }
+            }
+            _checkedGamesList = temp;
+            PrintHelper.PrintList(_checkedGamesList);
+        }
+
+        private void ButtonGo_OnClick(object sender, RoutedEventArgs e)
+        {
+            foreach (var nameSizePair in _checkedGamesList)
             {
                 DownloadTaskQueue.GetInstance().QueueJob(
-                    GameProviderSingleton.GetInstance().Active, 
-                    gamePair.Name, _client, _targetClientIp, 
+                    GameProviderSingleton.GetInstance().Active,
+                    nameSizePair.Name, _client, _targetClientIp,
                     new AsyncPack { ToExecute = new DelProgress(Progress), Window = this });
-                    //GameProviderSingleton.GetInstance().Active
-                    //    .RetrieveGame(gamePair.Name, _client, _targetClientIp,
-                    //        new AsyncPack {ToExecute = new DelProgress(Progress), Window = this});
             }
         }
 
@@ -158,22 +180,22 @@ namespace NetworkGameCopier
         {
             if (Math.Abs(percentage - 100) < 0.1)
             {
-                ProgressBar.Opacity = 0;
-                Percentage.Opacity = 0;
+                //ProgressBar.Opacity = 0;
+                //Percentage.Opacity = 0;
                 StateText.Text = "Idle";
             }
             else
             {
                 if (Math.Abs(ProgressBar.Opacity - 100) > 1)
                 {
-                    ProgressBar.Opacity = 100;
-                    Percentage.Opacity = 100;
+                    //ProgressBar.Opacity = 100;
+                    //Percentage.Opacity = 100;
                     StateText.Text = "Listing";
 
                 }else
                     StateText.Text = "Downloading";
                 ProgressBar.Value = percentage;
-                Percentage.Text = percentage.ToString("0.00") + "%";
+                Percentage.Text = percentage.ToString("0.0") + "%";
             }
         }
 
@@ -306,6 +328,7 @@ namespace NetworkGameCopier
             SettingsManager.GetInstance().SetShutdownAfterDownload(CheckBoxShutdownAfter.IsChecked);
             new Thread(SettingsManager.GetInstance().ForceSave).Start();
         }
+
 
     }
 
