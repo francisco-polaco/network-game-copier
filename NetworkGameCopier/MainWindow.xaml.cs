@@ -306,6 +306,7 @@ namespace NetworkGameCopier
             SettingsManager.GetInstance().SetShutdownAfterDownload(CheckBoxShutdownAfter.IsChecked);
             new Thread(SettingsManager.GetInstance().ForceSave).Start();
         }
+
     }
 
    

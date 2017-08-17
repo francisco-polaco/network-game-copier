@@ -113,7 +113,7 @@
                             Click="ButtonBlizzard_OnClick"
                             Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                             CommandParameter="{x:Static Dock.Left}">
-                                Blizzard
+                                Battle.net
                             </Button>
                             <Button x:Name="ButtonSteam" Margin="4" HorizontalAlignment="Center"
                             Style="{DynamicResource MaterialDesignFlatButton}"
@@ -185,13 +185,13 @@
                     EHEHEHE
                 </materialDesign:DialogHost>-->
                         <TextBlock x:Name="StateText" TextAlignment="Right"
-                                   Margin="-37,471,564.6,9.8" Grid.Row="1">Idle</TextBlock>
+                                   Margin="-15,462,551.6,18.8" Grid.Row="1">Idle</TextBlock>
                         <ProgressBar x:Name="ProgressBar" Opacity="100" 
                                      Orientation="Horizontal" Value="0" 
-                                     Margin="70,470,69.6,11.8" Height="Auto" 
-                                     Grid.Row="1" />
+                                     Margin="88,462,88,19.8" Height="Auto" 
+                                     Grid.Row="1"  />
                         <TextBlock x:Name="Percentage" Opacity="100" 
-                                   TextAlignment="Right" Margin="573,470,9.6,-1.2" 
+                                   TextAlignment="Right" Margin="552,462,30.6,15.8" 
                                    Grid.Row="1">100.0%</TextBlock>
                     </Grid>
                 </materialDesign:DrawerHost>
