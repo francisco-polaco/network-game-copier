@@ -11,6 +11,7 @@ using MaterialDesignThemes.Wpf;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using CheckBox = System.Windows.Controls.CheckBox;
 
 namespace NetworkGameCopier
 {
@@ -140,6 +141,12 @@ namespace NetworkGameCopier
                 _checkedGamesList.Remove(eRemovedItem as NameSizePair);
             }
 
+            RemoveUntickedGames();
+            PrintHelper.PrintList(_checkedGamesList);
+        }
+
+        private void RemoveUntickedGames()
+        {
             // Special case where user untick a game but it's not contemplated in removedItems
             List<NameSizePair> temp = new List<NameSizePair>(_checkedGamesList);
             foreach (var nameSizePair in _checkedGamesList)
@@ -150,7 +157,16 @@ namespace NetworkGameCopier
                 }
             }
             _checkedGamesList = temp;
-            PrintHelper.PrintList(_checkedGamesList);
+        }
+
+        private void ItemCheckBox_OnClick(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = sender as CheckBox;
+            if (cb != null && (bool) !cb.IsChecked)
+            {
+                RemoveUntickedGames();
+                PrintHelper.PrintList(_checkedGamesList);
+            }
         }
 
         private void ButtonGo_OnClick(object sender, RoutedEventArgs e)
@@ -330,6 +346,7 @@ namespace NetworkGameCopier
         }
 
 
+        
     }
 
    
