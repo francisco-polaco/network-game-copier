@@ -131,28 +131,23 @@ namespace NetworkGameCopier
 
                     long alreadyDownloaded = 0;
                     // download the files without any sort of verification and error handling YET!
-                    // It should be used a bigger number of threads, but for some reason the server can't handle it.
-                    Parallel.For(0, filesToDownloadList.Count, new ParallelOptions { MaxDegreeOfParallelism = 1 },
-                        i =>
+                    foreach (var ftpListItem in filesToDownloadList)
+                    {
+                        // TODO: Revisit this code to show some statistics
+                        try
                         {
-                            // TODO: Revisit this code to show some statistics
-                            //Stopwatch sw = new Stopwatch();
-                            //sw.Start();
-                            _client.DownloadFile(destGamePath + filesToDownloadList[i].FullName, 
-                                filesToDownloadList[i].FullName);
-                            //sw.Stop();
-                            //long elapsedTime = sw.ElapsedMilliseconds / 1000;
-                            //long speed;
-                            //if (elapsedTime != 0)
-                            //    speed = filesToDownloadList[i].Size / elapsedTime;
-                            //else
-                            //    speed = 1;
-                            alreadyDownloaded += filesToDownloadList[i].Size;
-                            //long eta = (filesToDownloadList[i].Size - alreadyDownloaded) / speed;
-                            // LogManager.GetCurrentClassLogger().Warn("Time: " + elapsedTime + "\nSpeed: " + speed / 1024 + "KB/s\nETA: " + eta);
-                            asyncPack.Window.Dispatcher.Invoke(asyncPack.ToExecute,
-                                Convert.ToDouble(alreadyDownloaded) / Convert.ToDouble(totalSize) * 100);
-                        });
+                            _client.DownloadFile(destGamePath + ftpListItem.FullName,
+                                ftpListItem.FullName);
+                        }
+                        catch (IOException e)
+                        {
+                            LogManager.GetCurrentClassLogger().Error(e.Message);
+                        }
+                        alreadyDownloaded += ftpListItem.Size;
+                        asyncPack.Window.Dispatcher.Invoke(asyncPack.ToExecute,
+                            Convert.ToDouble(alreadyDownloaded) / Convert.ToDouble(totalSize) * 100);
+                    }
+                    
                 }
                 else
                 { 

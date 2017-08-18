@@ -17,7 +17,7 @@ namespace NetworkGameCopier
             return Instance;
         }
 
-        private readonly Queue<Task> _queue = new Queue<Task>();
+        private readonly Queue<Thread> _queue = new Queue<Thread>();
         private readonly Thread _workerThread;
         private readonly ManualResetEvent _manualResetEvent = new ManualResetEvent(false);
 
@@ -32,9 +32,10 @@ namespace NetworkGameCopier
                     else
                     {
                         Monitor.Enter(_queue);
-                        Task toRun = _queue.Dequeue();
+                        Thread toRun = _queue.Dequeue();
                         Monitor.Exit(_queue);
-                        toRun.RunSynchronously();
+                        toRun.Start();
+                        toRun.Join();
                         if (_queue.Count == 0)
                         {
                             // Work is over
@@ -63,7 +64,7 @@ namespace NetworkGameCopier
         public void QueueJob(GameProviderOperationsBase provider, string gameName, NetworkManager client,
             string selectedComputer, AsyncPack asyncPack)
         {
-            Task toQueue = new Task(() =>
+            Thread toQueue = new Thread(() =>
             {
                 asyncPack.Window.Dispatcher.Invoke(asyncPack.ToExecute, new object[]{0.0});
                 provider.RetrieveGame(gameName, client, selectedComputer, asyncPack);

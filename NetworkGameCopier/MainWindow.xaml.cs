@@ -171,12 +171,15 @@ namespace NetworkGameCopier
 
         private void ButtonGo_OnClick(object sender, RoutedEventArgs e)
         {
+            // TODO: Uncomment
+            //GamesList.IsEnabled = false;
             foreach (var nameSizePair in _checkedGamesList)
             {
                 DownloadTaskQueue.GetInstance().QueueJob(
                     GameProviderSingleton.GetInstance().Active,
                     nameSizePair.Name, _client, _targetClientIp,
-                    new AsyncPack { ToExecute = new DelProgress(Progress), Window = this });
+                    new AsyncPack { ToExecute = new DelProgress(Progress) + UnlockGamesList,
+                        Window = this });
             }
         }
 
@@ -192,12 +195,31 @@ namespace NetworkGameCopier
             ComputerComboBox.Items.Add(computer);
         }
 
+        private int _unlockGamesListCounter = 1;
+
+        public void UnlockGamesList(double percentage)
+        {
+            if (Math.Abs(percentage - 100) < 0.1)
+            {
+                if (_unlockGamesListCounter == _checkedGamesList.Count)
+                {
+                    GamesList.IsEnabled = true;
+                    _unlockGamesListCounter = 1;
+                }
+                else
+                {
+                    _unlockGamesListCounter++;
+                }
+            }
+        }
+
         public void Progress(double percentage)
         {
             if (Math.Abs(percentage - 100) < 0.1)
             {
                 //ProgressBar.Opacity = 0;
                 //Percentage.Opacity = 0;
+                Percentage.Text = "100,0%";
                 StateText.Text = "Idle";
             }
             else
