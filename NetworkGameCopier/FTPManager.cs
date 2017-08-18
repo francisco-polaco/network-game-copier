@@ -103,60 +103,57 @@ namespace NetworkGameCopier
         public void RetrieveGame(string destGamePath, string sourceGamePath, 
             string targetIpServer, AsyncPack asyncPack) 
         {
-            new Thread(() =>
+            // create an FTP client
+            _client = new FtpClient(targetIpServer)
             {
-                // create an FTP client
-                _client = new FtpClient(targetIpServer)
-                {
-                    Port = FtpPort,
-                    Credentials = new NetworkCredential("anonymous", "anonymous@batata.com")
-                };
+                Port = FtpPort,
+                Credentials = new NetworkCredential("anonymous", "anonymous@batata.com")
+            };
 
-                // if you don't specify login credentials, we use the "anonymous" user account
+            // if you don't specify login credentials, we use the "anonymous" user account
 
-                // begin connecting to the server
-                _client.Connect();
+            // begin connecting to the server
+            _client.Connect();
             
-                // upload a file and retry 3 times before giving up
-                _client.RetryAttempts = 3;
+            // upload a file and retry 3 times before giving up
+            _client.RetryAttempts = 3;
                 
-                string sourcePath = _client.GetWorkingDirectory() + sourceGamePath;
-                // check if a folder exists
-                if (_client.DirectoryExists(sourcePath))
+            string sourcePath = _client.GetWorkingDirectory() + sourceGamePath;
+            // check if a folder exists
+            if (_client.DirectoryExists(sourcePath))
+            {
+                long totalSize = 0;
+                List<FtpListItem> filesToDownloadList = new List<FtpListItem>();
+                BuildListOfFilesToDownload(_client, sourcePath, filesToDownloadList, ref totalSize);
+                LogManager.GetCurrentClassLogger().Info("Size to be transfered: " + totalSize);
+
+                long alreadyDownloaded = 0;
+                // download the files without any sort of verification and error handling YET!
+                foreach (var ftpListItem in filesToDownloadList)
                 {
-                    long totalSize = 0;
-                    List<FtpListItem> filesToDownloadList = new List<FtpListItem>();
-                    BuildListOfFilesToDownload(_client, sourcePath, filesToDownloadList, ref totalSize);
-                    LogManager.GetCurrentClassLogger().Info("Size to be transfered: " + totalSize);
-
-                    long alreadyDownloaded = 0;
-                    // download the files without any sort of verification and error handling YET!
-                    foreach (var ftpListItem in filesToDownloadList)
+                    // TODO: Revisit this code to show some statistics
+                    try
                     {
-                        // TODO: Revisit this code to show some statistics
-                        try
-                        {
-                            _client.DownloadFile(destGamePath + ftpListItem.FullName,
-                                ftpListItem.FullName);
-                        }
-                        catch (IOException e)
-                        {
-                            LogManager.GetCurrentClassLogger().Error(e.Message);
-                        }
-                        alreadyDownloaded += ftpListItem.Size;
-                        asyncPack.Window.Dispatcher.Invoke(asyncPack.ToExecute,
-                            Convert.ToDouble(alreadyDownloaded) / Convert.ToDouble(totalSize) * 100);
+                        _client.DownloadFile(destGamePath + ftpListItem.FullName,
+                            ftpListItem.FullName);
                     }
+                    catch (IOException e)
+                    {
+                        LogManager.GetCurrentClassLogger().Error(e.Message);
+                    }
+                    alreadyDownloaded += ftpListItem.Size;
+                    asyncPack.Window.Dispatcher.Invoke(asyncPack.ToExecute,
+                        Convert.ToDouble(alreadyDownloaded) / Convert.ToDouble(totalSize) * 100);
+                }
                     
-                }
-                else
-                { 
-                  //  throw new DirectoryNotFoundException();
-                }
+            }
+            else
+            { 
+                //  throw new DirectoryNotFoundException();
+            }
 
-                // disconnect! good bye!
-                _client.Disconnect();
-            }).Start();
+            // disconnect! good bye!
+            _client.Disconnect();
         }
 
         private void BuildListOfFilesToDownload(FtpClient client, string sourcePath, List<FtpListItem> filesToDownloadList, ref long sizeToBeTransfered)
