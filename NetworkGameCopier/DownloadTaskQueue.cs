@@ -38,7 +38,7 @@ namespace NetworkGameCopier
 
         private readonly ConcurrentQueue<TaskContainer> _queue = new ConcurrentQueue<TaskContainer>();
         private readonly Thread _workerThread;
-        private readonly ManualResetEvent _manualResetEvent = new ManualResetEvent(false);
+        private readonly AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
 
         private DownloadTaskQueue()
         {
@@ -49,7 +49,7 @@ namespace NetworkGameCopier
 
                     if (_queue.Count == 0)
                     {
-                        _manualResetEvent.WaitOne();
+                        _autoResetEvent.WaitOne();
                     }
                     else
                     {
@@ -77,7 +77,7 @@ namespace NetworkGameCopier
             string selectedComputer, AsyncPack asyncPack)
         {
             _queue.Enqueue(new TaskContainer(provider, gameName, client, selectedComputer, asyncPack));
-            _manualResetEvent.Set();
+            _autoResetEvent.Set();
         }
 
         private void DoWork(TaskContainer container)
