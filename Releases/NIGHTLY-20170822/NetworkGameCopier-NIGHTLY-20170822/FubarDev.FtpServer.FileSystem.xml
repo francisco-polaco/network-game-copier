@@ -1,0 +1,642 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FubarDev.FtpServer.FileSystem</name>
+    </assembly>
+    <members>
+        <member name="T:FubarDev.FtpServer.FileSystem.BackgroundTransferStatus">
+            <summary>
+            The status of a single <see cref="T:FubarDev.FtpServer.FileSystem.IBackgroundTransfer"/>
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.FileSystem.BackgroundTransferStatus.Enqueued">
+            <summary>
+            Added to transfer queue
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.FileSystem.BackgroundTransferStatus.Transferring">
+            <summary>
+            Transferring the data
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.FileSystem.BackgroundTransferStatus.Finished">
+            <summary>
+            Transfer finished
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem">
+            <summary>
+            An empty file system to be used when the user isn't logged in yet.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem"/> class.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.FileSystemEntryComparer">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.Root">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.SupportsAppend">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.SupportsNonEmptyDirectoryDelete">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.AppendAsync(FubarDev.FtpServer.FileSystem.IUnixFileEntry,System.Nullable{System.Int64},System.IO.Stream,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.CreateAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.String,System.IO.Stream,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.CreateDirectoryAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.GetEntriesAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.GetEntryByNameAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.MoveAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry,FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.OpenReadAsync(FubarDev.FtpServer.FileSystem.IUnixFileEntry,System.Int64,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.ReplaceAsync(FubarDev.FtpServer.FileSystem.IUnixFileEntry,System.IO.Stream,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.SetMacTimeAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry,System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.EmptyUnixFileSystem.UnlinkAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.FileSystemExtensions">
+            <summary>
+            Extensions for the file system stuff
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.Clone(System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry})">
+            <summary>
+            Clone the stack of directory entries
+            </summary>
+            <param name="path">The stack of directory entries to clone</param>
+            <returns>the cloned <paramref name="path"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.IsChildOfOrSameAs(System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry},System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry},FubarDev.FtpServer.FileSystem.IUnixFileSystem)">
+            <summary>
+            Is the <paramref name="pathToTestAsChild"/> a child or the same path as <paramref name="pathToTestAsParent"/>?
+            </summary>
+            <param name="pathToTestAsChild">The path to test as child</param>
+            <param name="pathToTestAsParent">The path to test as parent</param>
+            <param name="fileSystem">The file system to use to compare the file names</param>
+            <returns><code>true</code> if the <paramref name="pathToTestAsChild"/> is a child or the same path as <paramref name="pathToTestAsParent"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.GetDirectoryAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystem,System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry},System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get the directory for the given <paramref name="path"/>
+            </summary>
+            <param name="fileSystem">The file system to get the directory for</param>
+            <param name="currentPath">The current path</param>
+            <param name="path">The (absolute or relative) path to get the directory for</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The found <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/> or <code>null</code></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.GetDirectoryAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystem,System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry},System.Collections.Generic.IReadOnlyList{System.String},System.Threading.CancellationToken)">
+            <summary>
+            Get the directory for the given <paramref name="pathElements"/>
+            </summary>
+            <param name="fileSystem">The file system to get the directory for</param>
+            <param name="currentPath">The current path</param>
+            <param name="pathElements">The (absolute or relative) path to get the directory for</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The found <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/> or <code>null</code></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.SearchDirectoryAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystem,System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry},System.String,System.Threading.CancellationToken)">
+            <summary>
+            Searches for a <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/> by using the <paramref name="currentPath"/> and <paramref name="path"/>
+            </summary>
+            <param name="fileSystem">The underlying <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/></param>
+            <param name="currentPath">The current path</param>
+            <param name="path">The relative path to search for</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The found <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.SearchDirectoryAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystem,System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry},System.Collections.Generic.IReadOnlyList{System.String},System.Threading.CancellationToken)">
+            <summary>
+            Searches for a <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/> by using the <paramref name="currentPath"/> and <paramref name="pathElements"/>
+            </summary>
+            <param name="fileSystem">The underlying <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/></param>
+            <param name="currentPath">The current path</param>
+            <param name="pathElements">The relative path elements to search for</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The found <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.SearchFileAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystem,System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry},System.String,System.Threading.CancellationToken)">
+            <summary>
+            Searches for a <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileEntry"/> by using the <paramref name="currentPath"/> and <paramref name="path"/>
+            </summary>
+            <param name="fileSystem">The underlying <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/></param>
+            <param name="currentPath">The current path</param>
+            <param name="path">The relative path to search for</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The found <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.SearchFileAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystem,System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry},System.Collections.Generic.IReadOnlyList{System.String},System.Threading.CancellationToken)">
+            <summary>
+            Searches for a <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileEntry"/> by using the <paramref name="currentPath"/> and <paramref name="pathElements"/>
+            </summary>
+            <param name="fileSystem">The underlying <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/></param>
+            <param name="currentPath">The current path</param>
+            <param name="pathElements">The relative path elements to search for</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The found <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.SearchEntryAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystem,System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry},System.String,System.Threading.CancellationToken)">
+            <summary>
+            Searches for a <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/> by using the <paramref name="currentPath"/> and <paramref name="path"/>
+            </summary>
+            <param name="fileSystem">The underlying <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/></param>
+            <param name="currentPath">The current path</param>
+            <param name="path">The relative path to search for</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The found <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.SearchEntryAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystem,System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry},System.Collections.Generic.IReadOnlyList{System.String},System.Threading.CancellationToken)">
+            <summary>
+            Searches for a <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/> by using the <paramref name="currentPath"/> and <paramref name="pathElements"/>
+            </summary>
+            <param name="fileSystem">The underlying <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/></param>
+            <param name="currentPath">The current path</param>
+            <param name="pathElements">The relative path elements to search for</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The found <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.ToDisplayString(System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry})">
+            <summary>
+            Returns the <paramref name="path"/> as string like <see cref="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.GetFullPath(System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry})"/>, with the
+            difference that it doesn't add the trailing <code>/</code>.
+            </summary>
+            <param name="path">The path to convert to string</param>
+            <returns>The <paramref name="path"/> as string</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.GetFullPath(System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry})">
+            <summary>
+            Returns the <paramref name="path"/> as string
+            </summary>
+            <param name="path">The path to convert to string</param>
+            <returns>The <paramref name="path"/> as string</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.GetParentPath(System.String)">
+            <summary>
+            Returns the parent path of the <paramref name="path"/>
+            </summary>
+            <param name="path">The path to get the parent path from</param>
+            <returns>The parent path</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.GetFullPath(System.Collections.Generic.Stack{FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry},System.String)">
+            <summary>
+            Returns the <paramref name="path"/> as string
+            </summary>
+            <param name="path">The path to convert to string</param>
+            <param name="fileName">The file name to append to the <paramref name="path"/></param>
+            <returns>The combination of <paramref name="path"/> and <paramref name="fileName"/> as string</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.CombinePath(System.String,System.String[])">
+            <summary>
+            Appends parts to a path
+            </summary>
+            <param name="path">The path to append to</param>
+            <param name="parts">The parts to append</param>
+            <returns>The combined path</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.CombinePath(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Appends parts to a path
+            </summary>
+            <param name="path">The path to append to</param>
+            <param name="parts">The parts to append</param>
+            <returns>The combined path</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.FileSystemExtensions.SplitPath(System.String)">
+            <summary>
+            Split the path into parts
+            </summary>
+            <param name="path">The path to split</param>
+            <returns>The parts of the path</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.Generic.GenericAccessMode">
+            <summary>
+            Generic implementation of the <see cref="T:FubarDev.FtpServer.FileSystem.IAccessMode"/> interface
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.Generic.GenericAccessMode.#ctor(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FileSystem.Generic.GenericAccessMode"/> class.
+            </summary>
+            <param name="read">is reading allowed?</param>
+            <param name="write">is writing allowed?</param>
+            <param name="execute">is executing allowed?</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.Generic.GenericAccessMode.Read">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.Generic.GenericAccessMode.Write">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.Generic.GenericAccessMode.Execute">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.Generic.GenericUnixPermissions">
+            <summary>
+            Generic implementation of <see cref="T:FubarDev.FtpServer.FileSystem.IUnixPermissions"/>
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.Generic.GenericUnixPermissions.#ctor(FubarDev.FtpServer.FileSystem.IAccessMode,FubarDev.FtpServer.FileSystem.IAccessMode,FubarDev.FtpServer.FileSystem.IAccessMode)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FileSystem.Generic.GenericUnixPermissions"/> class.
+            </summary>
+            <param name="user">The user permissions</param>
+            <param name="group">The group permissions</param>
+            <param name="owner">The owner permissions</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.Generic.GenericUnixPermissions.User">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.Generic.GenericUnixPermissions.Group">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.Generic.GenericUnixPermissions.Other">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.IAccessMode">
+            <summary>
+            A unix style access mode interface
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IAccessMode.Read">
+            <summary>
+            Gets a value indicating whether a read is allowed?
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IAccessMode.Write">
+            <summary>
+            Gets a value indicating whether a write is allowed?
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IAccessMode.Execute">
+            <summary>
+            Gets a value indicating whether a execute is allowed?
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.IBackgroundTransfer">
+            <summary>
+            Interface for background data transfers
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IBackgroundTransfer.TransferId">
+            <summary>
+            Gets the ID of the background data transfer
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.IBackgroundTransfer.Start(System.Threading.CancellationToken)">
+            <summary>
+            Starts the background data transfer
+            </summary>
+            <param name="cancellationToken">The cancellation token used to abort the background data transfer</param>
+            <returns>The task used to transfer the data in the background</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.IFileSystemClassFactory">
+            <summary>
+            This factory interface is used to create a <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/> implementation for a given user ID
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.IFileSystemClassFactory.Create(System.String,System.Boolean)">
+            <summary>
+            Creates a <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/> implementation for a given <paramref name="userId"/>
+            </summary>
+            <param name="userId">The user ID to create the <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/> for</param>
+            <param name="isAnonymous">Do we have an anonymous login?</param>
+            <returns>The new <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/> for the <paramref name="userId"/></returns>
+            <remarks>
+            When the login is anonymous, the <paramref name="userId"/> is the given password.
+            </remarks>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.ITemporaryData">
+            <summary>
+            Temporary data holder
+            </summary>
+            <remarks>
+            Temporary data gets removed from the system when it's disposed
+            </remarks>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.ITemporaryData.Size">
+            <summary>
+            Gets the size of the temporary data
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.ITemporaryData.FillAsync(System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            Loads the temporary data from a stream
+            </summary>
+            <param name="stream">The stream to load the data from</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The task the loading happens on</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.ITemporaryData.OpenAsync">
+            <summary>
+            Opens the temporary data and returns a stream
+            </summary>
+            <returns>The stream containig the temporary data</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry">
+            <summary>
+            A unix directory entry
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry.IsRoot">
+            <summary>
+            Gets a value indicating whether this is the root directory
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry.IsDeletable">
+            <summary>
+            Gets a value indicating whether this directory can be deleted
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.IUnixFileEntry">
+            <summary>
+            A unix file entry
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixFileEntry.Size">
+            <summary>
+            Gets the size of the file
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem">
+            <summary>
+            The unix file system abstraction used by the FTP server
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixFileSystem.SupportsAppend">
+            <summary>
+            Gets a value indicating whether this file system supports appending to a file.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixFileSystem.SupportsNonEmptyDirectoryDelete">
+            <summary>
+            Gets a value indicating whether this file system supports deletion of non-empty directories
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixFileSystem.FileSystemEntryComparer">
+            <summary>
+            Gets a string comparer for file system entry names
+            </summary>
+            <remarks>
+            Required to support case insensitive file systems
+            </remarks>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixFileSystem.Root">
+            <summary>
+            Gets the root directory entry
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.IUnixFileSystem.GetEntriesAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.Threading.CancellationToken)">
+            <summary>
+            Gets a list of <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/> objects for a given <paramref name="directoryEntry"/>
+            </summary>
+            <param name="directoryEntry">The <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/> to get the file system entries for</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The list of <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/> objects for a given <paramref name="directoryEntry"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.IUnixFileSystem.GetEntryByNameAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets a file system entry by name
+            </summary>
+            <param name="directoryEntry">The <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/> to get the file system entry for</param>
+            <param name="name">The name of the file system entry to search</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>Returns the found <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.IUnixFileSystem.MoveAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry,FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Moves a file system entry from <paramref name="parent"/> to <paramref name="target"/>
+            </summary>
+            <param name="parent">The <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/> of <paramref name="source"/></param>
+            <param name="source">The <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/> to move</param>
+            <param name="target">The destination <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/> where <paramref name="source"/> gets moved to</param>
+            <param name="fileName">The new name of <paramref name="source"/></param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>Returns the new <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.IUnixFileSystem.UnlinkAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry,System.Threading.CancellationToken)">
+            <summary>
+            Deletes a <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/>
+            </summary>
+            <param name="entry">The <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/> to delete</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The task where the underlying action is performed on</returns>
+            <remarks>
+            An implementation might decide to move the <paramref name="entry"/> into the trash instead of deleting it.
+            </remarks>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.IUnixFileSystem.CreateDirectoryAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Creates a sub directory with the name <paramref name="directoryName"/> in <paramref name="targetDirectory"/>
+            </summary>
+            <param name="targetDirectory">The directory to create the sub directory in</param>
+            <param name="directoryName">The name of the new sub directory</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The new <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.IUnixFileSystem.OpenReadAsync(FubarDev.FtpServer.FileSystem.IUnixFileEntry,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Opens a file for reading
+            </summary>
+            <param name="fileEntry">The <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileEntry"/> to read from</param>
+            <param name="startPosition">The start position to read from</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The <see cref="T:System.IO.Stream"/> to be used for reading</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.IUnixFileSystem.AppendAsync(FubarDev.FtpServer.FileSystem.IUnixFileEntry,System.Nullable{System.Int64},System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            Appends data to a file
+            </summary>
+            <param name="fileEntry">The <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileEntry"/> to append data to</param>
+            <param name="startPosition">The start position - when it is null, the data is appended</param>
+            <param name="data">The data stream to read from</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>an optional <see cref="T:FubarDev.FtpServer.FileSystem.IBackgroundTransfer"/> when the transfer needs to happen in the background</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.IUnixFileSystem.CreateAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.String,System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            Creates a file with the given <paramref name="fileName"/> and <paramref name="data"/>
+            </summary>
+            <param name="targetDirectory">The directory to create the file in</param>
+            <param name="fileName">The name of the new file</param>
+            <param name="data">The <see cref="T:System.IO.Stream"/> used to read the data for the new file</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>an optional <see cref="T:FubarDev.FtpServer.FileSystem.IBackgroundTransfer"/> when the transfer needs to happen in the background</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.IUnixFileSystem.ReplaceAsync(FubarDev.FtpServer.FileSystem.IUnixFileEntry,System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            Replaces the contents of a file
+            </summary>
+            <param name="fileEntry">The <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileEntry"/> to replace the data for</param>
+            <param name="data">The data to be written to the given <paramref name="fileEntry"/></param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>an optional <see cref="T:FubarDev.FtpServer.FileSystem.IBackgroundTransfer"/> when the transfer needs to happen in the background</returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.IUnixFileSystem.SetMacTimeAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry,System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)">
+            <summary>
+            Sets the modify/access/create timestamp of a file system item
+            </summary>
+            <param name="entry">The <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/> to change the timestamp for</param>
+            <param name="modify">The modification timestamp</param>
+            <param name="access">The access timestamp</param>
+            <param name="create">The creation timestamp</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The modified <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/></returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry">
+            <summary>
+            The file system entry information that is shared between a <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/> and a <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileEntry"/>
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry.Name">
+            <summary>
+            Gets the name of the file system entry
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry.Permissions">
+            <summary>
+            Gets the file entry permissions
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry.LastWriteTime">
+            <summary>
+            Gets the last write time
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry.CreatedTime">
+            <summary>
+            Gets the time of creation
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry.NumberOfLinks">
+            <summary>
+            Gets the number of links
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry.FileSystem">
+            <summary>
+            Gets the file system this entry belongs to
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.IUnixOwner">
+            <summary>
+            Defines the owning user and group of an item
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixOwner.Owner">
+            <summary>
+            Gets the owner
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixOwner.Group">
+            <summary>
+            Gets the group
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.IUnixPermissions">
+            <summary>
+            Unix file system entry permissions
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixPermissions.User">
+            <summary>
+            Gets the user permissions
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixPermissions.Group">
+            <summary>
+            Gets the group permissions
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.IUnixPermissions.Other">
+            <summary>
+            Gets the other permissions
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.MemoryTemporaryData">
+            <summary>
+            Stores the temporary data in a memory stream
+            </summary>
+            <remarks>
+            This is not recommended in a production environment!
+            </remarks>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.MemoryTemporaryData.Size">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.MemoryTemporaryData.FillAsync(System.IO.Stream,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.MemoryTemporaryData.OpenAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.MemoryTemporaryData.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.MemoryTemporaryData.Dispose(System.Boolean)">
+            <summary>
+            Dispose the object
+            </summary>
+            <param name="disposing"><code>true</code> when called from <see cref="M:FubarDev.FtpServer.FileSystem.MemoryTemporaryData.Dispose"/></param>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.SearchResult`1">
+            <summary>
+            The result of a file system search operation
+            </summary>
+            <typeparam name="T">The type of the found file system entry</typeparam>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.SearchResult`1.#ctor(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,`0,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FileSystem.SearchResult`1"/> class.
+            </summary>
+            <param name="directoryEntry">The directory entry of the found <paramref name="fileEntry"/></param>
+            <param name="fileEntry">The found <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/></param>
+            <param name="fileName">The name of the <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/> to be searched for within the <paramref name="directoryEntry"/></param>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.SearchResult`1.Directory">
+            <summary>
+            Gets the <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/> where the <see cref="P:FubarDev.FtpServer.FileSystem.SearchResult`1.FileName"/> was searched.
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.SearchResult`1.Entry">
+            <summary>
+            Gets the found <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/>
+            </summary>
+            <remarks>
+            <code>null</code> when the target entry could not be found
+            </remarks>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.SearchResult`1.FileName">
+            <summary>
+            Gets the name of the <see cref="P:FubarDev.FtpServer.FileSystem.SearchResult`1.Entry"/>
+            </summary>
+            <remarks>
+            <code>null</code> when the found entry is a ROOT entry.
+            </remarks>
+        </member>
+    </members>
+</doc>
