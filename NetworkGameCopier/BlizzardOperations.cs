@@ -26,7 +26,7 @@ namespace NetworkGameCopier
             List<string> gamesPathnames = new List<string>();
 
             foreach (var gameName in new[]{ "Overwatch" , "Heroes of the Storm" ,
-                "Hearthstone", "World of Warcraft" , "Diablo 3" , "Starcraft 2"})
+                "Hearthstone", "World of Warcraft" , "Diablo 3" , "Starcraft 2", "Destiny 2"})
             {
                 try
                 {
@@ -50,7 +50,7 @@ namespace NetworkGameCopier
 
         public override void RetrieveGame(string gameName, NetworkManager clienta, string selectedComputer, AsyncPack asyncPack)
         {
-            string remotePath = clienta.GetDirFromGameNameSteam(gameName);
+            string remotePath = clienta.GetDirFromGameNameBlizzard(gameName);
             Console.WriteLine(remotePath);
             FtpManager.GetInstance().RetrieveGame(SettingsManager.GetInstance().GetDefaultBlizzardPath(),
                 remotePath, selectedComputer, asyncPack);
