@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FubarDev.FtpServer.FileSystem.DotNet</name>
+    </assembly>
+    <members>
+        <member name="T:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystemProvider">
+            <summary>
+            A <see cref="T:FubarDev.FtpServer.FileSystem.IFileSystemClassFactory"/> implementation that uses
+            the standard .NET functionality to provide file system access.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystemProvider.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystemProvider"/> class.
+            </summary>
+            <param name="rootPath">The root path for all users</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystemProvider.#ctor(System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystemProvider"/> class.
+            </summary>
+            <param name="rootPath">The root path for all users</param>
+            <param name="useUserIdAsSubFolder">Use the user id as subfolder?</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystemProvider.#ctor(System.String,System.Boolean,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystemProvider"/> class.
+            </summary>
+            <param name="rootPath">The root path for all users</param>
+            <param name="useUserIdAsSubFolder">Use the user id as subfolder?</param>
+            <param name="streamBufferSize">Buffer size to be used in async IO methods</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystemProvider.AllowNonEmptyDirectoryDelete">
+            <summary>
+            Gets or sets a value indicating whether deletion of non-empty directories is allowed.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystemProvider.Create(System.String,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry">
+            <summary>
+            A <see cref="T:FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry"/> implementation for the standard
+            .NET file system functionality.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry.#ctor(FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem,System.IO.DirectoryInfo,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry"/> class.
+            </summary>
+            <param name="fileSystem">The file system this entry belongs to</param>
+            <param name="dirInfo">The <see cref="T:System.IO.DirectoryInfo"/> to extract the information from</param>
+            <param name="isRoot">Is this the root directory?</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry.Info">
+            <summary>
+            Gets the underlying <see cref="T:System.IO.DirectoryInfo"/>
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry.IsRoot">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry.IsDeletable">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry.Permissions">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry.LastWriteTime">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry.CreatedTime">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry.NumberOfLinks">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry.FileSystem">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry.Owner">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetDirectoryEntry.Group">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileEntry">
+            <summary>
+            A <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileEntry"/> implementation for the standard
+            .NET file system functionality.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileEntry.#ctor(FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem,System.IO.FileInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileEntry"/> class.
+            </summary>
+            <param name="fileSystem">The file system this entry belongs to</param>
+            <param name="info">The <see cref="T:System.IO.FileInfo"/> to extract the information from</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileEntry.Info">
+            <summary>
+            Gets the underlying <see cref="T:System.IO.FileInfo"/>
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileEntry.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileEntry.Permissions">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileEntry.LastWriteTime">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileEntry.CreatedTime">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileEntry.NumberOfLinks">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileEntry.FileSystem">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileEntry.Owner">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileEntry.Group">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileEntry.Size">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem">
+            <summary>
+            A <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystem"/> implementation that uses the
+            standard .NET functionality to access the file system.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.#ctor(System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem"/> class.
+            </summary>
+            <param name="rootPath">The path to use as root</param>
+            <param name="allowNonEmptyDirectoryDelete">Allow deletion of non-empty directories?</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.#ctor(System.String,System.Boolean,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem"/> class.
+            </summary>
+            <param name="rootPath">The path to use as root</param>
+            <param name="allowNonEmptyDirectoryDelete">Allow deletion of non-empty directories?</param>
+            <param name="streamBufferSize">Buffer size to be used in async IO methods</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.SupportsNonEmptyDirectoryDelete">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.FileSystemEntryComparer">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.Root">
+            <inheritdoc/>
+        </member>
+        <member name="P:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.SupportsAppend">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.GetEntriesAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.GetEntryByNameAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.MoveAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry,FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.UnlinkAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.CreateDirectoryAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.OpenReadAsync(FubarDev.FtpServer.FileSystem.IUnixFileEntry,System.Int64,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.AppendAsync(FubarDev.FtpServer.FileSystem.IUnixFileEntry,System.Nullable{System.Int64},System.IO.Stream,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.CreateAsync(FubarDev.FtpServer.FileSystem.IUnixDirectoryEntry,System.String,System.IO.Stream,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.ReplaceAsync(FubarDev.FtpServer.FileSystem.IUnixFileEntry,System.IO.Stream,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.SetMacTimeAsync(FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry,System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)">
+            <summary>
+            Sets the modify/access/create timestamp of a file system item
+            </summary>
+            <param name="entry">The <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/> to change the timestamp for</param>
+            <param name="modify">The modification timestamp</param>
+            <param name="access">The access timestamp</param>
+            <param name="create">The creation timestamp</param>
+            <param name="cancellationToken">The cancellation token</param>
+            <returns>The modified <see cref="T:FubarDev.FtpServer.FileSystem.IUnixFileSystemEntry"/></returns>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.Dispose(System.Boolean)">
+            <summary>
+            Dispose the object
+            </summary>
+            <param name="disposing"><code>true</code> when called from <see cref="M:FubarDev.FtpServer.FileSystem.DotNet.DotNetFileSystem.Dispose"/></param>
+        </member>
+    </members>
+</doc>

@@ -68,10 +68,11 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>F2E152564EF3B02336747AD9024909CEE00D6D0F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>7BEBC38894DF6F917BEC0DB7EECF3A8E26D5E208</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>NetworkGameCopier_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

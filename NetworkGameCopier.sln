@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkGameCopier", "NetworkGameCopier\NetworkGameCopier.csproj", "{C0042921-FFAD-42DF-898D-1B67B6F717F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateService", "UpdateService\UpdateService.csproj", "{B1055442-37F7-4898-ACD3-F2D9C49BE5FE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C0042921-FFAD-42DF-898D-1B67B6F717F5} = {C0042921-FFAD-42DF-898D-1B67B6F717F5}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +27,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3329363B-8D6D-4ABA-9D9C-C53C69E167F0}
 	EndGlobalSection
 EndGlobal

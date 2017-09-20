@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FubarDev.FtpServer.AccountManagement</name>
+    </assembly>
+    <members>
+        <member name="T:FubarDev.FtpServer.AccountManagement.AnonymousFtpUser">
+            <summary>
+            An anonymous FTP user
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.AnonymousFtpUser.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AccountManagement.AnonymousFtpUser"/> class.
+            </summary>
+            <param name="email">The anonymous users email address</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.AccountManagement.AnonymousFtpUser.Email">
+            <summary>
+            Gets the anonymous users email address
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.AnonymousFtpUser.IsInGroup(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.AccountManagement.Anonymous.BlockAnonymousValidation">
+            <summary>
+            Disallow anonymous logins
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.Anonymous.BlockAnonymousValidation.IsValid(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.AccountManagement.Anonymous.IAnonymousPasswordValidator">
+            <summary>
+            This interface validates the password for an anonymous login
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.Anonymous.IAnonymousPasswordValidator.IsValid(System.String)">
+            <summary>
+            Is this password valid for anonymous login?
+            </summary>
+            <param name="password">The password to validate</param>
+            <returns><code>true</code> when the password is valid for this kind of anonymous authentication</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.AccountManagement.Anonymous.NoTopLevelDomainValidation">
+            <summary>
+            Allows a server address for anonymous authentication without top level domain
+            </summary>
+            <remarks>
+            In other words: No dot required after <code>@</code>.
+            </remarks>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.Anonymous.NoTopLevelDomainValidation.IsValid(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.AccountManagement.Anonymous.NoValidation">
+            <summary>
+            Performs no validation. Every kind of password is allowed.
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.Anonymous.NoValidation.IsValid(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.AccountManagement.Anonymous.SimpleMailAddressValidation">
+            <summary>
+            The password must have the form of a valid email address.
+            </summary>
+            <remarks>
+            A <code>@</code> is required and the host name must contain a dot.
+            </remarks>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.Anonymous.SimpleMailAddressValidation.IsValid(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.AccountManagement.AnonymousMembershipProvider">
+            <summary>
+            Allow any anonymous login
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.AnonymousMembershipProvider.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AccountManagement.AnonymousMembershipProvider"/> class.
+            </summary>
+            <remarks>
+            Anonymous logins must provide an email address that at least seems to
+            be valid (<see cref="T:FubarDev.FtpServer.AccountManagement.Anonymous.SimpleMailAddressValidation"/>).
+            </remarks>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.AnonymousMembershipProvider.#ctor(FubarDev.FtpServer.AccountManagement.Anonymous.IAnonymousPasswordValidator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AccountManagement.AnonymousMembershipProvider"/> class.
+            </summary>
+            <param name="anonymousPasswordValidator">Anonymous login validation</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.AnonymousMembershipProvider.ValidateUser(System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FubarDev.FtpServer.AccountManagement.FtpUser">
+            <summary>
+            A basic FTP user object
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.FtpUser.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AccountManagement.FtpUser"/> class.
+            </summary>
+            <param name="name">The users name</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.AccountManagement.FtpUser.Name">
+            <summary>
+            Gets the name of the user
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.FtpUser.IsInGroup(System.String)">
+            <summary>
+            Returns <code>true</code> when the user is in the given group.
+            </summary>
+            <param name="groupName">The name of the group</param>
+            <returns><code>true</code> when the user is in the queries <paramref name="groupName"/></returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.AccountManagement.IMembershipProvider">
+            <summary>
+            Membership provider interface
+            </summary>
+            <remarks>
+            This interface must be implemented to allow the username/password authentication.
+            </remarks>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.IMembershipProvider.ValidateUser(System.String,System.String)">
+            <summary>
+            Validates if the combination of <paramref name="username"/> and <paramref name="password"/> is valid.
+            </summary>
+            <param name="username">The user name</param>
+            <param name="password">The password</param>
+            <returns>The result of the validation</returns>
+        </member>
+        <member name="T:FubarDev.FtpServer.AccountManagement.MemberValidationResult">
+            <summary>
+            Result for a member validation
+            </summary>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.MemberValidationResult.#ctor(FubarDev.FtpServer.AccountManagement.MemberValidationStatus)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AccountManagement.MemberValidationResult"/> class.
+            </summary>
+            <param name="status">The error status for the validation</param>
+        </member>
+        <member name="M:FubarDev.FtpServer.AccountManagement.MemberValidationResult.#ctor(FubarDev.FtpServer.AccountManagement.MemberValidationStatus,FubarDev.FtpServer.AccountManagement.FtpUser)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FubarDev.FtpServer.AccountManagement.MemberValidationResult"/> class.
+            </summary>
+            <param name="status">The success status for the validation</param>
+            <param name="user">The validated user</param>
+        </member>
+        <member name="P:FubarDev.FtpServer.AccountManagement.MemberValidationResult.Status">
+            <summary>
+            Gets the status of the validation
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.AccountManagement.MemberValidationResult.IsSuccess">
+            <summary>
+            Gets a value indicating whether the user login succeeded
+            </summary>
+        </member>
+        <member name="P:FubarDev.FtpServer.AccountManagement.MemberValidationResult.User">
+            <summary>
+            Gets the authenticated user.
+            </summary>
+        </member>
+        <member name="T:FubarDev.FtpServer.AccountManagement.MemberValidationStatus">
+            <summary>
+            Validation result for a <see cref="T:FubarDev.FtpServer.AccountManagement.IMembershipProvider"/>
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.AccountManagement.MemberValidationStatus.InvalidLogin">
+            <summary>
+            User name or password invalid
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.AccountManagement.MemberValidationStatus.InvalidAnonymousEmail">
+            <summary>
+            Email address validation for anonymous login failed
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.AccountManagement.MemberValidationStatus.Anonymous">
+            <summary>
+            Anonymous user
+            </summary>
+        </member>
+        <member name="F:FubarDev.FtpServer.AccountManagement.MemberValidationStatus.AuthenticatedUser">
+            <summary>
+            User authenticated successfully
+            </summary>
+        </member>
+    </members>
+</doc>
