@@ -93,12 +93,11 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}"; Flags: nowait postinstall skipifsilent; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"
+Filename: "{app}\InstallService.bat"; WorkingDir: "{app}"; Flags: waituntilterminated runhidden
 
 [UninstallRun]
-Filename: "{app}\UninstallService.bat"
+Filename: "{app}\UninstallService.bat"; WorkingDir: "{app}"; Flags: runhidden
 
 [UninstallDelete]
-Type: filesandordirs; Name: "{app}\root"
-Type: filesandordirs; Name: "{app}\log.txt"
-Type: files; Name: "{app}\settings.xml"
+Type: filesandordirs; Name: "{app}"
